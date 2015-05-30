@@ -9,6 +9,7 @@ namespace Gwent.NET.Model
             Decks = new List<Deck>();
         }
 
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Picture { get; set; }
         public List<Deck> Decks { get; set; }

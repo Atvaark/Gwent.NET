@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace Gwent.NET.Model
 {
-    public class Custom
+    public class CustomGwintCardDefinitions
     {
         [XmlArray("gwint_battle_king_card_definitions", IsNullable = true)]
         [XmlArrayItem("card")]
@@ -11,7 +11,7 @@ namespace Gwent.NET.Model
 
         [XmlArray("gwint_card_definitions_final", IsNullable = true)]
         [XmlArrayItem("card")]
-        public List<Card> GwintCardDefinitionsFinal { get; set; }
+        public List<Card> GwintCardDefinitions { get; set; }
 
     }
 }

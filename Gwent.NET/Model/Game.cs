@@ -5,6 +5,10 @@ namespace Gwent.NET.Model
 {
     public class Game
     {
+        public Game()
+        {
+            Participants = new List<Participant>();
+        }
         public int Id { get; set; }
         public State State { get; set; }
         public List<Participant> Participants { get; set; } 

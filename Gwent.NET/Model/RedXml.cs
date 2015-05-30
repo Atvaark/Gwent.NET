@@ -6,6 +6,6 @@ namespace Gwent.NET.Model
     public class RedXml
     {
         [XmlElement("custom")]
-        public Custom Custom { get; set; }
+        public CustomGwintCardDefinitions GwintCardDefinitions { get; set; }
     }
 }

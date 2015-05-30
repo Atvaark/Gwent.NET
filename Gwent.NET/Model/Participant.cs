@@ -6,21 +6,23 @@ namespace Gwent.NET.Model
     {
         public Participant()
         {
-            DeckCards = new List<DeckCard>();
-            DisposedCards = new List<DeckCard>();
-            CloseCombatCards = new List<DeckCard>();
-            RangeCards = new List<DeckCard>();
-            SiegeCards = new List<DeckCard>();
+            DeckCards = new List<Card>();
+            DisposedCards = new List<Card>();
+            CloseCombatCards = new List<Card>();
+            RangeCards = new List<Card>();
+            SiegeCards = new List<Card>();
         }
 
-
         public User User { get; set; }
-        public int Lives { get; set; }
         public Deck Deck { get; set; }
-        public List<DeckCard> DeckCards { get; set; }
-        public List<DeckCard> DisposedCards { get; set; }
-        public List<DeckCard> CloseCombatCards { get; set; }
-        public List<DeckCard> RangeCards { get; set; }
-        public List<DeckCard> SiegeCards { get; set; }
+        public bool IsOwner { get; set; }
+        public int Lives { get; set; }
+        public int Draws { get; set; }
+        public List<Card> HandCards { get; set; }
+        public List<Card> DeckCards { get; set; }
+        public List<Card> DisposedCards { get; set; }
+        public List<Card> CloseCombatCards { get; set; }
+        public List<Card> RangeCards { get; set; }
+        public List<Card> SiegeCards { get; set; }
     }
 }

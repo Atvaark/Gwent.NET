@@ -1,10 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace Gwent.NET.Model
 {
     public class Card
     {
+        public Card()
+        {
+            TypeFlags = new List<GwintTypeFlag>();
+            EffectFlags = new List<GwintEffectFlag>();
+            SummonFlags = new List<GwintSummonFlag>();
+        }
+
         [XmlAttribute("index")]
         public int Index { get; set; }
 
@@ -25,14 +34,18 @@ namespace Gwent.NET.Model
 
         [XmlArray("type_flags")]
         [XmlArrayItem("flag")]
+        [JsonIgnore]
         public List<GwintTypeFlag> TypeFlags { get; set; }
-
+        
         [XmlArray("effect_flags")]
         [XmlArrayItem("flag")]
+        [JsonIgnore]
         public List<GwintEffectFlag> EffectFlags { get; set; }
-
+        
         [XmlArray("summonFlags", IsNullable = true)]
         [XmlArrayItem("card")]
         public List<GwintSummonFlag> SummonFlags { get; set; }
+
+        public bool IsBattleKing { get; set; }
     }
 }

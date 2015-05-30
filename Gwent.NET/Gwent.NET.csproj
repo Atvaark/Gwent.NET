@@ -32,6 +32,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,10 +48,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTOs\CardDto.cs" />
+    <Compile Include="DTOs\DeckDto.cs" />
+    <Compile Include="DTOs\GameDto.cs" />
+    <Compile Include="DTOs\ParticipantDto.cs" />
+    <Compile Include="DTOs\UserDto.cs" />
+    <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="GwentModule.cs" />
+    <Compile Include="Repositories\GameRepository.cs" />
+    <Compile Include="Interfaces\IGameRepository.cs" />
     <Compile Include="Model\Card.cs" />
-    <Compile Include="Model\Custom.cs" />
+    <Compile Include="Model\CustomGwintCardDefinitions.cs" />
     <Compile Include="Model\Deck.cs" />
-    <Compile Include="Model\DeckCard.cs" />
     <Compile Include="Model\Game.cs" />
     <Compile Include="Model\GwentFaction.cs" />
     <Compile Include="Model\GwintEffect.cs" />
@@ -57,9 +72,17 @@
     <Compile Include="Model\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Repositories\CardRepository.cs" />
+    <Compile Include="Interfaces\ICardRepository.cs" />
+    <Compile Include="Interfaces\IUserRepository.cs" />
+    <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="States\GameEndState.cs" />
     <Compile Include="States\GameStartState.cs" />
-    <Compile Include="States\InitialState.cs" />
     <Compile Include="States\LobbyState.cs" />
     <Compile Include="States\PreparationState.cs" />
     <Compile Include="States\RoundEndState.cs" />
@@ -69,14 +92,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\def_gwint_battle_king_cards.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\def_gwint_cards_final.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
