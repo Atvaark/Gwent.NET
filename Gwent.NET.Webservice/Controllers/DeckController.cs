@@ -6,6 +6,7 @@ using Gwent.NET.Model;
 
 namespace Gwent.NET.Webservice.Controllers
 {
+    [Authorize]
     public class DeckController : ApiController
     {
         private readonly IUserRepository _userRepository;
@@ -21,7 +22,7 @@ namespace Gwent.NET.Webservice.Controllers
         [Route("api/user/{userId}/deck")]
         public IHttpActionResult Get(int userId)
         {
-            User user = _userRepository.Find(userId);
+            User user = _userRepository.FindById(userId);
             if (user == null)
             {
                 return NotFound();
@@ -33,7 +34,7 @@ namespace Gwent.NET.Webservice.Controllers
         [Route("api/user/{userId}/deck/{deckId}")]
         public IHttpActionResult Get(int userId, int deckId)
         {
-            User user = _userRepository.Find(userId);
+            User user = _userRepository.FindById(userId);
             if (user == null)
             {
                 return NotFound();
@@ -54,18 +55,18 @@ namespace Gwent.NET.Webservice.Controllers
             {
                 return BadRequest();
             }
-            User user = _userRepository.Find(userId);
+            User user = _userRepository.FindById(userId);
             if (user == null)
             {
                 return NotFound();
             }
+
             var newDeck = DeckDtoToDeck(deck);
             if (!ValidateDeck(newDeck))
             {
                 return BadRequest();
             }
-            user.Decks.Add(newDeck);
-            newDeck.Id = user.Decks.IndexOf(newDeck);
+            _userRepository.AddDeck(userId, newDeck);
             return Ok(newDeck.ToDto());
         }
         
@@ -77,7 +78,7 @@ namespace Gwent.NET.Webservice.Controllers
             {
                 return BadRequest();
             }
-            User user = _userRepository.Find(userId);
+            User user = _userRepository.FindById(userId);
             if (user == null)
             {
                 return NotFound();

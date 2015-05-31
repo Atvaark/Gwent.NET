@@ -11,6 +11,7 @@ namespace Gwent.NET.Model
 
         public int Id { get; set; }
         public string Name { get; set; }
+        public string PasswordHash { get; set; }
         public string Picture { get; set; }
         public List<Deck> Decks { get; set; }
     }

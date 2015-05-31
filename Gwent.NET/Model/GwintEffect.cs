@@ -91,8 +91,6 @@ namespace Gwent.NET.Model
         EffectUnsummonDummy = 1 << 26,
 
         [XmlEnum("EFFECT_CLEAR_SKY")]
-        EffectClearSky = 1 << 27,
-
-
+        EffectClearSky = 1 << 27
     }
 }

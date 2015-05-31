@@ -17,24 +17,6 @@ namespace Gwent.NET
         {
             return card.EffectFlags.Aggregate(GwintEffect.EffectNone, (current, effectFlag) => current | effectFlag.Name);
         }
-
-        public static CardDto ToDto(this Card card)
-        {
-            return new CardDto
-            {
-                Index = card.Index,
-                Title = card.Title,
-                Description = card.Description,
-                Power = card.Power,
-                Picture = card.Picture,
-                FactionIndex = GwentFaction.Neutral,
-                Type = card.GetGwintType(),
-                Effect = card.GetGwintEffect(),
-                SummonFlags = card.SummonFlags.Select(s => s.Id).ToList(),
-                IsBattleKing = card.IsBattleKing
-            };
-        }
-
         public static UserDto ToDto(this User user)
         {
             return new UserDto
@@ -45,10 +27,28 @@ namespace Gwent.NET
             };
         }
 
+        public static CardDto ToDto(this Card card)
+        {
+            return new CardDto
+            {
+                Index = card.Index,
+                Title = card.Title,
+                Description = card.Description,
+                Power = card.Power,
+                Picture = card.Picture,
+                Faction = card.FactionIndex,
+                Type = card.GetGwintType(),
+                Effect = card.GetGwintEffect(),
+                SummonFlags = card.SummonFlags.Select(s => s.Id).ToList(),
+                IsBattleKing = card.IsBattleKing
+            };
+        }
+
         public static DeckDto ToDto(this Deck deck)
         {
             return new DeckDto
             {
+                Id = deck.Id,
                 Cards = deck.Cards.Select(c => c.Index).ToList(),
                 Faction = deck.Faction,
                 BattleKingCard = deck.BattleKingCard.Index
@@ -61,24 +61,24 @@ namespace Gwent.NET
             {
                 Id = game.Id,
                 StateType = game.State.GetType().Name,
-                Participants = game.Participants.Select(p => p.ToDto()).ToList()
+                Players = game.Players.Select(p => p.ToDto()).ToList()
             };
         }
 
-        public static ParticipantDto ToDto(this Participant participant)
+        public static PlayerDto ToDto(this Player player)
         {
-            return new ParticipantDto
+            return new PlayerDto
             {
-                User = participant.User.Id,
-                Deck = participant.Deck.Id,
-                IsOwner = participant.IsOwner,
-                Lives = participant.Lives,
-                Draws = participant.Draws,
-                DeckCardCount = participant.DeckCards.Count,
-                DisposedCards = participant.DisposedCards.Select(c => c.Index).ToList(),
-                CloseCombatCards = participant.CloseCombatCards.Select(c => c.Index).ToList(),
-                RangeCards = participant.RangeCards.Select(c => c.Index).ToList(),
-                SiegeCards = participant.RangeCards.Select(c => c.Index).ToList()
+                User = player.User.Id,
+                Deck = player.Deck.Id,
+                IsLobbyOwner = player.IsOwner,
+                Lives = player.Lives,
+                HandCardCount = player.HandCards.Count,
+                DeckCardCount = player.DeckCards.Count,
+                DisposedCards = player.DisposedCards.Select(c => c.Index).ToList(),
+                CloseCombatCards = player.CloseCombatCards.Select(c => c.Index).ToList(),
+                RangeCards = player.RangeCards.Select(c => c.Index).ToList(),
+                SiegeCards = player.RangeCards.Select(c => c.Index).ToList()
             };
         }
     }

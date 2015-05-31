@@ -5,18 +5,18 @@ namespace Gwent.NET.Model
     public enum GwentFaction
     {
         [XmlEnum("F_NEUTRAL")]
-        Neutral,
+        Neutral = 0,
 
         [XmlEnum("F_NORTHERN_KINGDOM")]
-        NorthernKingdom,
+        NorthernKingdom = 1,
 
         [XmlEnum("F_NILFGAARD")]
-        Nilfgaard,
+        Nilfgaard = 2,
 
         [XmlEnum("F_SCOIATAEL")]
-        Scoiatael,
+        Scoiatael = 3,
 
         [XmlEnum("F_NO_MANS_LAND")]
-        NoMansLand 
+        NoMansLand = 4
     }
 }

@@ -1,0 +1,17 @@
+﻿<h3>Deck list</h3>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Cards</th>
+        <th>Faction</th>
+        <th>BattleKing</th>
+        <th></th>
+    </tr>
+    <tr ng-repeat="deck in data.decks">
+        <td>{{deck.Cards.length}}</td>
+        <td>{{deck.Faction}}</td>
+        <td>{{deck.BattleKingCard}}</td>
+        <td><a>Edit</a></td>
+        <td><a>Remove</a></td>
+    </tr>
+</table>

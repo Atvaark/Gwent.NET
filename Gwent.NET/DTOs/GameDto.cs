@@ -6,11 +6,11 @@ namespace Gwent.NET.DTOs
     {
         public GameDto()
         {
-            Participants = new List<ParticipantDto>();
+            Players = new List<PlayerDto>();
         }
 
         public int Id { get; set; }
         public string StateType { get; set; }
-        public List<ParticipantDto> Participants { get; set; }
+        public List<PlayerDto> Players { get; set; }
     }
 }

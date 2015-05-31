@@ -2,9 +2,9 @@
 
 namespace Gwent.NET.Model
 {
-    public class Participant
+    public class Player
     {
-        public Participant()
+        public Player()
         {
             DeckCards = new List<Card>();
             DisposedCards = new List<Card>();
@@ -17,7 +17,6 @@ namespace Gwent.NET.Model
         public Deck Deck { get; set; }
         public bool IsOwner { get; set; }
         public int Lives { get; set; }
-        public int Draws { get; set; }
         public List<Card> HandCards { get; set; }
         public List<Card> DeckCards { get; set; }
         public List<Card> DisposedCards { get; set; }

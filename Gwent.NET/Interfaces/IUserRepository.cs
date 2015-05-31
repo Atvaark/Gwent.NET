@@ -4,8 +4,13 @@ namespace Gwent.NET.Interfaces
 {
     public interface IUserRepository
     {
-        User Find(int id);
-        User Create(string name, string picture);
+        User FindById(int id);
+        User FindById(string id);
+        User FindByName(string username);
+        User Create(User user);
         void Update(int id, User user);
+        void AddDeck(int id, Deck deck);
+        void Delete(int id);
+        void Delete(string id);
     }
 }

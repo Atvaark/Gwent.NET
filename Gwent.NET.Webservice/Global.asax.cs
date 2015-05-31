@@ -10,12 +10,6 @@ namespace Gwent.NET.Webservice
     {
         protected void Application_Start()
         {
-            var builder = new ContainerBuilder();
-            var config = GlobalConfiguration.Configuration;
-            builder.RegisterModule<GwentModule>();
-            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
-            var container = builder.Build();
-            config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
     }

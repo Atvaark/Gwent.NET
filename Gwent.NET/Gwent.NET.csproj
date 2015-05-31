@@ -37,7 +37,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -51,7 +51,9 @@
     <Compile Include="DTOs\CardDto.cs" />
     <Compile Include="DTOs\DeckDto.cs" />
     <Compile Include="DTOs\GameDto.cs" />
-    <Compile Include="DTOs\ParticipantDto.cs" />
+    <Compile Include="DTOs\PasswordChangeDto.cs" />
+    <Compile Include="DTOs\PlayerDto.cs" />
+    <Compile Include="DTOs\RegistrationDto.cs" />
     <Compile Include="DTOs\UserDto.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="GwentModule.cs" />
@@ -67,7 +69,7 @@
     <Compile Include="Model\GwintSummonFlag.cs" />
     <Compile Include="Model\GwintType.cs" />
     <Compile Include="Model\GwintTypeFlag.cs" />
-    <Compile Include="Model\Participant.cs" />
+    <Compile Include="Model\Player.cs" />
     <Compile Include="Model\RedXml.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Program.cs" />

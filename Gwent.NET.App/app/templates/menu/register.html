@@ -1,0 +1,13 @@
+﻿<div id="register-panel">
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            <label for="username-input">Username</label>
+            <input id="username-input" type="text" ng-model="data.register.username" />
+            <label for="password-input">Password</label>
+            <input id="password-input" type="password" ng-model="data.register.password" />
+            <label for="password-input">Password again</label>
+            <input id="password-again-input" type="password" ng-model="data.register.passwordAgain" />
+        </div>
+        <button type="submit" ng-click="methods.register()">Register</button>
+    </form>
+</div>

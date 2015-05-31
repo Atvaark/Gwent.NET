@@ -1,0 +1,66 @@
+﻿<style>
+.card-big {
+    width: 410px;
+    height: 775px;
+    border: solid;
+    border-width: 1px;
+    border-radius: 25px;
+}
+.card-big-circle-big {
+    width: 120px;
+    height: 120px;
+    border: solid;
+    border-width: 1px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 120px;
+    font-size: 4.5em;
+    box-shadow: 2px 2px 2px #888888
+}
+.card-big-circle-small {
+    width: 100px;
+    height: 100px;
+    border: solid;
+    border-width: 1px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 120px;
+    font-size: 4.5em;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: 2px 2px 2px #888888
+}
+.card-big-text-area {
+    height: calc(100% - 575px);
+    border-top: solid;
+    border-top-width: 1px;
+}
+.card-big-title {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 1.75em;
+}
+.card-big-quote {
+    text-align: center;
+    font-size: 1.5em;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+</style>
+<div class="card-big">
+    <div class="card-big-circle-big">{{card.power}}</div>
+    <div style="height: 80px"></div>
+    <div class="card-big-circle-small">
+        <img src="{{card.type}}" alt="type" />
+    </div>
+    <div style="height: 32px"></div>
+    <div class="card-big-circle-small">
+        <img src="{{card.effect}}" alt="effect" />
+    </div>
+    <div style="height: 137px"></div>
+    <div class="card-big-text-area">
+        <div class="card-big-title">{{card.title}}</div>
+        <div style="height: 60px"></div>
+        <div class="card-big-quote">{{card.quote}}</div>
+    </div>
+</div>

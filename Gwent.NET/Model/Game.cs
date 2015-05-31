@@ -7,10 +7,10 @@ namespace Gwent.NET.Model
     {
         public Game()
         {
-            Participants = new List<Participant>();
+            Players = new List<Player>();
         }
         public int Id { get; set; }
         public State State { get; set; }
-        public List<Participant> Participants { get; set; } 
+        public List<Player> Players { get; set; } 
     }
 }

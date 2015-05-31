@@ -181,3 +181,8 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+
+# Web application frameworks
+Gwent.NET.App/Content/*
+Gwent.NET.App/fonts/*
+Gwent.NET.App/Scripts/*
