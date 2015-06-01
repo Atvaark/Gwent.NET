@@ -6,6 +6,7 @@ namespace Gwent.NET.Model
     {
         public Player()
         {
+            HandCards = new List<Card>();
             DeckCards = new List<Card>();
             DisposedCards = new List<Card>();
             CloseCombatCards = new List<Card>();

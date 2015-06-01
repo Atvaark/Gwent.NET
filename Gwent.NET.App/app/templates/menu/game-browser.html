@@ -1,0 +1,16 @@
+﻿<h3>Game browser</h3>
+<button type="button" ng-click="methods.getGames()">Refresh</button>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Players</th>
+        <th>State</th>
+        <th></th>
+    </tr>
+    <tr ng-repeat="game in data.games">
+        <td>{{game.Id}}</td>
+        <td>{{game.PlayerCount}}</td>
+        <td>{{game.State}}</td>
+        <td><a ng-click="methods.joinGame(game.Id)">Join</a></td>
+    </tr>
+</table>

@@ -60,7 +60,7 @@ namespace Gwent.NET
             return new GameDto
             {
                 Id = game.Id,
-                StateType = game.State.GetType().Name,
+                State = game.State.GetType().Name,
                 Players = game.Players.Select(p => p.ToDto()).ToList()
             };
         }
@@ -70,7 +70,7 @@ namespace Gwent.NET
             return new PlayerDto
             {
                 User = player.User.Id,
-                Deck = player.Deck.Id,
+                Deck = player.Deck == null ? 0 : player.Deck.Id, // TODO: Set the deck beforehand
                 IsLobbyOwner = player.IsOwner,
                 Lives = player.Lives,
                 HandCardCount = player.HandCards.Count,

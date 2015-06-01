@@ -2,5 +2,6 @@
 {
     public abstract class State
     {
+        public abstract bool IsOver { get; }
     }
 }

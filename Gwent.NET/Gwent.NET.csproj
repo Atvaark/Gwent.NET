@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="DTOs\CardDto.cs" />
     <Compile Include="DTOs\DeckDto.cs" />
+    <Compile Include="DTOs\GameBrowseDto.cs" />
     <Compile Include="DTOs\GameDto.cs" />
     <Compile Include="DTOs\PasswordChangeDto.cs" />
     <Compile Include="DTOs\PlayerDto.cs" />

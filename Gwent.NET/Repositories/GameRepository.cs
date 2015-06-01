@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
@@ -29,12 +30,18 @@ namespace Gwent.NET.Repositories
             return game;
         }
 
+        public IEnumerable<Game> FindByUserId(int userId)
+        {
+            return _games.Values.Where(g => g.Players.Any(p => p.User.Id == userId));
+        }
+
         public Game Create(Game game)
         {
             Game newGame = new Game
             {
                 Id = Interlocked.Increment(ref _id),
-                State = game.State
+                State = game.State,
+                Players = game.Players
             };
             _games.Add(newGame.Id, newGame);
             return newGame;

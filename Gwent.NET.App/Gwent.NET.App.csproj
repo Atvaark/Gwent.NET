@@ -57,9 +57,10 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\scripts\menu\game-controller.js" />
+    <Content Include="app\templates\menu\game-lobby.html" />
     <Content Include="favicon.ico" />
     <Content Include="app\scripts\app.js" />
-    <Content Include="app\scripts\game\game-controller.js" />
     <Content Include="app\scripts\game\game.js" />
     <Content Include="app\scripts\game\gw-card-big.js" />
     <Content Include="app\scripts\menu\deck-controller.js" />
@@ -67,11 +68,11 @@
     <Content Include="app\scripts\menu\menu.js" />
     <Content Include="app\scripts\network\network.js" />
     <Content Include="app\templates\game\card-big.html" />
-    <Content Include="app\templates\menu\browser.html" />
+    <Content Include="app\templates\menu\game-browser.html" />
     <Content Include="app\templates\menu\deck-create.html" />
     <Content Include="app\templates\menu\deck-list.html" />
     <Content Include="app\templates\menu\deck.html" />
-    <Content Include="app\templates\menu\lobby.html" />
+    <Content Include="app\templates\menu\game.html" />
     <Content Include="app\templates\menu\login.html" />
     <Content Include="app\templates\menu\menu.html" />
     <Content Include="app\templates\menu\main.html" />

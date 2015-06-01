@@ -1,9 +1,54 @@
-﻿<div ng-hide="data.user != null">
-    <div class="panel" ui-sref="menu.login">
-        <a>Login</a>
-    </div>
-    <div class="panel" ui-sref="menu.register">
-        <a>Register</a>
-    </div>
-</div>
+﻿<style>
+    .menu-nav {
+        background-color: #fff;
+        border: 1px solid #dedede;
+        border-radius: 4px;
+        box-shadow: 0 2px 2px -1px #000000;
+        box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.055);
+        color: #888;
+        display: block;
+        margin: 8px 8px 8px 8px;
+        overflow: hidden;
+    }
+
+        .menu-nav ul {
+            margin: 0;
+            padding: 0;
+        }
+
+            .menu-nav ul li {
+                display: inline-block;
+                list-style-type: none;
+            }
+
+        .menu-nav > ul > li > a {
+            color: #aaa;
+            display: block;
+            line-height: 50px;
+            padding: 0 25px;
+            text-decoration: none;
+        }
+
+        .menu-nav > ul > li:hover {
+            background-color: rgb( 40, 44, 47 );
+        }
+
+            .menu-nav > ul > li:hover > a {
+                color: rgb( 255, 255, 255 );
+            }
+
+                .menu-nav > ul > li:hover > a > .caret {
+                    border-top-color: rgb( 255, 255, 255 );
+                }
+</style>
+<nav class="menu-nav">
+    <ul style="float: left;">
+        <li><a ui-sref="menu">Home</a></li>
+    </ul>
+    <ul style="float: right;">
+        <li ng-hide="data.user !== null"><a ui-sref="menu.login">Login</a></li>
+        <li ng-hide="data.user !== null"><a ui-sref="menu.register">Register</a></li>
+        <li ng-show="data.user !== null"><a href="#" ng-click="methods.logout()">Logout</a></li>
+    </ul>
+</nav>
 <div ui-view></div>

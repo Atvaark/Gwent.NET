@@ -35,13 +35,18 @@
                     url: '/create',
                     templateUrl: 'templates/menu/deck-create.html'
                 })
-                .state('menu.main.lobby', {
-                    url: '/lobby',
-                    templateUrl: 'templates/menu/lobby.html'
+                .state('menu.main.game', {
+                    url: '/game',
+                    templateUrl: 'templates/menu/game.html',
+                    controller: 'GameController as ctrl'
                 })
-                .state('menu.main.browser', {
+                .state('menu.main.game.browser', {
                     url: '/browser',
-                    templateUrl: 'templates/menu/browser.html'
+                    templateUrl: 'templates/menu/game-browser.html'
+                })
+                .state('menu.main.game.lobby', {
+                    url: '/lobby',
+                    templateUrl: 'templates/menu/game-lobby.html'
                 });
         });
 })();

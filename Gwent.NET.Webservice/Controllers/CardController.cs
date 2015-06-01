@@ -6,6 +6,7 @@ using Gwent.NET.Repositories;
 
 namespace Gwent.NET.Webservice.Controllers
 {
+    [Authorize]
     public class CardController : ApiController
     {
         private readonly ICardRepository _cardRepository;

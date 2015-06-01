@@ -29,7 +29,7 @@
                             cardService.cards = cards;
                             deferred.resolve(cards);
                         }, function (msg) {
-                            data.cards = [];
+                            cardService.cards = [];
                             deferred.reject(msg);
                         });
                     return deferred.promise;

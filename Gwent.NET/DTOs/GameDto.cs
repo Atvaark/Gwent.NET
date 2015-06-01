@@ -10,7 +10,7 @@ namespace Gwent.NET.DTOs
         }
 
         public int Id { get; set; }
-        public string StateType { get; set; }
+        public string State { get; set; }
         public List<PlayerDto> Players { get; set; }
     }
 }

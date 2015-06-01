@@ -17,7 +17,11 @@ namespace Gwent.NET.Webservice
         {
             app.UseCors(CorsOptions.AllowAll);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
-            app.UseCookieAuthentication(new CookieAuthenticationOptions());
+            var cookieAuthenticationOptions = new CookieAuthenticationOptions
+            {
+                //CookieHttpOnly = false
+            };
+            app.UseCookieAuthentication(cookieAuthenticationOptions);
             PublicClientId = "self";
             OAuthOptions = new OAuthAuthorizationServerOptions
             {

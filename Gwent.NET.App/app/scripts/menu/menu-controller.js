@@ -4,13 +4,23 @@
     angular.module('app.menu')
         .controller('MenuController', function ($scope, $log, $state, backendService, userService) {
             var ctrl = this;
-            var data = $scope.data = {};
+            var data = $scope.data = {
+                user: {},
+                login: {},
+                register: {}
+            };
             var methods = $scope.methods = {};
+            var setUser = function (user) {
+                data.user = user;
+                if (user !== null && !$state.includes('menu.main')) {
+                    $state.go('menu.main');
+                }
+            };
             methods.login = function () {
-                backendService.methods.login(data.login.username, data.login.password)
+                userService.login(data.login.username, data.login.password)
                     .then(function (user) {
-                        userService.setUser(user);
                         $log.info('Login successful');
+                        setUser(user);
                         data.login.error = '';
                     },
                     function (msg) {
@@ -18,14 +28,21 @@
                     });
             };
             methods.logout = function () {
-
+                userService.logout().then(function () {
+                    $log.info('Logout successful');
+                    setUser(null);
+                }, function (msg) {
+                    $log.error('Logout failed');
+                    data.login.error = 'Logout failed';
+                    setUser(null);
+                });
             };
             methods.register = function () {
                 if (data.register.password !== data.register.passwordAgain) {
                     data.register.error = 'Password does not match';
                     return;
                 }
-                backendService.methods.register(data.register.username, data.register.password)
+                userService.register(data.register.username, data.register.password)
                     .then(function (response) {
                         $log.info('Registration successful');
                         data.register.error = '';
@@ -37,11 +54,6 @@
                     });
             };
 
-            $scope.$on('userChanged', function () {
-                data.user = userService.user;
-                if (data.user != null) {
-                    $state.go('menu.main');
-                }
-            });
+            setUser(userService.getUser());
         });
 })();

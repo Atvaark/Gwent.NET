@@ -1,14 +1,14 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Gwent.NET.DTOs;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
 using Gwent.NET.Webservice.Auth;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
-using Gwent.NET.DTOs;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Cookies;
 
 namespace Gwent.NET.Webservice.Controllers
 {
@@ -48,13 +48,14 @@ namespace Gwent.NET.Webservice.Controllers
 
         // POST api/User/Logout
         [Authorize]
-        [Route("Logout")]
+        [HttpPost]
+        [Route("api/user/Logout")]
         public IHttpActionResult Logout()
         {
             Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
             return Ok();
         }
-
+        
         // POST: api/User/Register
         [HttpPost]
         [Route("api/user/register")]
@@ -80,7 +81,7 @@ namespace Gwent.NET.Webservice.Controllers
 
         // POST api/User/ChangePassword
         [Authorize]
-        [Route("ChangePassword")]
+        [Route("api/user/changepassword")]
         public async Task<IHttpActionResult> ChangePassword(PasswordChangeDto passwordChange)
         {
             if (!ModelState.IsValid)

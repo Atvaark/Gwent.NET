@@ -33,7 +33,7 @@
                     data.error = 'Unable to retrieve decks.';
                 });
             };
-            
+
             methods.showDecks = function () {
                 methods.getDecks();
                 $state.go('menu.main.deck.list');
@@ -46,8 +46,7 @@
                 $state.go('menu.main.deck.create');
             };
 
-            methods.addDeckCard = function(index) {
-                var card = data.cards[index];
+            methods.addDeckCard = function (card) {
                 var deckCard = methods.findDeckCard(card.Index);
                 if (deckCard) {
                     deckCard.Count = deckCard.Count + 1;
@@ -72,10 +71,9 @@
             methods.removeDeckCard = function (cardIndex) {
                 data.create.cards.splice(cardIndex, 1);
             };
-
-            methods.findDeckCard = function(cardIndex) {
+            methods.findDeckCard = function (cardIndex) {
                 var foundCard = null;
-                angular.forEach(data.create.cards, function(deckCard) {
+                angular.forEach(data.create.cards, function (deckCard) {
                     if (deckCard.Index === cardIndex) {
                         foundCard = deckCard;
                         return;
@@ -83,23 +81,23 @@
                 });
                 return foundCard;
             };
-            
+
             methods.createDeck = function () {
                 var deckDto = {
                     Cards: [],
                     Faction: data.create.faction,
                     BattleKingCard: data.create.battleKing
                 };
-                angular.forEach(data.create.cards, function(card) {
+                angular.forEach(data.create.cards, function (card) {
                     for (var i = 0; i < card.Count; i++) {
                         deckDto.Cards.push(card.Index);
                     }
                 });
-                backendService.methods.createDeck(deckDto).then(function(response) {
+                backendService.methods.createDeck(deckDto).then(function (response) {
                     $log.info('Deck created.');
                     data.error = '';
-
-                }, function(msg) {
+                    methods.showDecks();
+                }, function (msg) {
                     $log.error('Unable to create deck.');
                     data.error = 'Unable to create deck.';
                 });

@@ -1,0 +1,5 @@
+﻿<h2>Game</h2>
+<button type="button" ui-sref="menu.main.game.browser">Browse games</button>
+<button type="button" ng-show="data.game == null" ng-click="methods.startGame()">Start game</button>
+<button type="button" ng-show="data.game != null" ng-click="methods.resumeGame()">Resume game</button>
+<div ui-view></div>
