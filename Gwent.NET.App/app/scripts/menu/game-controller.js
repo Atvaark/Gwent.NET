@@ -16,8 +16,8 @@
                     data.games = games;
                     data.error = '';
                 }, function (msg) {
-                    $log.error('Unable got get games');
-                    data.error = 'Unable got get games';
+                    $log.error('Unable to get games');
+                    data.error = 'Unable to get games';
                 });
             };
 
@@ -33,8 +33,8 @@
                     data.game = game;
                     deferred.resolve(game);
                 }, function (msg) {
-                    $log.error('Unable got get active game');
-                    data.error = 'Unable got get active game';
+                    $log.error('Unable to get active game');
+                    data.error = 'Unable to get active game';
                     deferred.reject();
                 });
                 return deferred.promise;
@@ -47,8 +47,8 @@
                     data.game = game;
                     deferred.resolve(game);
                 }, function (msg) {
-                    $log.error('Unable to create game.');
-                    data.error = 'Unable to create game.';
+                    $log.error('Unable to create game');
+                    data.error = 'Unable to create game';
                     data.game = {};
                     deferred.reject();
                 });
@@ -60,8 +60,8 @@
                     $log.info('Game joined');
                     data.game = game;
                 }, function (msg) {
-                    $log.error('Unable to join game.');
-                    data.error = 'Unable to join game.';
+                    $log.error('Unable to join game');
+                    data.error = 'Unable to join game';
                     data.game = {};
                 });
             }

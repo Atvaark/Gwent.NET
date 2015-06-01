@@ -1,5 +1,5 @@
 ﻿<h3>Create deck</h3>
-<label for="faction">Faction</label>
+<label for="faction">Chosen Faction</label>
 <select id="faction" name="faction" ng-model="data.create.faction">
     <option ng-repeat="faction in data.factions | deckFaction" value="{{faction.id}}">{{faction.name}}</option>
 </select>
@@ -7,7 +7,7 @@
 <select id="battleKing" name="battleKing" ng-model="data.create.battleKing">
     <option ng-repeat="card in data.cards | battleKing | faction: data.create.faction" value="{{card.Index}}">{{card.Title}}</option>
 </select>
-<h4>Available cards</h4>
+<h4>Card Collection</h4>
 <table>
     <tr>
         <th>Title</th>
@@ -27,7 +27,7 @@
         <td><a ng-click="methods.addDeckCard(card)">Add</a></td>
     </tr>
 </table>
-<h4>Deck cards</h4>
+<h4>Cards in Deck</h4>
 <table>
     <tr>
         <th>Title</th>
@@ -48,4 +48,11 @@
         <td><a ng-click="methods.removeDeckCard($index)">Remove</a></td>
     </tr>
 </table>
+<div>
+    Total cards in deck: {{methods.getTotalCardsInDeck()}}<br />
+    Number of Unit Cards: {{methods.getUnitCardsCount()}}<br />
+    Special Cards: {{methods.getSpecialCardsCount()}}/{{data.maxSpecialCards}}<br />
+    Total Unit Card Strength: {{methods.getTotalUnitCardStrength()}}<br />
+    Hero Cards: {{methods.getHeroCardsCount()}}<br />
+</div>
 <button type="button" ng-click="methods.createDeck()">Create</button>

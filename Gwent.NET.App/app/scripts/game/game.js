@@ -93,11 +93,11 @@
         .factory('gwintFactionService', function () {
             var gwintFactionService = {};
             gwintFactionService.factions = [
-                { id: 0, name: 'Neutral', validDeckFaction: false },
-                { id: 1, name: 'Northern Kingdom', validDeckFaction: true },
-                { id: 2, name: 'Nilfgaard', validDeckFaction: true },
-                { id: 3, name: 'Scoia\'tael', validDeckFaction: true },
-                { id: 4, name: 'No Man\'s Land', validDeckFaction: true },
+                { id: 0, name: 'Neutral', perk: '', validDeckFaction: false },
+                { id: 1, name: 'Northern Kingdom', perk: 'Draw a card from your deck whenever you win a round.', validDeckFaction: true },
+                { id: 2, name: 'Nilfgaard', perk: 'Win whenever there is a draw.', validDeckFaction: true },
+                { id: 3, name: 'Scoia\'tael', perk: 'You devide who goes first at the start of battle.', validDeckFaction: true },
+                { id: 4, name: 'No Man\'s Land', perk: 'One randomly-chosen Monster Unit Card stays on the battlefield after each round.', validDeckFaction: true },
             ];
             return gwintFactionService;
         })
@@ -113,8 +113,8 @@
             }
         })
         .factory('gwintTypeService', function () {
-            var gwintTypeService = {
-                types: [
+            var gwintTypeService = {}
+            gwintTypeService.types = [
                     { id: 0, name: 'None' },
                     { id: 1 << 0, name: 'GlobalEffect' },
                     { id: 1 << 1, name: 'FriendlyEffect' },
@@ -128,8 +128,7 @@
                     { id: 1 << 9, name: 'Siege' },
                     { id: 1 << 10, name: 'Hero' },
                     { id: 1 << 11, name: 'Spy' }
-                ]
-            }
+            ];
             gwintTypeService.methods = {
                 getTypes: function (types) {
                     var tempTypes = [];
@@ -139,6 +138,28 @@
                         }
                     });
                     return tempTypes;
+                },
+                hasType: function (types, typeName) {
+                    var type;
+                    for (var i = 0; i < gwintTypeService.types.length; i++) {
+                        type = gwintTypeService.types[i];
+                        if (type.name === typeName && (types & type.id)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                },
+                hasAnyType: function (types, typeNames) {
+                    var type;
+                    for (var i = 0; i < gwintTypeService.types.length; i++) {
+                        type = gwintTypeService.types[i];
+                        for (var j = 0; j < typeNames.length; j++) {
+                            if (type.name === typeNames[j] && (types & type.id)) {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
                 }
             };
 

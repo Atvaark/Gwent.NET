@@ -2,9 +2,12 @@
     'use strict';
 
     angular.module('app.menu')
-        .controller('DeckController', function ($scope, $state, $log, cardService, backendService, gwintFactionService) {
+        .controller('DeckController', function ($scope, $state, $log, cardService, backendService, gwintFactionService, gwintTypeService) {
             var data = $scope.data = {
                 initialized: false,
+                maxSpecialCards: 10,
+                cards: [],
+                decks: [],
                 create: {
                     cards: []
                 }
@@ -101,6 +104,52 @@
                     $log.error('Unable to create deck.');
                     data.error = 'Unable to create deck.';
                 });
+            };
+
+            methods.getTotalCardsInDeck = function () {
+                var count = 0;
+                angular.forEach(data.create.cards, function(card) {
+                    count += card.Count;
+                });
+                return count;
+            };
+
+            methods.getUnitCardsCount = function () {
+                var unitCardCount = 0;
+                angular.forEach(data.create.cards, function (card) {
+                    if (gwintTypeService.methods.hasType(card.Type, 'Creature')) {
+                        unitCardCount += card.Count;
+                    }
+                });
+                return unitCardCount;
+            };
+
+            methods.getSpecialCardsCount = function () {
+                var specialCardCount = 0;
+                angular.forEach(data.create.cards, function (card) {
+                    if (gwintTypeService.methods.hasAnyType(card.Type, ['Spell', 'RowModifier', 'GlobalEffect', 'Weather'])) {
+                        specialCardCount += card.Count;
+                    }
+                });
+                return specialCardCount;
+            };
+            
+            methods.getTotalUnitCardStrength = function () {
+                var powerSum = 0;
+                angular.forEach(data.create.cards, function (card) {
+                    powerSum += card.Power * card.Count;
+                });
+                return powerSum;
+            };
+
+            methods.getHeroCardsCount = function () {
+                var heroCount = 0;
+                angular.forEach(data.create.cards, function (card) {
+                    if (gwintTypeService.methods.hasType(card.Type, 'Hero')) {
+                        heroCount += card.Count;
+                    }
+                });
+                return heroCount;
             };
 
             if (!data.initialized) {

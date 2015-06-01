@@ -18,6 +18,8 @@ namespace Gwent.NET.Webservice.Controllers
             _cardRepository = cardRepository;
         }
 
+        // TODO: Remove {userId} in the routes and use the claims instead.
+
         // GET: api/user/5/deck
         [Route("api/user/{userId}/deck")]
         public IHttpActionResult Get(int userId)
