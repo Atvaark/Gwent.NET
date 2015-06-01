@@ -35,14 +35,18 @@
             };
             
             methods.showDecks = function () {
+                methods.getDecks();
                 $state.go('menu.main.deck.list');
             };
 
             methods.newDeck = function () {
+                data.create = {
+                    cards: []
+                };
                 $state.go('menu.main.deck.create');
             };
 
-            methods.addCard = function(index) {
+            methods.addDeckCard = function(index) {
                 var card = data.cards[index];
                 var deckCard = methods.findDeckCard(card.Index);
                 if (deckCard) {
@@ -65,6 +69,10 @@
                 data.create.cards.push(deckCard);
             };
 
+            methods.removeDeckCard = function (cardIndex) {
+                data.create.cards.splice(cardIndex, 1);
+            };
+
             methods.findDeckCard = function(cardIndex) {
                 var foundCard = null;
                 angular.forEach(data.create.cards, function(deckCard) {
@@ -75,13 +83,26 @@
                 });
                 return foundCard;
             };
-
-            methods.removeCard = function(cardIndex) {
-                data.create.cards.splice(cardIndex, 1);
-            };
-
+            
             methods.createDeck = function () {
-                // TODO: Transform and call the backendService
+                var deckDto = {
+                    Cards: [],
+                    Faction: data.create.faction,
+                    BattleKingCard: data.create.battleKing
+                };
+                angular.forEach(data.create.cards, function(card) {
+                    for (var i = 0; i < card.Count; i++) {
+                        deckDto.Cards.push(card.Index);
+                    }
+                });
+                backendService.methods.createDeck(deckDto).then(function(response) {
+                    $log.info('Deck created.');
+                    data.error = '';
+
+                }, function(msg) {
+                    $log.error('Unable to create deck.');
+                    data.error = 'Unable to create deck.';
+                });
             };
 
             if (!data.initialized) {

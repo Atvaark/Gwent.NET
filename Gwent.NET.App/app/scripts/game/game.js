@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.game', [])
-        .config(function($stateProvider) {
+        .config(function ($stateProvider) {
             $stateProvider
                 .state('game', {
                     url: '/game',
@@ -19,16 +19,16 @@
         })
         .factory('cardService', function ($q, backendService) {
             var cardService = {
-                cards : []
+                cards: []
             };
             cardService.methods = {
-                getCards: function() {
+                getCards: function () {
                     var deferred = $q.defer();
                     backendService.methods.getCards()
                         .then(function (cards) {
                             cardService.cards = cards;
                             deferred.resolve(cards);
-                        }, function(msg) {
+                        }, function (msg) {
                             data.cards = [];
                             deferred.reject(msg);
                         });
@@ -37,10 +37,10 @@
             }
             return cardService;
         })
-        .filter('battleKing', function() {
-            return function(cards) {
+        .filter('battleKing', function () {
+            return function (cards) {
                 var tempCards = [];
-                angular.forEach(cards, function(card) {
+                angular.forEach(cards, function (card) {
                     if (card.IsBattleKing) {
                         tempCards.push(card);
                     }
@@ -48,10 +48,10 @@
                 return tempCards;
             }
         })
-        .filter('notBattleKing', function() {
-            return function(cards) {
+        .filter('notBattleKing', function () {
+            return function (cards) {
                 var tempCards = [];
-                angular.forEach(cards, function(card) {
+                angular.forEach(cards, function (card) {
                     if (!card.IsBattleKing) {
                         tempCards.push(card);
                     }
@@ -59,7 +59,7 @@
                 return tempCards;
             }
         })
-        .filter('faction', function() {
+        .filter('faction', function () {
             return function (cards, faction) {
                 var tempCards = [];
                 if (faction === undefined || faction === '') {
@@ -74,13 +74,13 @@
                 return tempCards;
             }
         })
-        .filter('factions', function() {
+        .filter('factions', function () {
             return function (cards, factions) {
                 var tempCards = [];
                 if (factions === undefined || factions === []) {
                     return tempCards;
                 }
-                angular.forEach(factions, function(faction) {
+                angular.forEach(factions, function (faction) {
                     angular.forEach(cards, function (card) {
                         if (card.Faction === Number(faction)) {
                             tempCards.push(card);
@@ -90,7 +90,7 @@
                 return tempCards;
             }
         })
-        .factory('gwintFactionService', function() {
+        .factory('gwintFactionService', function () {
             var gwintFactionService = {};
             gwintFactionService.factions = [
                 { id: 0, name: 'Neutral', validDeckFaction: false },
@@ -101,10 +101,10 @@
             ];
             return gwintFactionService;
         })
-        .filter('deckFaction', function() {
+        .filter('deckFaction', function () {
             return function (factions) {
                 var tempFactions = [];
-                angular.forEach(factions, function(faction) {
+                angular.forEach(factions, function (faction) {
                     if (faction.validDeckFaction) {
                         tempFactions.push(faction);
                     }
@@ -113,56 +113,124 @@
             }
         })
         .factory('gwintTypeService', function () {
-            var gwintTypeService = {};
-            var types = gwintTypeService.types = new Map();
-            types.set(0, 'None');
-            types.set(1 << 0, 'GlobalEffect');
-            types.set(1 << 1, 'FriendlyEffect');
-            types.set(1 << 2, 'OffensiveEffect');
-            types.set(1 << 3, 'RowModifier');
-            types.set(1 << 4, 'Spell');
-            types.set(1 << 5, 'Weather');
-            types.set(1 << 6, 'Creature');
-            types.set(1 << 7, 'Melee');
-            types.set(1 << 8, 'Ranged');
-            types.set(1 << 9, 'Siege');
-            types.set(1 << 10, 'Hero');
-            types.set(1 << 11, 'Spy');
+            var gwintTypeService = {
+                types: [
+                    { id: 0, name: 'None' },
+                    { id: 1 << 0, name: 'GlobalEffect' },
+                    { id: 1 << 1, name: 'FriendlyEffect' },
+                    { id: 1 << 2, name: 'OffensiveEffect' },
+                    { id: 1 << 3, name: 'RowModifier' },
+                    { id: 1 << 4, name: 'Spell' },
+                    { id: 1 << 5, name: 'Weather' },
+                    { id: 1 << 6, name: 'Creature' },
+                    { id: 1 << 7, name: 'Melee' },
+                    { id: 1 << 8, name: 'Ranged' },
+                    { id: 1 << 9, name: 'Siege' },
+                    { id: 1 << 10, name: 'Hero' },
+                    { id: 1 << 11, name: 'Spy' }
+                ]
+            }
+            gwintTypeService.methods = {
+                getTypes: function (types) {
+                    var tempTypes = [];
+                    angular.forEach(gwintTypeService.types, function (type) {
+                        if (types & type.id) {
+                            tempTypes.push(type);
+                        }
+                    });
+                    return tempTypes;
+                }
+            };
+
             return gwintTypeService;
         })
+        .filter('gwintType', function () {
+            return function (cards, allowedTypes) {
+                var tempCards = [];
+
+                if (allowedTypes === undefined || allowedTypes === []) {
+                    return tempCards;
+                }
+
+                angular.forEach(cards, function (card) {
+                    for (var i = 0; i < allowedTypes.length; i++) {
+                        if (card.Type & allowedTypes[i]) {
+                            tempCards.push(card);
+                            return;
+                        }
+                    }
+                });
+
+                return tempCards;
+            }
+        })
         .factory('gwintEffectService', function () {
-            var gwintEffectService = {};
-            var effects = gwintEffectService.effects = new Map();
-            effects.set(0, 'None');
-            effects.set(1 << 0, 'CpClearWeather');
-            effects.set(1 << 1, 'CpPickFrostCard');
-            effects.set(1 << 2, 'CpPickFogCard');
-            effects.set(1 << 3, 'CpPickRainCard');
-            effects.set(1 << 4, 'CpPickWeatherCard');
-            effects.set(1 << 5, 'CpMeleeHorn');
-            effects.set(1 << 6, 'CpRangeHorn');
-            effects.set(1 << 7, 'CpSiegeHorn');
-            effects.set(1 << 8, 'CpMeleeScorch');
-            effects.set(1 << 9, 'CpSiegeScorch');
-            effects.set(1 << 10, 'CpResurectCard');
-            effects.set(1 << 11, 'CpResurectFromEnemy');
-            effects.set(1 << 12, 'CpView3EnemyCards');
-            effects.set(1 << 13, 'CpCounterKingAblility');
-            effects.set(1 << 14, 'Cp11ThCard');
-            effects.set(1 << 15, 'CpBin2Pick1');
-            effects.set(1 << 16, 'EffectMelee');
-            effects.set(1 << 17, 'EffectRanged');
-            effects.set(1 << 18, 'EffectSiege');
-            effects.set(1 << 19, 'EffectScorch');
-            effects.set(1 << 20, 'EffectHorn');
-            effects.set(1 << 21, 'EffectImproveNeighbours');
-            effects.set(1 << 22, 'EffectSummonClones');
-            effects.set(1 << 23, 'EffectNurse');
-            effects.set(1 << 24, 'EffectSameTypeMorale');
-            effects.set(1 << 25, 'EffectDrawX2');
-            effects.set(1 << 26, 'EffectUnsummonDummy');
-            effects.set(1 << 27, 'EffectClearSky');
+            var gwintEffectService = {
+                effects: [
+                    { id: 0, name: 'None' },
+                    { id: 1 << 0, name: 'CpClearWeather' },
+                    { id: 1 << 1, name: 'CpPickFrostCard' },
+                    { id: 1 << 2, name: 'CpPickFogCard' },
+                    { id: 1 << 3, name: 'CpPickRainCard' },
+                    { id: 1 << 4, name: 'CpPickWeatherCard' },
+                    { id: 1 << 5, name: 'CpMeleeHorn' },
+                    { id: 1 << 6, name: 'CpRangeHorn' },
+                    { id: 1 << 7, name: 'CpSiegeHorn' },
+                    { id: 1 << 8, name: 'CpMeleeScorch' },
+                    { id: 1 << 9, name: 'CpSiegeScorch' },
+                    { id: 1 << 10, name: 'CpResurectCard' },
+                    { id: 1 << 11, name: 'CpResurectFromEnemy' },
+                    { id: 1 << 12, name: 'CpView3EnemyCards' },
+                    { id: 1 << 13, name: 'CpCounterKingAblility' },
+                    { id: 1 << 14, name: 'Cp11ThCard' },
+                    { id: 1 << 15, name: 'CpBin2Pick1' },
+                    { id: 1 << 16, name: 'EffectMelee' },
+                    { id: 1 << 17, name: 'EffectRanged' },
+                    { id: 1 << 18, name: 'EffectSiege' },
+                    { id: 1 << 19, name: 'EffectScorch' },
+                    { id: 1 << 20, name: 'EffectHorn' },
+                    { id: 1 << 21, name: 'EffectImproveNeighbours' },
+                    { id: 1 << 22, name: 'EffectSummonClones' },
+                    { id: 1 << 23, name: 'EffectNurse' },
+                    { id: 1 << 24, name: 'EffectSameTypeMorale' },
+                    { id: 1 << 25, name: 'EffectDrawX2' },
+                    { id: 1 << 26, name: 'EffectUnsummonDummy' },
+                    { id: 1 << 27, name: 'EffectClearSky' },
+                ]
+            };
+            gwintEffectService.methods = {
+                getEffects: function (effects) {
+                    var tempEffects = [];
+                    angular.forEach(gwintEffectService.effects, function (effect) {
+                        if (effects & effect.id) {
+                            tempEffects.push(effect);
+                        }
+                    });
+                    return tempEffects;
+                }
+            }
+
             return gwintEffectService;
         })
+        .filter('gwintEffect', function () {
+            return function (cards, allowedEffects) {
+                var tempCards = [];
+
+                if (allowedEffects === undefined || allowedEffects === []) {
+                    return tempCards;
+                }
+
+                angular.forEach(cards, function (card) {
+                    for (var i = 0; i < allowedEffects.length; i++) {
+                        if (card.Effect & allowedEffects[i]) {
+                            tempCards.push(card);
+                            return;
+                        }
+                    }
+                });
+
+                return tempCards;
+            }
+        });
 
 })();

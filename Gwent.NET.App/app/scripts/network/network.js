@@ -88,14 +88,14 @@
                             return $q.reject('No user logged in.');
                         }
                         var deferred = $q.defer();
-                        $http.post(backendUrl + '/user' / userService.user.id + '/deck', deck)
+                        $http.post(backendUrl + '/user/' + userService.user.id + '/deck', deck)
                             .success(function (responsedData) {
                                 deferred.resolve(responsedData);
-                            }
+                            })
                             .error(function (msg) {
                                 deferred.reject(msg);
-                            }));
-                        return defer.promise;
+                            });
+                        return deferred.promise;
                     }
                 }
             };

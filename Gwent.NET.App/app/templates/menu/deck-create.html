@@ -5,7 +5,7 @@
 </select>
 <label for="battleKing">King</label>
 <select id="battleKing" name="battleKing" ng-model="data.create.battleKing">
-    <option ng-repeat="card in data.cards | battleKing | faction: data.create.faction" value="{{card.Id}}">{{card.Title}}</option>
+    <option ng-repeat="card in data.cards | battleKing | faction: data.create.faction" value="{{card.Index}}">{{card.Title}}</option>
 </select>
 <h4>Available cards</h4>
 <table>
@@ -24,7 +24,7 @@
         <td>{{card.Power}}</td>
         <td>{{card.Effect}}</td>
         <td>{{card.Type}}</td>
-        <td><a ng-click="methods.addCard($index)">Add</a></td>
+        <td><a ng-click="methods.addDeckCard($index)">Add</a></td>
     </tr>
 </table>
 <h4>Deck cards</h4>
@@ -45,7 +45,7 @@
         <td>{{card.Effect}}</td>
         <td>{{card.Type}}</td>
         <td>{{card.Count}}</td>
-        <td><a ng-click="methods.removeCard($index)">Remove</a></td>
+        <td><a ng-click="methods.removeDeckCard($index)">Remove</a></td>
     </tr>
 </table>
 <button type="button" ng-click="methods.createDeck()">Create</button>

@@ -57,6 +57,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="favicon.ico" />
     <Content Include="app\scripts\app.js" />
     <Content Include="app\scripts\game\game-controller.js" />
     <Content Include="app\scripts\game\game.js" />
