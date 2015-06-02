@@ -6,6 +6,7 @@
             $stateProvider
                 .state('menu', {
                     url: '',
+                    abstract: true,
                     templateUrl: 'templates/menu/menu.html',
                     controller: 'MenuController as ctrl'
                 })
@@ -18,7 +19,7 @@
                     templateUrl: 'templates/menu/register.html'
                 })
                 .state('menu.main', {
-                    url: '/main',
+                    url: '',
                     templateUrl: 'templates/menu/main.html'
                 })
                 .state('menu.main.deck', {

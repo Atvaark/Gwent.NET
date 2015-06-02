@@ -10,8 +10,6 @@ namespace Gwent.NET
                 .Where(t => t.Name.EndsWith("Repository"))
                 .SingleInstance()
                 .AsImplementedInterfaces();
-
-
             base.Load(builder);
         }
     }

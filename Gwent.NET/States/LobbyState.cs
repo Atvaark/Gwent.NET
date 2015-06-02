@@ -2,10 +2,9 @@
 {
     public class LobbyState : State
     {
-        public override bool IsOver
+        public override bool IsJoinable
         {
-            get { return false; }
+            get { return true; }
         }
-
     }
 }

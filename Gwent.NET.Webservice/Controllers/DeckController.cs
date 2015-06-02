@@ -7,39 +7,37 @@ using Gwent.NET.Model;
 namespace Gwent.NET.Webservice.Controllers
 {
     [Authorize]
-    public class DeckController : ApiController
+    public class DeckController : AuthenticatedApiController
     {
-        private readonly IUserRepository _userRepository;
         private readonly ICardRepository _cardRepository;
 
-        public DeckController(IUserRepository userRepository, ICardRepository cardRepository)
+        public DeckController(IUserRepository userRepository, ICardRepository cardRepository) : base(userRepository)
         {
-            _userRepository = userRepository;
             _cardRepository = cardRepository;
         }
 
         // TODO: Remove {userId} in the routes and use the claims instead.
 
-        // GET: api/user/5/deck
-        [Route("api/user/{userId}/deck")]
-        public IHttpActionResult Get(int userId)
+        // GET: api/deck
+        [Route("api/deck")]
+        public IHttpActionResult Get()
         {
-            User user = _userRepository.FindById(userId);
-            if (user == null)
+            User user;
+            if(!TryGetUser(out user))
             {
-                return NotFound();
+                return BadRequest();
             }
             return Ok(user.Decks.Select(d => d.ToDto()));
         }
 
-        // GET: api/user/5/deck/5
-        [Route("api/user/{userId}/deck/{deckId}")]
-        public IHttpActionResult Get(int userId, int deckId)
+        // GET: api/deck/5
+        [Route("api/deck/{deckId}")]
+        public IHttpActionResult Get(int deckId)
         {
-            User user = _userRepository.FindById(userId);
-            if (user == null)
+            User user;
+            if (!TryGetUser(out user))
             {
-                return NotFound();
+                return BadRequest();
             }
             Deck deck = user.Decks.ElementAtOrDefault(deckId);
             if (deck == null)
@@ -50,37 +48,36 @@ namespace Gwent.NET.Webservice.Controllers
         }
 
         // POST: api/Deck
-        [Route("api/user/{userId}/deck")]
-        public IHttpActionResult Post(int userId, [FromBody]DeckDto deck)
+        [Route("api/deck")]
+        public IHttpActionResult Post([FromBody]DeckDto deck)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            User user = _userRepository.FindById(userId);
-            if (user == null)
+            User user;
+            if (!TryGetUser(out user))
             {
-                return NotFound();
+                return BadRequest();
             }
-
             var newDeck = DeckDtoToDeck(deck);
             if (!ValidateDeck(newDeck))
             {
                 return BadRequest();
             }
-            _userRepository.AddDeck(userId, newDeck);
+            UserRepository.AddDeck(user.Id, newDeck);
             return Ok(newDeck.ToDto());
         }
         
         // PUT: api/Deck/5
-        [Route("api/user/{userId}/deck/{deckId}")]
+        [Route("api/deck/{deckId}")]
         public IHttpActionResult Put(int userId, int deckId, [FromBody]DeckDto deck)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            User user = _userRepository.FindById(userId);
+            User user = UserRepository.FindById(userId);
             if (user == null)
             {
                 return NotFound();
@@ -103,10 +100,12 @@ namespace Gwent.NET.Webservice.Controllers
 
         private Deck DeckDtoToDeck(DeckDto deck)
         {
-            Deck newDeck = new Deck();
-            newDeck.BattleKingCard = _cardRepository.Find(deck.BattleKingCard);
-            newDeck.Faction = deck.Faction;
-            newDeck.Cards = deck.Cards.Select(id => _cardRepository.Find(id)).ToList();
+            Deck newDeck = new Deck
+            {
+                BattleKingCard = _cardRepository.Find(deck.BattleKingCard),
+                Faction = deck.Faction,
+                Cards = deck.Cards.Select(id => _cardRepository.Find(id)).ToList()
+            };
             return newDeck;
         }
 
@@ -123,22 +122,21 @@ namespace Gwent.NET.Webservice.Controllers
             {
                 return false;
             }
-
+            
             // The battle king card is actually a battle king
             if (!deck.BattleKingCard.IsBattleKing)
             {
                 return false;
             }
             
-            // Not too many special cards
-            int specialCardCount = deck.Cards.Count(c =>
+            // The faction of the battle king card is not neutral
+            if (deck.BattleKingCard.FactionIndex == GwentFaction.Neutral)
             {
-                var gwintType = c.GetGwintType();
-                return gwintType.HasFlag(GwintType.Spell)
-                    || gwintType.HasFlag(GwintType.RowModifier)
-                    || gwintType.HasFlag(GwintType.GlobalEffect) 
-                    || gwintType.HasFlag(GwintType.Weather);
-            });
+                return false;
+            }
+            
+            // Not too many special cards
+            int specialCardCount = deck.Cards.Count(c => IsSpecialCard(c.GetGwintType()));
             if (specialCardCount > 10)
             {
                 return false;
@@ -154,6 +152,14 @@ namespace Gwent.NET.Webservice.Controllers
             }
 
             return true;
+        }
+
+        private bool IsSpecialCard(GwintType gwintType)
+        {
+            return gwintType.HasFlag(GwintType.Spell)
+                   || gwintType.HasFlag(GwintType.RowModifier)
+                   || gwintType.HasFlag(GwintType.GlobalEffect) 
+                   || gwintType.HasFlag(GwintType.Weather);
         }
     }
 }

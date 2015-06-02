@@ -1,4 +1,6 @@
-﻿using System.Net.Http;
+﻿using System.Linq;
+using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Gwent.NET.DTOs;
@@ -12,14 +14,13 @@ using Microsoft.Owin.Security.Cookies;
 
 namespace Gwent.NET.Webservice.Controllers
 {
-    public class UserController : ApiController
+    public class UserController : AuthenticatedApiController
     {
         private ApplicationUserManager _userManager;
-        private readonly IUserRepository _userRepository;
 
-        public UserController(IUserRepository userRepository)
+        public UserController(IUserRepository userRepository) : base(userRepository)
         {
-            _userRepository = userRepository;
+
         }
 
         public ApplicationUserManager UserManager
@@ -38,7 +39,26 @@ namespace Gwent.NET.Webservice.Controllers
         [Authorize]
         public IHttpActionResult Get(int id)
         {
-            User user = _userRepository.FindById(id);
+            User user = UserRepository.FindById(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user.ToDto());
+        }
+
+        // GET: api/User/Me
+        [Authorize]
+        [HttpGet]
+        [Route("api/user/me")]
+        public IHttpActionResult Me()
+        {
+            int userId;
+            if (!TryGetUserId(out userId))
+            {
+                return BadRequest();
+            }
+            User user = UserRepository.FindById(userId);
             if (user == null)
             {
                 return NotFound();
@@ -49,7 +69,7 @@ namespace Gwent.NET.Webservice.Controllers
         // POST api/User/Logout
         [Authorize]
         [HttpPost]
-        [Route("api/user/Logout")]
+        [Route("api/user/logout")]
         public IHttpActionResult Logout()
         {
             Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
@@ -75,7 +95,7 @@ namespace Gwent.NET.Webservice.Controllers
                 return BadRequest();
             }
 
-            User user = _userRepository.FindById(applicationUser.Id);
+            User user = UserRepository.FindById(applicationUser.Id);
             return Ok(user.ToDto());
         }
 

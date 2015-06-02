@@ -6,6 +6,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
+using Gwent.NET.Properties;
 
 namespace Gwent.NET.Repositories
 {
@@ -30,14 +31,14 @@ namespace Gwent.NET.Repositories
         private IEnumerable<Card> ReadCustomGwintCardDefinitions()
         {
             //var gwintCards = ReadGwintCardsFromFile("Resources\\def_gwint_cards_final.xml");
-            var gwintCards = ReadGwintCardsFromResource(Properties.Resources.def_gwint_cards_final);
+            var gwintCards = ReadGwintCardsFromResource(Resources.def_gwint_cards_final);
             foreach (var card in gwintCards.GwintCardDefinitions)
             {
                 yield return card;
             }
             
             //var gwintBattleKingCards = ReadGwintCardsFromFile("Resources\\def_gwint_battle_king_cards.xml");
-            var gwintBattleKingCards = ReadGwintCardsFromResource(Properties.Resources.def_gwint_battle_king_cards);
+            var gwintBattleKingCards = ReadGwintCardsFromResource(Resources.def_gwint_battle_king_cards);
             foreach (var card in gwintBattleKingCards.GwintBattleKingCardDefinitions)
             {
                 card.IsBattleKing = true;

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
-using Gwent.NET.States;
 
 namespace Gwent.NET.Repositories
 {

@@ -1,9 +1,9 @@
 ﻿using Autofac;
+using Autofac.Integration.Owin;
 using Gwent.NET.Interfaces;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
-using Autofac.Integration.Owin;
 
 namespace Gwent.NET.Webservice.Auth
 {

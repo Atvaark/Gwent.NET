@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.network', [])
-        .factory('userService', function ($rootScope, $q, $window, $http) {
+        .factory('userService', function ($rootScope, $log, $q, $window, $http) {
             var backendUrl = 'http://localhost:9029/api';
             var userService = {};
             var localStorage = $window['localStorage'];
@@ -16,19 +16,35 @@
                     $http.defaults.headers.common.Authorization = '';
                 }
             };
+
+            var validateUser = function () {
+                $http.get(backendUrl + '/user/me')
+                    .success(function (userReponse) {
+                        $log.info('User validated successfully');
+                    })
+                    .error(function (data, status) {
+                        $log.info('User could not be validated.');
+                        userService.setUser(null);
+                    });
+            };
+
             var init = function () {
                 user = JSON.parse(localStorage.getItem('user'));
                 updateAuthorizationHeader();
+                validateUser();
             };
+
             userService.setUser = function (newUser) {
                 user = newUser;
                 localStorage.setItem('user', JSON.stringify(user));
                 updateAuthorizationHeader();
                 $rootScope.$broadcast('userChanged', user);
             };
+
             userService.getUser = function () {
                 return user;
             };
+
             userService.logout = function () {
                 var deferred = $q.defer();
                 $http.post(backendUrl + '/user/logout')
@@ -42,6 +58,7 @@
                     });
                 return deferred.promise;
             };
+
             userService.login = function (username, password) {
                 var deferred = $q.defer();
                 $http.post(backendUrl + '/token',
@@ -173,7 +190,7 @@
                             return $q.reject('No user logged in.');
                         }
                         var deferred = $q.defer();
-                        $http.get(backendUrl + '/user/' + userService.getUser().id + '/deck')
+                        $http.get(backendUrl + '/deck')
                             .success(function (decks) {
                                 deferred.resolve(decks);
                             })
@@ -187,7 +204,7 @@
                             return $q.reject('No user logged in.');
                         }
                         var deferred = $q.defer();
-                        $http.post(backendUrl + '/user/' + userService.getUser().id + '/deck', deck)
+                        $http.post(backendUrl + '/deck', deck)
                             .success(function (responsedData) {
                                 deferred.resolve(responsedData);
                             })
@@ -206,11 +223,13 @@
             var gameHubProxy = null;
 
             gameHubService.setAuthorizationQueryString = function () {
-                var user = userService.getUser();
-                if (user) {
-                    connection.qs = { Bearer: userService.getUser().accessToken };
-                } else {
-                    connection.qs = {};
+                if (connection) {
+                    var user = userService.getUser();
+                    if (user) {
+                        connection.qs = { Bearer: userService.getUser().accessToken };
+                    } else {
+                        connection.qs = {};
+                    }
                 }
             };
 

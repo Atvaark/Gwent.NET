@@ -148,6 +148,7 @@
     <Compile Include="Auth\QueryStringBearerAuthorizeAttribute.cs" />
     <Compile Include="Auth\UserStore.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AuthenticatedApiController.cs" />
     <Compile Include="Controllers\CardController.cs" />
     <Compile Include="Controllers\DeckController.cs" />
     <Compile Include="Controllers\GameController.cs" />

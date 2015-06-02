@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using Gwent.NET.DTOs;
 using Gwent.NET.Model;
 
@@ -17,6 +15,7 @@ namespace Gwent.NET
         {
             return card.EffectFlags.Aggregate(GwintEffect.EffectNone, (current, effectFlag) => current | effectFlag.Name);
         }
+
         public static UserDto ToDto(this User user)
         {
             return new UserDto
@@ -60,7 +59,7 @@ namespace Gwent.NET
             return new GameDto
             {
                 Id = game.Id,
-                State = game.State.GetType().Name,
+                State = game.State.Name,
                 Players = game.Players.Select(p => p.ToDto()).ToList()
             };
         }

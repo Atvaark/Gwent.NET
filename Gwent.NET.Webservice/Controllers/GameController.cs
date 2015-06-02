@@ -1,36 +1,26 @@
 ﻿using System.Linq;
-using System.Net.Http;
-using System.Security.Claims;
 using System.Web.Http;
 using Gwent.NET.DTOs;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
 using Gwent.NET.States;
-using Microsoft.Owin.Security;
 
 namespace Gwent.NET.Webservice.Controllers
 {
-    public class GameController : ApiController
+    public class GameController : AuthenticatedApiController
     {
         private readonly IGameRepository _gameRepository;
-        private readonly IUserRepository _userRepository;
 
-        public GameController(IGameRepository gameRepository, IUserRepository userRepository)
+        public GameController(IUserRepository userRepository, IGameRepository gameRepository) : base(userRepository)
         {
             _gameRepository = gameRepository;
-            _userRepository = userRepository;
         }
-
-        private IAuthenticationManager Authentication
-        {
-            get { return Request.GetOwinContext().Authentication; }
-        }
-
+        
         [HttpGet]
         [Route("api/game/browse")]
         public IHttpActionResult Browse()
         {
-            var games = _gameRepository.Get().Where(g => !g.State.IsOver).Select(g => new GameBrowseDto
+            var games = _gameRepository.Get().Where(g => g.State.IsJoinable).Select(g => new GameBrowseDto
             {
                 Id = g.Id,
                 State = g.State.GetType().Name,
@@ -122,34 +112,5 @@ namespace Gwent.NET.Webservice.Controllers
             return Ok(game.ToDto());
         }
 
-        private bool TryGetUser(out User user)
-        {
-            user = null;
-            int userId;
-            if (!TryGetUserId(out userId))
-            {
-                return false;
-            }
-            user = _userRepository.FindById(userId);
-            return user != null;
-        }
-
-        private bool TryGetUserId(out int userId)
-        {
-            userId = 0;
-            var user = Authentication.User;
-            if (user == null)
-            {
-                return false;
-            }
-
-            var nameIdentifierClaim = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-            if (nameIdentifierClaim == null)
-            {
-                return false;
-            }
-
-            return int.TryParse(nameIdentifierClaim.Value, out userId);
-        }
     }
 }
