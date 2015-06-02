@@ -24,7 +24,7 @@
                 user = newUser;
                 localStorage.setItem('user', JSON.stringify(user));
                 updateAuthorizationHeader();
-                $rootScope.$broadcast('userChanged');
+                $rootScope.$broadcast('userChanged', user);
             };
             userService.getUser = function () {
                 return user;
@@ -86,6 +86,70 @@
             init();
             return userService;
         })
+        .factory('gameService', function ($http, $q, userService) {
+            var backendUrl = 'http://localhost:9029/api';
+            return {
+                getGames: function () {
+                    if (userService.getUser() == null) {
+                        return $q.reject('No user logged in.');
+                    }
+                    var deferred = $q.defer();
+                    $http.get(backendUrl + '/game/browse')
+                        .success(function (games) {
+                            deferred.resolve(games);
+                        })
+                        .error(function (msg) {
+                            deferred.reject(msg);
+                        });
+                    return deferred.promise;
+                },
+                getActiveGame: function () {
+                    if (userService.getUser() == null) {
+                        return $q.reject('No user logged in.');
+                    }
+                    var deferred = $q.defer();
+                    $http.get(backendUrl + '/game/active')
+                        .success(function (game) {
+                            deferred.resolve(game);
+                        })
+                        .error(function (msg, status) {
+                            if (status === 404) {
+                                deferred.resolve(null);
+                            }
+                            deferred.reject(msg);
+                        });
+                    return deferred.promise;
+                },
+                createGame: function () {
+                    if (userService.getUser() == null) {
+                        return $q.reject('No user logged in.');
+                    }
+                    var deferred = $q.defer();
+                    $http.post(backendUrl + '/game')
+                        .success(function (game) {
+                            deferred.resolve(game);
+                        })
+                        .error(function (msg) {
+                            deferred.reject(msg);
+                        });
+                    return deferred.promise;
+                },
+                joinGame: function (gameId) {
+                    if (userService.getUser() == null) {
+                        return $q.reject('No user logged in.');
+                    }
+                    var deferred = $q.defer();
+                    $http.put(backendUrl + '/game/' + gameId + '/join')
+                        .success(function (game) {
+                            deferred.resolve(game);
+                        })
+                        .error(function (msg) {
+                            deferred.reject(msg);
+                        });
+                    return deferred.promise;
+                }
+            };
+        })
         .factory('backendService', function ($http, $q, userService) {
             var backendUrl = 'http://localhost:9029/api';
 
@@ -131,75 +195,65 @@
                                 deferred.reject(msg);
                             });
                         return deferred.promise;
-                    },
-                    getGames: function () {
-                        if (userService.getUser() == null) {
-                            return $q.reject('No user logged in.');
-                        }
-                        var deferred = $q.defer();
-                        $http.get(backendUrl + '/game/browse')
-                            .success(function (games) {
-                                deferred.resolve(games);
-                            })
-                            .error(function (msg, status) {
-                                deferred.reject(msg);
-                            });
-                        return deferred.promise;
-                    },
-                    getActiveGame: function () {
-                        if (userService.getUser() == null) {
-                            return $q.reject('No user logged in.');
-                        }
-                        var deferred = $q.defer();
-                        $http.get(backendUrl + '/game/active')
-                            .success(function (game) {
-                                deferred.resolve(game);
-                            })
-                            .error(function (msg, status) {
-                                if (status === 404) {
-                                    deferred.resolve(null);
-                                }
-                                deferred.reject(msg);
-                            });
-                        return deferred.promise;
-                    },
-                    createGame: function () {
-                        if (userService.getUser() == null) {
-                            return $q.reject('No user logged in.');
-                        }
-                        var deferred = $q.defer();
-                        $http.post(backendUrl + '/game')
-                            .success(function (game) {
-                                deferred.resolve(game);
-                            })
-                            .error(function (msg) {
-                                deferred.reject(msg);
-                            });
-                        return deferred.promise;
-                    },
-                    joinGame: function (gameId) {
-                        if (userService.getUser() == null) {
-                            return $q.reject('No user logged in.');
-                        }
-                        var deferred = $q.defer();
-                        $http.put(backendUrl + '/game/' + gameId + '/join')
-                            .success(function (game) {
-                                deferred.resolve(game);
-                            })
-                            .error(function (msg) {
-                                deferred.reject(msg);
-                            });
-                        return deferred.promise;
                     }
                 }
             };
-
         })
-        .factory('signalRService', function () {
-            return {
-                methods: {
+        .factory('gameHubService', function ($rootScope, $log, $q, userService) {
+            var signalRUrl = 'http://localhost:9029/signalr';
+            var gameHubService = {};
+            var connection = null;
+            var gameHubProxy = null;
 
+            gameHubService.setAuthorizationQueryString = function () {
+                var user = userService.getUser();
+                if (user) {
+                    connection.qs = { Bearer: userService.getUser().accessToken };
+                } else {
+                    connection.qs = {};
                 }
             };
+
+            gameHubService.connect = function () {
+                if (userService.getUser() == null) {
+                    return $q.reject('No user logged in.');
+                }
+
+                var deferred = $q.defer();
+                $log.info('connecting');
+                connection = $.hubConnection(signalRUrl, { useDefaultPath: false });
+                gameHubService.setAuthorizationQueryString();
+                gameHubProxy = connection.createHubProxy('gameHub');
+                gameHubProxy.on('recieveServerCommand', gameHubService.recieveCommand);
+                connection.start()
+                    .done(function () {
+                        console.log('connected');
+                        deferred.resolve();
+                    })
+                    .fail(function () {
+                        deferred.reject();
+                    });
+                return deferred.promise;
+            };
+
+            gameHubService.disconnect = function () {
+                // TODO: Implement
+            };
+
+            gameHubService.recieveCommand = function (command) {
+                $log.info('server command recieved');
+                $rootScope.$broadcast('serverCommandRecieved', command);
+
+            };
+
+            gameHubService.sendCommand = function (command) {
+                gameHubProxy.invoke('RecieveClientCommand', command);
+            };
+
+            $rootScope.$on('userChanged', function () {
+                gameHubService.setAuthorizationQueryString();
+            });
+
+            return gameHubService;
         });
 })();

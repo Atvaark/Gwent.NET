@@ -74,6 +74,7 @@
             methods.removeDeckCard = function (cardIndex) {
                 data.create.cards.splice(cardIndex, 1);
             };
+
             methods.findDeckCard = function (cardIndex) {
                 var foundCard = null;
                 angular.forEach(data.create.cards, function (deckCard) {

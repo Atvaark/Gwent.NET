@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.menu')
-        .controller('GameController', function ($scope, $state, $stateParams, $log, $q, backendService) {
+        .controller('GameController', function ($scope, $state, $stateParams, $log, $q, gameService, gameHubService) {
             var data = $scope.data =
             {
                 game: null,
@@ -11,7 +11,7 @@
             var methods = $scope.methods = {};
 
             methods.getGames = function () {
-                backendService.methods.getGames().then(function (games) {
+                gameService.getGames().then(function (games) {
                     $log.info('Getting games successful');
                     data.games = games;
                     data.error = '';
@@ -24,7 +24,7 @@
             methods.getActiveGame = function () {
                 var deferred = $q.defer();
 
-                backendService.methods.getActiveGame().then(function (game) {
+                gameService.getActiveGame().then(function (game) {
                     if (game == null) {
                         $log.info('No active game found');
                     } else {
@@ -42,7 +42,7 @@
 
             methods.createGame = function () {
                 var deferred = $q.defer();
-                backendService.methods.createGame().then(function (game) {
+                gameService.createGame().then(function (game) {
                     $log.info('Game created');
                     data.game = game;
                     deferred.resolve(game);
@@ -56,7 +56,7 @@
             };
 
             methods.joinGame = function (id) {
-                backendService.methods.joinGame(id).then(function (game) {
+                gameService.joinGame(id).then(function (game) {
                     $log.info('Game joined');
                     data.game = game;
                 }, function (msg) {

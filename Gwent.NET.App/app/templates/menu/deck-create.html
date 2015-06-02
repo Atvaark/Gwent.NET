@@ -3,7 +3,7 @@
 <select id="faction" name="faction" ng-model="data.create.faction">
     <option ng-repeat="faction in data.factions | deckFaction" value="{{faction.id}}">{{faction.name}}</option>
 </select>
-<label for="battleKing">King</label>
+<label for="battleKing">Leader</label>
 <select id="battleKing" name="battleKing" ng-model="data.create.battleKing">
     <option ng-repeat="card in data.cards | battleKing | faction: data.create.faction" value="{{card.Index}}">{{card.Title}}</option>
 </select>
