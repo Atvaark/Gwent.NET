@@ -48,6 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\PassCommand.cs" />
+    <Compile Include="Commands\PlayCardCommand.cs" />
+    <Compile Include="Commands\ResurrectCommand.cs" />
+    <Compile Include="Commands\UseBattleKingCardCommand.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\ForfeitGameCommand.cs" />
+    <Compile Include="Commands\RedrawCardCommand.cs" />
+    <Compile Include="Commands\StartGameCommand.cs" />
     <Compile Include="DTOs\CardDto.cs" />
     <Compile Include="DTOs\DeckDto.cs" />
     <Compile Include="DTOs\GameBrowseDto.cs" />
@@ -87,7 +95,7 @@
     <Compile Include="States\GameEndState.cs" />
     <Compile Include="States\GameStartState.cs" />
     <Compile Include="States\LobbyState.cs" />
-    <Compile Include="States\PreparationState.cs" />
+    <Compile Include="States\ResurrectState.cs" />
     <Compile Include="States\RoundEndState.cs" />
     <Compile Include="States\RoundStartState.cs" />
     <Compile Include="States\RoundState.cs" />

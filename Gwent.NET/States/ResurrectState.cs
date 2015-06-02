@@ -1,7 +1,6 @@
 ﻿namespace Gwent.NET.States
 {
-    public class PreparationState : State
+    class ResurrectState : State
     {
-
     }
 }

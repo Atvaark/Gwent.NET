@@ -115,19 +115,19 @@
         .factory('gwintTypeService', function () {
             var gwintTypeService = {}
             gwintTypeService.types = [
-                    { id: 0, name: 'None' },
-                    { id: 1 << 0, name: 'GlobalEffect' },
-                    { id: 1 << 1, name: 'FriendlyEffect' },
-                    { id: 1 << 2, name: 'OffensiveEffect' },
-                    { id: 1 << 3, name: 'RowModifier' },
-                    { id: 1 << 4, name: 'Spell' },
-                    { id: 1 << 5, name: 'Weather' },
-                    { id: 1 << 6, name: 'Creature' },
-                    { id: 1 << 7, name: 'Melee' },
-                    { id: 1 << 8, name: 'Ranged' },
-                    { id: 1 << 9, name: 'Siege' },
-                    { id: 1 << 10, name: 'Hero' },
-                    { id: 1 << 11, name: 'Spy' }
+                { id: 0, name: 'None' },
+                { id: 1 << 0, name: 'GlobalEffect' },
+                { id: 1 << 1, name: 'FriendlyEffect' },
+                { id: 1 << 2, name: 'OffensiveEffect' },
+                { id: 1 << 3, name: 'RowModifier' },
+                { id: 1 << 4, name: 'Spell' },
+                { id: 1 << 5, name: 'Weather' },
+                { id: 1 << 6, name: 'Creature' },
+                { id: 1 << 7, name: 'Melee' },
+                { id: 1 << 8, name: 'Ranged' },
+                { id: 1 << 9, name: 'Siege' },
+                { id: 1 << 10, name: 'Hero' },
+                { id: 1 << 11, name: 'Spy' }
             ];
             gwintTypeService.methods = {
                 getTypes: function (types) {
@@ -253,5 +253,4 @@
                 return tempCards;
             }
         });
-
 })();
