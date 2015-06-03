@@ -1,5 +1,4 @@
-﻿<h3>Create deck</h3>
-<label for="faction">Chosen Faction</label>
+﻿<label for="faction">Chosen Faction</label>
 <select id="faction" name="faction" ng-model="data.create.faction">
     <option ng-repeat="faction in data.factions | deckFaction" value="{{faction.id}}">{{faction.name}}</option>
 </select>

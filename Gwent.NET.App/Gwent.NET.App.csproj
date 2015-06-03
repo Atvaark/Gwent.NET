@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\scripts\menu\game-controller.js" />
+    <Content Include="app\templates\menu\game-lobby.css" />
     <Content Include="app\templates\menu\game-lobby.html" />
     <Content Include="favicon.ico" />
     <Content Include="app\scripts\app.js" />

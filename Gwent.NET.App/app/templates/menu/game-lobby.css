@@ -1,0 +1,339 @@
+﻿/* Left */
+.leader-card {
+    background: red;
+    width: 85px;
+    height: 110px;
+}
+
+    .leader-card > .card {
+        top: 10px;
+        left: 8.5px;
+    }
+
+.turn-indicator {
+    background: red;
+    width: 30px;
+    height: 30px;
+}
+
+.player-info {
+    background: red;
+    width: 300px;
+    height: 100px;
+}
+
+.player-info-avatar {
+    background: green;
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: 35px;
+}
+
+.player-info-name {
+    background: greenyellow;
+    position: absolute;
+    width: 165px;
+    height: 25px;
+    left: 135px;
+}
+
+.player-info-faction {
+    background: gold;
+    position: absolute;
+    width: 165px;
+    height: 25px;
+    top: 25px;
+    left: 135px;
+}
+
+.player-info-hand {
+    background: blue;
+    position: absolute;
+    width: 55px;
+    height: 50px;
+    top: 50px;
+    left: 135px;
+}
+
+.player-info-lives {
+    background: lime;
+    position: absolute;
+    width: 110px;
+    height: 50px;
+    top: 50px;
+    left: 190px;
+}
+
+/* Middle */
+.battlefield-power {
+    background: aqua;
+    width: 80px;
+    height: 80px;
+}
+
+.battlefield-row {
+    position: relative;
+    width: 760px;
+    height: 105px;
+    left: 40px;
+}
+
+.battlefield-row-power {
+    background: red;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: 35px;
+}
+
+.battlefield-row-horn {
+    background: #CC0000;
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    top: 5px;
+    left: 40px;
+    text-align: center;
+}
+
+    .battlefield-row-horn > .card {
+        top: 5px;
+    }
+
+.battlefield-row-cards {
+    background: red;
+    position: absolute;
+    width: 610px;
+    height: 100px;
+    top: 5px;
+    left: 150px;
+    text-align: center;
+}
+
+    .battlefield-row-cards > .card {
+        top: 5px;
+    }
+
+.battlefield-row-icon {
+    background: #AA0000;
+    width: 80px;
+    height: 80px;
+}
+
+.battlefield-row-horn-icon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.battlefield-row-cards-icon {
+    position: absolute;
+    top: 10px;
+    left: 265px;
+}
+
+.card {
+    position: relative;
+    display: inline-block;
+    background: black;
+    width: 100%;
+    height: 100%;
+    max-width: 68px;
+    max-height: 90px;
+    margin: 0 auto;
+}
+
+.card-active {
+    top: -10px;
+}
+
+/* Right */
+.disposed-cards {
+    background: red;
+    width: 125px;
+    height: 110px;
+}
+
+.disposed-cards-stack {
+    background: yellow;
+    position: absolute;
+    width: 80px;
+    height: 95px;
+    top: 5px;
+    left: 5px;
+}
+
+.disposed-cards-icon {
+    background: yellow;
+    position: absolute;
+    top: 40px;
+    left: 85px;
+    width: 40px;
+    height: 30px;
+}
+
+.deck-cards {
+    background: red;
+    width: 70px;
+    height: 120px;
+}
+
+.deck-cards-count {
+    background: yellow;
+    position: absolute;
+    top: 90px;
+    left: 15px;
+    width: 40px;
+    height: 30px;
+}
+
+/* Overview */
+#gwint-table {
+    background: gray;
+    position: absolute;
+    width: 1366px;
+    height: 768px;
+}
+
+#gwint-left {
+    background: #696969;
+    position: absolute;
+    width: 300px;
+    height: 768px;
+}
+
+#gwint-middle {
+    background: gray;
+    position: absolute;
+    width: 800px;
+    height: 768px;
+    left: 300px;
+}
+
+#gwint-right {
+    background: #696969;
+    position: absolute;
+    width: 266px;
+    height: 768px;
+    left: 1100px;
+}
+
+/* Left */
+#top-player-leader-card {
+    position: absolute;
+    top: 60px;
+    left: 60px;
+}
+
+#bottom-player-leader-card {
+    position: absolute;
+    top: 625px;
+    left: 60px;
+}
+
+#top-player-turn-indicator {
+    position: absolute;
+    top: 100px;
+    left: 150px;
+}
+
+#bottom-player-turn-indicator {
+    position: absolute;
+    top: 665px;
+    left: 150px;
+}
+
+#top-player-info {
+    position: absolute;
+    top: 210px;
+}
+
+#bottom-player-info {
+    position: absolute;
+    top: 500px;
+}
+
+#weather {
+    background: red;
+    position: absolute;
+    width: 230px;
+    height: 130px;
+    top: 325px;
+    left: 50px;
+}
+
+#weather-cards {
+    background: yellow;
+    text-align: center;
+    position: absolute;
+    width: 220px;
+    height: 90px;
+    top: 20px;
+    left: 5px;
+    right: 5px;
+}
+
+/* Middle */
+#battlefield {
+    position: absolute;
+    width: 800px;
+    height: 630px;
+}
+
+#top-player-battlefield-power {
+    position: absolute;
+    top: 220px;
+    left: -40px;
+}
+
+#bottom-player-battlefield-power {
+    position: absolute;
+    top: 510px;
+    left: -40px;
+}
+
+#bottom-player-hand {
+    background: red;
+    position: absolute;
+    height: 100px;
+    width: 720px;
+    left: 80px;
+    top: 635px;
+    padding-left: 3px;
+    padding-right: 3px;
+    text-align: center;
+}
+
+    #bottom-player-hand > .card {
+        top: 5px;
+    }
+
+    #bottom-player-hand > .card-active {
+        top: -5px;
+    }
+
+/* Right */
+#top-player-disposed-cards {
+    position: absolute;
+    top: 50px;
+    left: 20px;
+}
+
+#bottom-player-disposed-cards {
+    position: absolute;
+    top: 620px;
+    left: 20px;
+}
+
+#top-player-deck-cards {
+    position: absolute;
+    top: 40px;
+    left: 150px;
+}
+
+#bottom-player-deck-cards {
+    position: absolute;
+    top: 615px;
+    left: 150px;
+}

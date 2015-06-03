@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Autofac;
+using Gwent.NET.Commands;
 using Gwent.NET.Webservice.Auth;
 using Microsoft.AspNet.SignalR;
 
@@ -39,7 +40,7 @@ namespace Gwent.NET.Webservice.Hubs
             return base.OnReconnected();
         }
 
-        public void RecieveClientCommand(string message)
+        public void RecieveClientCommand(Command command)
         {
 
         }

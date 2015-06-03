@@ -1,302 +1,10 @@
-﻿<style>
-    /* Left */
-    .leader-card {
-        background: red;
-        width: 85px;
-        height: 110px;
-    }
-
-    .turn-indicator {
-        background: red;
-        width: 30px;
-        height: 30px;
-    }
-
-    .player-info {
-        background: red;
-        width: 300px;
-        height: 100px;
-    }
-
-    .player-info-avatar {
-        background: green;
-        position: absolute;
-        width: 100px;
-        height: 100px;
-        left: 35px;
-    }
-
-    .player-info-name {
-        background: greenyellow;
-        position: absolute;
-        width: 165px;
-        height: 25px;
-        left: 135px;
-    }
-
-    .player-info-faction {
-        background: gold;
-        position: absolute;
-        width: 165px;
-        height: 25px;
-        top: 25px;
-        left: 135px;
-    }
-
-    .player-info-hand {
-        background: blue;
-        position: absolute;
-        width: 55px;
-        height: 50px;
-        top: 50px;
-        left: 135px;
-    }
-
-    .player-info-lives {
-        background: lime;
-        position: absolute;
-        width: 110px;
-        height: 50px;
-        top: 50px;
-        left: 190px;
-    }
-
-    /* Middle */
-    .battlefield-power {
-        background: aqua;
-        width: 80px;
-        height: 80px;
-    }
-
-    .battlefield-row {
-        position: relative;
-        width: 760px;
-        height: 105px;
-        left: 40px;
-    }
-
-    .battlefield-row-power {
-        background: red;
-        position: absolute;
-        width: 40px;
-        height: 40px;
-        top: 35px;
-    }
-
-    .battlefield-row-horn {
-        background: #CC0000;
-        position: absolute;
-        width: 100px;
-        height: 100px;
-        top: 5px;
-        left: 40px;
-    }
-
-    .battlefield-row-cards {
-        background: red;
-        position: absolute;
-        width: 610px;
-        height: 100px;
-        top: 5px;
-        left: 150px;
-    }
-
-    .battlefield-row-icon {
-        background: #AA0000;
-        width: 80px;
-        height: 80px;
-    }
-
-    .battlefield-row-horn-icon {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-    }
-
-    .battlefield-row-cards-icon {
-        position: absolute;
-        top: 10px;
-        left: 265px;
-    }
-
-    .hand-card {
-        float: left;
-        background: black;
-        width: 68px;
-        height: 90px;
-        margin-left: 2px;
-        margin-left: 2px;
-    }
-
-    .hand-card-active {
-        position: relative;
-        top: -10px;
-    }
-
-    /* Right */
-    .disposed-cards {
-        width: 125px;
-        height: 110px
-    }
-
-    .disposed-cards-stack {
-        background: red;
-        position: absolute;
-        width: 85px;
-        height: 110px;
-    }
-
-    .disposed-cards-icon {
-        background: red;
-        position: absolute;
-        top: 40px;
-        left: 85px;
-        width: 40px;
-        height: 30px;
-    }
-
-    .deck-cards {
-        background: red;
-        width: 70px;
-        height: 120px;
-    }
-
-    /* Overview */
-    #gwint-table {
-        background: gray;
-        position: absolute;
-        width: 1366px;
-        height: 768px;
-    }
-
-    #gwint-left {
-        background: #696969;
-        position: absolute;
-        width: 300px;
-        height: 768px;
-    }
-
-    #gwint-middle {
-        background: gray;
-        position: absolute;
-        width: 800px;
-        height: 768px;
-        left: 300px;
-    }
-
-    #gwint-right {
-        background: #696969;
-        position: absolute;
-        width: 266px;
-        height: 768px;
-        left: 1100px;
-    }
-
-    /* Left */
-    #top-player-leader-card {
-        position: absolute;
-        top: 60px;
-        left: 60px;
-    }
-
-    #bottom-player-leader-card {
-        position: absolute;
-        top: 625px;
-        left: 60px;
-    }
-
-    #top-player-turn-indicator {
-        position: absolute;
-        top: 100px;
-        left: 150px;
-    }
-
-    #bottom-player-turn-indicator {
-        position: absolute;
-        top: 665px;
-        left: 150px;
-    }
-
-    #top-player-info {
-        position: absolute;
-        top: 210px;
-    }
-
-    #bottom-player-info {
-        position: absolute;
-        top: 500px;
-    }
-
-    #weather-cards {
-        background: red;
-        position: absolute;
-        width: 230px;
-        height: 130px;
-        top: 325px;
-        left: 50px;
-    }
-
-    /* Middle */
-    #battlefield {
-        position: absolute;
-        width: 800px;
-        height: 630px;
-    }
-
-    #top-player-battlefield-power {
-        position: absolute;
-        top: 220px;
-        left: -40px;
-    }
-
-    #bottom-player-battlefield-power {
-        position: absolute;
-        top: 510px;
-        left: -40px;
-    }
-
-    #bottom-player-hand {
-        background: red;
-        position: absolute;
-        height: 100px;
-        width: 720px;
-        left: 80px;
-        top: 635px;
-        padding-left: 7px;
-        padding-right: 7px;
-    }
-
-    /* Right */
-    #top-player-disposed-cards {
-        position: absolute;
-        top: 50px;
-        left: 20px;
-    }
-
-    #bottom-player-disposed-cards {
-        position: absolute;
-        top: 620px;
-        left: 20px;
-    }
-
-    #top-player-deck-cards {
-        position: absolute;
-        top: 40px;
-        left: 150px;
-    }
-
-    #bottom-player-deck-cards {
-        position: absolute;
-        top: 615px;
-        left: 150px;
-    }
-
-</style>
-<!--<h3>Game lobby</h3>
-<div>Debug: Game {{data.game | json}}</div>-->
+﻿<div>Debug: Game {{data.game | json}}</div>
+<link rel="stylesheet" type="text/css" href="templates/menu/game-lobby.css">
 <div id="gwint-table">
     <div id="gwint-left">
-        <div id="top-player-leader-card" class="leader-card"></div>
+        <div id="top-player-leader-card" class="leader-card">
+            <div class="card"></div>
+        </div>
         <div id="top-player-turn-indicator" class="turn-indicator"></div>
         <div id="top-player-info" class="player-info">
             <div id="top-player-info-avatar" class="player-info-avatar"></div>
@@ -305,7 +13,12 @@
             <div id="top-player-info-hand" class="player-info-hand"></div>
             <div id="top-player-info-lives" class="player-info-lives"></div>
         </div>
-        <div id="weather-cards"></div>
+        <div id="weather">
+            <div id="weather-cards">
+                <div class="card"></div>
+                <div class="card"></div>
+            </div>
+        </div>
         <div id="bottom-player-info" class="player-info">
             <div id="bottom-player-info-avatar" class="player-info-avatar"></div>
             <div id="bottom-player-info-name" class="player-info-name"></div>
@@ -313,7 +26,9 @@
             <div id="bottom-player-info-hand" class="player-info-hand"></div>
             <div id="bottom-player-info-lives" class="player-info-lives"></div>
         </div>
-        <div id="bottom-player-leader-card" class="leader-card"></div>
+        <div id="bottom-player-leader-card" class="leader-card">
+            <div class="card"></div>
+        </div>
         <div id="bottom-player-turn-indicator" class="turn-indicator"></div>
     </div>
     <div id="gwint-middle">
@@ -331,9 +46,18 @@
                 <div id="top-player-ranged-row-power" class="battlefield-row-power"></div>
                 <div id="top-player-ranged-row-horn" class="battlefield-row-horn">
                     <div id="top-player-ranged-row-horn-icon" class="battlefield-row-icon battlefield-row-horn-icon"></div>
+                    <div class="card"></div>
                 </div>
                 <div id="top-player-ranged-row-cards" class="battlefield-row-cards">
                     <div id="top-player-ranged-row-cards-icon" class="battlefield-row-icon battlefield-row-cards-icon"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
                 </div>
             </div>
             <div id="top-player-melee-row" class="battlefield-row">
@@ -376,16 +100,13 @@
         <div id="top-player-battlefield-power" class="battlefield-power"></div>
         <div id="bottom-player-battlefield-power" class="battlefield-power"></div>
         <div id="bottom-player-hand">
-            <div class="hand-card"></div>
-            <div class="hand-card hand-card-active"></div>
-            <div class="hand-card"></div>
-            <div class="hand-card"></div>
-            <div class="hand-card"></div>
-            <div class="hand-card"></div>
-            <div class="hand-card"></div>
-            <div class="hand-card"></div>
-            <div class="hand-card"></div>
-            <div class="hand-card"></div>
+            <div class="card"></div>
+            <div class="card card-active"></div>
+            <div class="card"></div>
+            <div class="card"></div>
+            <div class="card"></div>
+            <div class="card"></div>
+            <div class="card"></div>
         </div>
     </div>
     <div id="gwint-right">
@@ -393,11 +114,17 @@
             <div id="top-player-disposed-cards-stack" class="disposed-cards-stack"></div>
             <div id="top-player-disposed-cards-icon" class="disposed-cards-icon"></div>
         </div>
-        <div id="top-player-deck-cards" class="deck-cards"></div>
+        <div id="top-player-deck-cards" class="deck-cards">
+            <div id="top-player-deck-cards-count" class="deck-cards-count"></div>
+        </div>
         <div id="bottom-player-disposed-cards" class="disposed-cards">
-            <div id="bottom-player-disposed-cards-stack" class="disposed-cards-stack"></div>
+            <div id="bottom-player-disposed-cards-stack" class="disposed-cards-stack">
+                <div class="card"></div>
+            </div>
             <div id="bottom-player-disposed-cards-icon" class="disposed-cards-icon"></div>
         </div>
-        <div id="bottom-player-deck-cards" class="deck-cards"></div>
+        <div id="bottom-player-deck-cards" class="deck-cards">
+            <div id="bottom-player-deck-cards-count" class="deck-cards-count"></div>
+        </div>
     </div>
 </div>

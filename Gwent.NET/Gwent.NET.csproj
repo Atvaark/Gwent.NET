@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\EndRedrawCardCommand.cs" />
     <Compile Include="Commands\PassCommand.cs" />
     <Compile Include="Commands\PlayCardCommand.cs" />
     <Compile Include="Commands\ResurrectCommand.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="States\GameEndState.cs" />
     <Compile Include="States\GameStartState.cs" />
     <Compile Include="States\LobbyState.cs" />
+    <Compile Include="States\RedrawState.cs" />
     <Compile Include="States\ResurrectState.cs" />
     <Compile Include="States\RoundEndState.cs" />
     <Compile Include="States\RoundStartState.cs" />
