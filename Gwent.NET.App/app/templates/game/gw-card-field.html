@@ -1,7 +1,8 @@
 ﻿<style>
     .gw-card-field {
+        transform-origin: top left;
+        transform: scale(0.22, 0.2184); /* HACK: Scales from 309x412 to ~68x90 */
         position: absolute;
-        background-image: url(nor_siegfried.png);
         background-position-y: -8px;
         width: 309px;
         height: 412px;
@@ -30,7 +31,7 @@
         left: 215px;
     }
 </style>
-<div class="gw-card-field">
+<div class="gw-card-field" style="background-image: url({{image}});">
     <div class="gw-card-field-power">{{power}}</div>
     <div class="gw-card-field-ability">{{ability}}</div>
     <div class="gw-card-field-type">{{type}}</div>

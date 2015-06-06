@@ -252,5 +252,23 @@
 
                 return tempCards;
             }
+        })
+        .directive('gwCard', function () {
+            return {
+                require: '^ngModel',
+                scope: {
+                    card: '=ngModel'
+                },
+                templateUrl: 'templates/game/gw-card.html'
+            };
+        })
+        .directive('gwCardField', function () {
+            return {
+                require: '^ngModel',
+                scope: {
+                    card: '=ngModel'
+                },
+                templateUrl: 'templates/game/gw-card-field.html'
+            };
         });
 })();
