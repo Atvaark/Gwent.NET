@@ -58,8 +58,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\scripts\menu\game-controller.js" />
+    <Content Include="app\templates\game\gw-card-field.html" />
+    <Content Include="app\templates\game\gw-card.html" />
     <Content Include="app\templates\menu\game-lobby.css" />
     <Content Include="app\templates\menu\game-lobby.html" />
+    <Content Include="app\templates\menu\home.html" />
     <Content Include="favicon.ico" />
     <Content Include="app\scripts\app.js" />
     <Content Include="app\scripts\game\game.js" />
@@ -76,7 +79,6 @@
     <Content Include="app\templates\menu\game.html" />
     <Content Include="app\templates\menu\login.html" />
     <Content Include="app\templates\menu\menu.html" />
-    <Content Include="app\templates\menu\main.html" />
     <Content Include="app\templates\menu\register.html" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />

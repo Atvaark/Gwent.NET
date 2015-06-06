@@ -144,10 +144,6 @@
     margin: 0 auto;
 }
 
-.card-active {
-    top: -10px;
-}
-
 /* Right */
 .disposed-cards {
     background: red;
@@ -309,10 +305,6 @@
         top: 5px;
     }
 
-    #bottom-player-hand > .card-active {
-        top: -5px;
-    }
-
 /* Right */
 #top-player-disposed-cards {
     position: absolute;
@@ -336,4 +328,23 @@
     position: absolute;
     top: 615px;
     left: 150px;
+}
+
+#bottom-player-hand > .card:hover {
+    top: -5px;
+}
+
+.battlefield-row-horn:hover {
+    /* TODO: Fix the content getting moved (border: 2px solid transparent) */
+    border: 2px solid yellow;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.battlefield-row-cards:hover {
+    border: 2px solid yellow;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }

@@ -21,7 +21,7 @@
                         data.login.error = '';
                         data.login.username = '';
                         data.login.password = '';
-                        $state.go('menu.main');
+                        $state.go('menu');
                     },
                     function () {
                         data.login.error = 'Login failed';

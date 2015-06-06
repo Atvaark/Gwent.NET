@@ -1,0 +1,87 @@
+﻿<style>
+    .gw-card {
+        width: 309px;
+        height: 583px;
+    }
+
+    .gw-card-top-image {
+        background-image: url(nor_siegfried.png);
+        position: absolute;
+        width: 309px;
+        height: 444px;
+    }
+
+    .gw-card-bottom {
+        position: absolute;
+        width: 309px;
+        height: 139px;
+        top: 452px;
+        border-bottom-left-radius: 25px;
+        border-bottom-right-radius: 25px;
+    }
+
+    .gw-card-bottom-title {
+        margin-top: 5px;
+        margin-left: 65px; /* TODO: Only if not neutral */
+        text-align: center;
+        font-size: 16pt;
+        font-weight: bold;
+    }
+
+    .gw-card-bottom-description {
+        position: absolute;
+        text-align: center;
+        font-size: 15pt;
+        top: 75px;
+    }
+
+    .gw-card-left {
+        position: absolute;
+        width: 90px;
+        height: 583px;
+    }
+
+    .gw-card-left-faction {
+        position: absolute;
+        width: 60px;
+        height: 480px;
+        top: 45px;
+        left: 15px;
+    }
+
+    .gw-card-left-power {
+        position: absolute;
+        width: 90px;
+        height: 90px;
+        text-align: center;
+    }
+
+    .gw-card-left-type {
+        position: absolute;
+        width: 80px;
+        height: 80px;
+        top: 150px;
+        margin: 5px;
+    }
+
+    .gw-card-left-ability {
+        position: absolute;
+        width: 80px;
+        height: 80px;
+        top: 250px;
+        margin: 5px;
+    }
+</style>
+<div class="gw-card">
+    <div class="gw-card-top-image" style="background-image: url({{image}});"></div>
+    <div class="gw-card-bottom">
+        <div class="gw-card-bottom-title">{{title}}</div>
+        <div class="gw-card-bottom-description">{{description}}</div>
+    </div>
+    <div class="gw-card-left">
+        <div class="gw-card-left-faction">{{faction}}</div>
+        <div class="gw-card-left-power">{{power}}</div>
+        <div class="gw-card-left-type">{{type}}</div>
+        <div class="gw-card-left-ability">{{ability}}</div>
+    </div>
+</div>

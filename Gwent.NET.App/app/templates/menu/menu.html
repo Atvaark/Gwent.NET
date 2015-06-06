@@ -43,12 +43,14 @@
 </style>
 <nav class="menu-nav">
     <ul style="float: left;">
-        <li><a ui-sref="menu.main">Home</a></li>
+        <li><a ui-sref="menu.home">Home</a></li>
+        <li ng-if="data.user !== null"><a ui-sref="menu.deck.list">Deck</a></li>
+        <li ng-if="data.user !== null"><a ui-sref="menu.game">Play</a></li>
     </ul>
     <ul style="float: right;">
-        <li ng-hide="data.user !== null"><a ui-sref="menu.login">Login</a></li>
-        <li ng-hide="data.user !== null"><a ui-sref="menu.register">Register</a></li>
-        <li ng-show="data.user !== null"><a href="#" ng-click="methods.logout()">Logout</a></li>
+        <li ng-if="data.user == null"><a ui-sref="menu.login">Login</a></li>
+        <li ng-if="data.user == null"><a ui-sref="menu.register">Register</a></li>
+        <li ng-if="data.user !== null"><a href="#" ng-click="methods.logout()">Logout</a></li>
     </ul>
 </nav>
 <div ui-view></div>

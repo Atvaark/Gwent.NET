@@ -39,14 +39,14 @@
 
             methods.showDecks = function () {
                 methods.getDecks();
-                $state.go('menu.main.deck.list');
+                $state.go('menu.deck.list');
             };
 
             methods.newDeck = function () {
                 data.create = {
                     cards: []
                 };
-                $state.go('menu.main.deck.create');
+                $state.go('menu.deck.create');
             };
 
             methods.addDeckCard = function (card) {

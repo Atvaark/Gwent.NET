@@ -68,12 +68,12 @@
 
             methods.startGame = function () {
                 methods.createGame().then(function () {
-                    $state.go('menu.main.game.lobby');
+                    $state.go('menu.game.lobby');
                 });
             };
 
             methods.resumeGame = function () {
-                $state.go('menu.main.game.lobby');
+                $state.go('menu.game.lobby');
             };
 
             methods.getActiveGame().then(function (game) {
