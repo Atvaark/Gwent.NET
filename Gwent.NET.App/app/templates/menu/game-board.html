@@ -1,0 +1,439 @@
+﻿<style>
+    .gw-board {
+        width: 1920px;
+        height: 1080px;
+    }
+
+    .gw-leader-holder {
+        background: red;
+        width: 176px;
+        height: 150px;
+    }
+
+    .gw-leader-holder-card {
+        background: yellow;
+        width: 114px;
+        height: 150px;
+        position: absolute;
+    }
+
+    .gw-leader-holder-turn-indicator {
+        background: yellow;
+        width: 56px;
+        height: 56px;
+        position: absolute;
+        top: 50px;
+        left: 117px;
+    }
+
+    .gw-player {
+        background: red;
+        width: 396px;
+        height: 136px;
+    }
+
+    .gw-player-portrait {
+        background: orange;
+        width: 136px;
+        height: 136px;
+    }
+
+    .gw-player-faction-icon {
+        background: orangered;
+        width: 60px;
+        height: 60px;
+    }
+
+    .gw-player-name {
+        background: orangered;
+        width: 260px;
+        height: 30px;
+    }
+
+    .gw-player-faction-name {
+        background: orange;
+        width: 260px;
+        height: 30px;
+    }
+
+    .gw-player-card-count {
+        background: orangered;
+        width: 76px;
+        height: 76px;
+    }
+
+    .gw-player-life-indicator {
+        background: orange;
+        width: 90px;
+        height: 76px;
+    }
+
+    .gw-player-winning-round {
+        background: orangered;
+        width: 94px;
+        height: 94px;
+    }
+
+    .gw-player-score {
+        background: orange;
+        width: 65px;
+        height: 65px;
+    }
+
+    .gw-player-passed {
+        background: orange;
+        width: 94px;
+        height: 24px;
+    }
+
+    .gw-weather {
+        background: red;
+        width: 293px;
+        height: 150px;
+    }
+
+    .gw-row {
+        background: red;
+        width: 1015px;
+        height: 132px;
+    }
+
+    .gw-row-score {
+        background: yellow;
+        width: 78px;
+        height: 132px;
+        position: absolute;
+    }
+
+    .gw-row-score-text {
+        background: orange;
+        width: 54px;
+        height: 54px;
+        position: absolute;
+        left: 12px;
+        top: 39px;
+    }
+
+    .gw-row-modifier {
+        background: yellow;
+        width: 137px;
+        height: 124px;
+        position: absolute;
+        top: 8px;
+        left: 78px;
+    }
+
+    .gw-row-cards {
+        background: yellow;
+        width: 800px;
+        height: 128px;
+        position: absolute;
+        top: 4px;
+        left: 215px;
+    }
+
+    .gw-hand {
+        background: red;
+        width: 947px;
+        height: 138px;
+    }
+
+    .gw-graveyard {
+        background: red;
+        width: 113px;
+        height: 148px;
+    }
+
+    .gw-deck {
+        background: red;
+        width: 100px;
+        height: 160px;
+    }
+
+    .gw-card-preview {
+        background: red;
+        width: 310px;
+        height: 584px;
+    }
+
+    #gw-top-leader-holder {
+        position: absolute;
+        top: 72px;
+        left: 130px;
+    }
+
+    #gw-top-player {
+        position: absolute;
+        top: 275px;
+        left: 105px;
+    }
+
+    #gw-top-player-portrait {
+        position: absolute;
+    }
+
+    #gw-top-player-faction-icon {
+        position: absolute;
+    }
+
+    #gw-top-player-name {
+        position: absolute;
+        left: 136px;
+    }
+
+    #gw-top-player-faction-name {
+        position: absolute;
+        top: 30px;
+        left: 136px;
+    }
+
+    #gw-top-player-card-count {
+        position: absolute;
+        top: 60px;
+        left: 136px;
+    }
+
+    #gw-top-player-life-indicator {
+        position: absolute;
+        top: 60px;
+        left: 212px;
+    }
+
+    #gw-top-player-winning-round {
+        position: absolute;
+        top: 10px;
+        left: 302px;
+    }
+
+    #gw-top-player-score {
+        position: absolute;
+        top: 23px;
+        left: 316px;
+    }
+
+    #gw-top-player-passed {
+        position: absolute;
+        top: 112px;
+        left: 302px;
+    }
+
+    #gw-bottom-player {
+        position: absolute;
+        top: 665px;
+        left: 105px;
+    }
+
+    #gw-bottom-player-portrait {
+        position: absolute;
+    }
+
+    #gw-bottom-player-faction-icon {
+        position: absolute;
+        top: 76px;
+    }
+
+    #gw-bottom-player-name {
+        position: absolute;
+        top: 76px;
+        left: 136px;
+    }
+
+    #gw-bottom-player-faction-name {
+        position: absolute;
+        top: 106px;
+        left: 136px;
+    }
+
+    #gw-bottom-player-card-count {
+        position: absolute;
+        left: 136px;
+    }
+
+    #gw-bottom-player-life-indicator {
+        position: absolute;
+        left: 212px;
+    }
+
+    #gw-bottom-player-winning-round {
+        position: absolute;
+        top: 22px;
+        left: 302px;
+    }
+
+    #gw-bottom-player-score {
+        position: absolute;
+        top: 35px;
+        left: 316px;
+    }
+
+    #gw-bottom-player-passed {
+        position: absolute;
+        left: 302px;
+    }
+
+    #gw-weather {
+        position: absolute;
+        top: 444px;
+        left: 135px;
+    }
+
+    #gw-bottom-leader-holder {
+        position: absolute;
+        top: 824px;
+        left: 132px;
+    }
+
+    #gw-top-row-siege {
+        position: absolute;
+        top: 9px;
+        left: 501px;
+    }
+
+    #gw-top-row-ranged {
+        position: absolute;
+        top: 142px;
+        left: 501px;
+    }
+
+    #gw-top-row-melee {
+        position: absolute;
+        top: 275px;
+        left: 501px;
+    }
+
+    #gw-bottom-row-melee {
+        position: absolute;
+        top: 427px;
+        left: 501px;
+    }
+
+    #gw-bottom-row-ranged {
+        position: absolute;
+        top: 560px;
+        left: 501px;
+    }
+
+    #gw-bottom-row-siege {
+        position: absolute;
+        top: 693px;
+        left: 501px;
+    }
+
+    #gw-bottom-hand {
+        position: absolute;
+        top: 836px;
+        left: 572px;
+    }
+
+    #gw-top-graveyard {
+        position: absolute;
+        top: 68px;
+        left: 1544px;
+    }
+
+    #gw-bottom-graveyard {
+        position: absolute;
+        top: 826px;
+        left: 1544px;
+    }
+
+    #gw-top-deck {
+        position: absolute;
+        top: 55px;
+        left: 1724px;
+    }
+
+    #gw-bottom-deck {
+        position: absolute;
+        top: 814px;
+        left: 1724px;
+    }
+
+    #gw-card-preview {
+        position: absolute;
+        top: 226px;
+        left: 1541px;
+    }
+</style>
+
+<div class="gw-board">
+    <div id="gw-top-leader-holder" class="gw-leader-holder">
+        <div class="gw-leader-holder-card"></div>
+        <div class="gw-leader-holder-turn-indicator"></div>
+    </div>
+    <div id="gw-top-player" class="gw-player">
+        <div id="gw-top-player-portrait" class="gw-player-portrait"></div>
+        <div id="gw-top-player-faction-icon" class="gw-player-faction-icon"></div>
+        <div id="gw-top-player-name" class="gw-player-name"></div>
+        <div id="gw-top-player-faction-name" class="gw-player-faction-name"></div>
+        <div id="gw-top-player-card-count" class="gw-player-card-count"></div>
+        <div id="gw-top-player-life-indicator" class="gw-player-life-indicator"></div>
+        <div id="gw-top-player-winning-round" class="gw-player-winning-round"></div>
+        <div id="gw-top-player-score" class="gw-player-score"></div>
+        <div id="gw-top-player-passed" class="gw-player-passed"></div>
+    </div>
+    <div id="gw-weather" class="gw-weather"></div>
+    <div id="gw-bottom-player" class="gw-player gw-bottom-player">
+        <div id="gw-bottom-player-portrait" class="gw-player-portrait"></div>
+        <div id="gw-bottom-player-faction-icon" class="gw-player-faction-icon"></div>
+        <div id="gw-bottom-player-name" class="gw-player-name"></div>
+        <div id="gw-bottom-player-faction-name" class="gw-player-faction-name"></div>
+        <div id="gw-bottom-player-card-count" class="gw-player-card-count"></div>
+        <div id="gw-bottom-player-life-indicator" class="gw-player-life-indicator"></div>
+        <div id="gw-bottom-player-winning-round" class="gw-player-winning-round"></div>
+        <div id="gw-bottom-player-score" class="gw-player-score"></div>
+        <div id="gw-bottom-player-passed" class="gw-player-passed"></div>
+    </div>
+    <div id="gw-bottom-leader-holder" class="gw-leader-holder">
+        <div class="gw-leader-holder-card"></div>
+        <div class="gw-leader-holder-turn-indicator"></div>
+    </div>
+    <div id="gw-top-row-siege" class="gw-row">
+        <div class="gw-row-score">
+            <div class="gw-row-score-text"></div>
+        </div>
+        <div class="gw-row-modifier"></div>
+        <div class="gw-row-cards"></div>
+    </div>
+    <div id="gw-top-row-ranged" class="gw-row">
+        <div class="gw-row-score">
+            <div class="gw-row-score-text"></div>
+        </div>
+        <div class="gw-row-modifier"></div>
+        <div class="gw-row-cards"></div>
+    </div>
+    <div id="gw-top-row-melee" class="gw-row">
+        <div class="gw-row-score">
+            <div class="gw-row-score-text"></div>
+        </div>
+        <div class="gw-row-modifier"></div>
+        <div class="gw-row-cards"></div>
+    </div>
+    <div id="gw-bottom-row-melee" class="gw-row">
+        <div class="gw-row-score">
+            <div class="gw-row-score-text"></div>
+        </div>
+        <div class="gw-row-modifier"></div>
+        <div class="gw-row-cards"></div>
+    </div>
+    <div id="gw-bottom-row-ranged" class="gw-row">
+        <div class="gw-row-score">
+            <div class="gw-row-score-text"></div>
+        </div>
+        <div class="gw-row-modifier"></div>
+        <div class="gw-row-cards"></div>
+    </div>
+    <div id="gw-bottom-row-siege" class="gw-row">
+        <div class="gw-row-score">
+            <div class="gw-row-score-text"></div>
+        </div>
+        <div class="gw-row-modifier"></div>
+        <div class="gw-row-cards"></div>
+    </div>
+    <div id="gw-bottom-hand" class="gw-hand"></div>
+    <div id="gw-top-graveyard" class="gw-graveyard"></div>
+    <div id="gw-bottom-graveyard" class="gw-graveyard"></div>
+    <div id="gw-top-deck" class="gw-deck"></div>
+    <div id="gw-card-preview" class="gw-card-preview "></div>
+    <div id="gw-bottom-deck" class="gw-deck"></div>
+</div>
