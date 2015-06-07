@@ -6,17 +6,17 @@ namespace Gwent.NET.Model
     {
         [XmlEnum("F_NEUTRAL")]
         Neutral = 0,
-
-        [XmlEnum("F_NORTHERN_KINGDOM")]
-        NorthernKingdom = 1,
+        
+        [XmlEnum("F_NO_MANS_LAND")]
+        NoMansLand = 1,
 
         [XmlEnum("F_NILFGAARD")]
         Nilfgaard = 2,
 
+        [XmlEnum("F_NORTHERN_KINGDOM")]
+        NorthernKingdom = 3,
+        
         [XmlEnum("F_SCOIATAEL")]
-        Scoiatael = 3,
-
-        [XmlEnum("F_NO_MANS_LAND")]
-        NoMansLand = 4
+        Scoiatael = 4
     }
 }

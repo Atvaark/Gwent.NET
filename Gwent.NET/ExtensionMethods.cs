@@ -13,7 +13,7 @@ namespace Gwent.NET
 
         public static GwintEffect GetGwintEffect(this Card card)
         {
-            return card.EffectFlags.Aggregate(GwintEffect.EffectNone, (current, effectFlag) => current | effectFlag.Name);
+            return card.EffectFlags.Aggregate(GwintEffect.None, (current, effectFlag) => current | effectFlag.Name);
         }
 
         public static UserDto ToDto(this User user)

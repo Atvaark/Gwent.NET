@@ -4,93 +4,108 @@ using System.Xml.Serialization;
 namespace Gwent.NET.Model
 {
     [Flags]
-    public enum GwintEffect
+    public enum GwintEffect : long  
     {
         [XmlEnum("EFFECT_NONE")]
-        EffectNone = 0,
+        None = 0,
 
-        [XmlEnum("CP_CLEAR_WEATHER")]
-        CpClearWeather = 1 << 0,
+        Backstab = 1 << 0,
 
-        [XmlEnum("CP_PICK_FROST_CARD")]
-        CpPickFrostCard = 1 << 1,
+        MoraleBoost = 1 << 1,
 
-        [XmlEnum("CP_PICK_FOG_CARD")]
-        CpPickFogCard = 1 << 2,
+        Ambush = 1 << 2,
 
-        [XmlEnum("CP_PICK_RAIN_CARD")]
-        CpPickRainCard = 1 << 3,
+        ToughSkin = 1 << 3,
 
-        [XmlEnum("CP_PICK_WEATHER_CARD")]
-        CpPickWeatherCard = 1 << 4,
+        Bin2 = 1 << 4,
 
-        [XmlEnum("CP_MELEE_HORN")]
-        CpMeleeHorn = 1 << 5,
-
-        [XmlEnum("CP_RANGE_HORN")]
-        CpRangeHorn = 1 << 6,
-
-        [XmlEnum("CP_SIEGE_HORN")]
-        CpSiegeHorn = 1 << 7,
+        Bin3 = 1 << 5,
 
         [XmlEnum("CP_MELEE_SCORCH")]
-        CpMeleeScorch = 1 << 8,
-
-        [XmlEnum("CP_SIEGE_SCORCH")]
-        CpSiegeScorch = 1 << 9,
-
-        [XmlEnum("CP_RESURECT_CARD")]
-        CpResurectCard = 1 << 10,
-
-        [XmlEnum("CP_RESURECT_FROM_ENEMY")]
-        CpResurectFromEnemy = 1 << 11,
-
-        [XmlEnum("CP_VIEW_3_ENEMY_CARDS")]
-        CpView3EnemyCards = 1 << 12,
-
-        [XmlEnum("CP_COUNTER_KING_ABLILITY")]
-        CpCounterKingAblility = 1 << 13,
+        MeleeScorch = 1 << 6,
 
         [XmlEnum("CP_11TH_CARD")]
-        Cp11ThCard = 1 << 14,
+        EleventhCard = 1 << 7,
+
+        [XmlEnum("CP_CLEAR_WEATHER")]
+        ClearWeather = 1 << 8,
+
+        [XmlEnum("CP_PICK_WEATHER_CARD")]
+        PickWeather = 1 << 9,
+
+        [XmlEnum("CP_PICK_RAIN_CARD")]
+        PickRain = 1 << 10,
+
+        [XmlEnum("CP_PICK_FOG_CARD")]
+        PickFog = 1 << 11,
+
+        [XmlEnum("CP_PICK_FROST_CARD")]
+        PickFrost = 1 << 12,
+
+        [XmlEnum("CP_VIEW_3_ENEMY_CARDS")]
+        View3Enemy = 1 << 13,
+
+        [XmlEnum("CP_RESURECT_CARD")]
+        Resurrect = 1 << 14,
+
+        [XmlEnum("CP_RESURECT_FROM_ENEMY")]
+        ResurrectEnemy = 1 << 15,
 
         [XmlEnum("CP_BIN2_PICK1")]
-        CpBin2Pick1 = 1 << 15,
+        Bin2Pick1 = 1 << 16,
+
+        [XmlEnum("CP_MELEE_HORN")]
+        MeleeHorn = 1 << 17,
+
+        [XmlEnum("CP_RANGE_HORN")]
+        RangeHorn = 1 << 18,
+
+        [XmlEnum("CP_SIEGE_HORN")]
+        SiegeHorn = 1 << 19,
+
+        [XmlEnum("CP_SIEGE_SCORCH")]
+        SiegScorch = 1 << 20,
+
+        [XmlEnum("CP_COUNTER_KING_ABLILITY")]
+        CounerKing = 1 << 21,
 
         [XmlEnum("EFFECT_MELEE")]
-        EffectMelee = 1 << 16,
+        Melee = 1 << 22,
 
         [XmlEnum("EFFECT_RANGED")]
-        EffectRanged = 1 << 17,
+        Ranged = 1 << 23,
 
         [XmlEnum("EFFECT_SIEGE")]
-        EffectSiege = 1 << 18,
-
-        [XmlEnum("EFFECT_SCORCH")]
-        EffectScorch = 1 << 19,
-
-        [XmlEnum("EFFECT_HORN")]
-        EffectHorn = 1 << 20,
-
-        [XmlEnum("EFFECT_IMPROVE_NEIGHBOURS")]
-        EffectImproveNeighbours = 1 << 21,
-
-        [XmlEnum("EFFECT_SUMMON_CLONES")]
-        EffectSummonClones = 1 << 22,
-
-        [XmlEnum("EFFECT_NURSE")]
-        EffectNurse = 1 << 23,
-
-        [XmlEnum("EFFECT_SAME_TYPE_MORALE")]
-        EffectSameTypeMorale = 1 << 24,
-
-        [XmlEnum("EFFECT_DRAW_X2")]
-        EffectDrawX2 = 1 << 25,
+        Siege = 1 << 24,
 
         [XmlEnum("EFFECT_UNSUMMON_DUMMY")]
-        EffectUnsummonDummy = 1 << 26,
+        UnsummonDummy = 1 << 25,
+
+        [XmlEnum("EFFECT_HORN")]
+        Horn = 1 << 26,
+
+        [XmlEnum("EFFECT_DRAW")]
+        Draw = 1 << 27,
+
+        [XmlEnum("EFFECT_SCORCH")]
+        Scorch = 1 << 28,
 
         [XmlEnum("EFFECT_CLEAR_SKY")]
-        EffectClearSky = 1 << 27
+        ClearSky = 1 << 29,
+
+        [XmlEnum("EFFECT_SUMMON_CLONES")]
+        SummonClones = 1 << 30,
+
+        [XmlEnum("EFFECT_IMPROVE_NEIGHBOURS")]
+        ImproveNeighbours = 1 << 31,
+
+        [XmlEnum("EFFECT_NURSE")]
+        Nurse = 1 << 32,
+
+        [XmlEnum("EFFECT_DRAW_X2")]
+        Draw2 = 1 << 33,
+
+        [XmlEnum("EFFECT_SAME_TYPE_MORALE")]
+        SameTypeMorale = 1 << 34
     }
 }

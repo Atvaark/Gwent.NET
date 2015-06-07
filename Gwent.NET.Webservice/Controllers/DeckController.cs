@@ -156,10 +156,7 @@ namespace Gwent.NET.Webservice.Controllers
 
         private bool IsSpecialCard(GwintType gwintType)
         {
-            return gwintType.HasFlag(GwintType.Spell)
-                   || gwintType.HasFlag(GwintType.RowModifier)
-                   || gwintType.HasFlag(GwintType.GlobalEffect) 
-                   || gwintType.HasFlag(GwintType.Weather);
+            return !gwintType.HasFlag(GwintType.Creature);
         }
     }
 }
