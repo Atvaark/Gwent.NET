@@ -60,7 +60,7 @@
     <Content Include="app\scripts\menu\game-controller.js" />
     <Content Include="app\templates\game\gw-card-field.html" />
     <Content Include="app\templates\game\gw-card.html" />
-    <Content Include="app\templates\menu\game-board.html" />
+    <Content Include="app\templates\game\gw-board.html" />
     <Content Include="app\templates\menu\game-lobby.css" />
     <Content Include="app\templates\menu\game-lobby.html" />
     <Content Include="app\templates\menu\home.html" />

@@ -1,7 +1,7 @@
 ﻿namespace Gwent.NET.Commands
 {
-    public class RedrawCardCommand
+    public class RedrawCardCommand : Command
     {
-        public int Id { get; set; }
+        public int CardId { get; set; }
     }
 }

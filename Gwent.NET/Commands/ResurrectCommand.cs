@@ -1,7 +1,7 @@
 ﻿namespace Gwent.NET.Commands
 {
-    public class ResurrectCommand
+    public class ResurrectCommand : Command
     {
-        public int Id { get; set; }
+        public int CardId { get; set; }
     }
 }

@@ -1,7 +1,6 @@
 ﻿namespace Gwent.NET.Commands
 {
-    public abstract class Command
+    public class Command
     {
-
     }
 }

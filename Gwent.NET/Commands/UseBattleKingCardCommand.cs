@@ -1,6 +1,6 @@
 ﻿namespace Gwent.NET.Commands
 {
-    class UseBattleKingCardCommand
+    public class UseBattleKingCardCommand : Command
     {
 
     }

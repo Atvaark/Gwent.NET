@@ -68,12 +68,27 @@
 
             methods.startGame = function () {
                 methods.createGame().then(function () {
-                    $state.go('menu.game.lobby');
+                    gameHubService.connect()
+                        .then(function () {
+                            $state.go('menu.game.lobby');
+                        });
                 });
             };
 
             methods.resumeGame = function () {
-                $state.go('menu.game.lobby');
+                gameHubService.connect()
+                    .then(function () {
+                        gameHubService.authenticate();
+                        $state.go('menu.game.lobby');
+
+                        /* Test command*/
+                        //gameHubService.sendCommand({
+                        //    type: "EndRedrawCard",
+                        //    cardId: 1,
+                        //    slot: "MeleeModifier",
+                        //    playerId: 0
+                        //});
+                    });
             };
 
             methods.getActiveGame().then(function (game) {

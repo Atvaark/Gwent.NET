@@ -19,10 +19,10 @@
 
             var validateUser = function () {
                 $http.get(backendUrl + '/user/me')
-                    .success(function (userReponse) {
+                    .success(function () {
                         $log.info('User validated successfully');
                     })
-                    .error(function (data, status) {
+                    .error(function () {
                         $log.info('User could not be validated.');
                         userService.setUser(null);
                     });
@@ -237,7 +237,10 @@
                 if (userService.getUser() == null) {
                     return $q.reject('No user logged in.');
                 }
-
+                if (connection !== null) {
+                    console.log('already connected');
+                    $q.when();
+                }
                 var deferred = $q.defer();
                 $log.info('connecting');
                 connection = $.hubConnection(signalRUrl, { useDefaultPath: false });
@@ -256,18 +259,29 @@
             };
 
             gameHubService.disconnect = function () {
-                // TODO: Implement
+                if (connection !== null) {
+                    connection.stop();
+                    connection = null;
+                    gameHubProxy = null;
+                }
             };
 
             gameHubService.recieveCommand = function (command) {
-                $log.info('server command recieved');
+                var commandString = JSON.stringify(command);
+                $log.info('server command recieved' + commandString);
                 $rootScope.$broadcast('serverCommandRecieved', command);
-
             };
 
             gameHubService.sendCommand = function (command) {
+                var commandString = JSON.stringify(command);
+                $log.info('sending client command ' + commandString);
                 gameHubProxy.invoke('RecieveClientCommand', command);
             };
+            
+            gameHubService.authenticate = function() {
+                $log.info('authenticating client');
+                gameHubProxy.invoke('Authenticate');
+            }
 
             $rootScope.$on('userChanged', function () {
                 gameHubService.setAuthorizationQueryString();

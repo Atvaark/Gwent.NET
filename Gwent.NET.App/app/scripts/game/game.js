@@ -2,31 +2,22 @@
     'use strict';
 
     angular.module('app.game', [])
-        .config(function ($stateProvider) {
-            $stateProvider
-                .state('game', {
-                    url: '/game',
-                    abstract: true,
-                    template: '<div class="game">' +
-                        '<div ui-view></div>' +
-                        '</div>'
-                })
-                .state('game.lobby', {
-                    url: '/:id',
-                    template: '<div><div id=gameCanvas"></div></div>',
-                    controller: 'GameController'
-                });
-        })
         .factory('cardService', function ($q, backendService) {
             var cardService = {
+                cardsLoaded: false,
                 cards: []
             };
             cardService.methods = {
                 getCards: function () {
+                    if (cardService.cardsLoaded) {
+                        return $q.when(cardService.cards);
+                    }
+
                     var deferred = $q.defer();
                     backendService.methods.getCards()
                         .then(function (cards) {
                             cardService.cards = cards;
+                            cardService.cardsLoaded = true;
                             deferred.resolve(cards);
                         }, function (msg) {
                             cardService.cards = [];
@@ -278,6 +269,20 @@
                     card: '=ngModel'
                 },
                 templateUrl: 'templates/game/gw-card-field.html'
+            };
+        })
+        .directive('gwBoard', function () {
+            var controller = function () {
+
+            };
+
+            return {
+                require: '^ngModel',
+                scope: {
+                    game: '=ngModel'
+                },
+                controller: controller,
+                templateUrl: 'templates/game/gw-board.html'
             };
         });
 })();
