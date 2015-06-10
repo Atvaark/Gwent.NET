@@ -1,4 +1,6 @@
-﻿using Gwent.NET.Model;
+﻿using System.Collections.Generic;
+using Gwent.NET.Events;
+using Gwent.NET.Model;
 
 namespace Gwent.NET.Commands
 {
@@ -6,5 +8,9 @@ namespace Gwent.NET.Commands
     {
         public int CardId { get; set; }
         public GwintSlot Slot { get; set; }
+        public override IEnumerable<Event> Execute(int senderUserId, Game game)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

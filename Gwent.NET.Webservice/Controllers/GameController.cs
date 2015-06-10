@@ -76,7 +76,8 @@ namespace Gwent.NET.Webservice.Controllers
                     new Player
                     {
                         User = user,
-                        IsOwner = true
+                        IsOwner = true,
+                        Deck = new Deck() // TODO: Set the initial deck.
                     }
                 }
             };

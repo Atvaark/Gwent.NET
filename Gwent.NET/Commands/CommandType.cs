@@ -3,13 +3,14 @@ namespace Gwent.NET.Commands
     public enum CommandType
     {
         None = 0,
-        EndRedrawCard = 1,
-        ForfeitGame = 2,
-        Pass = 3,
-        PickStartingPlayer = 4,
-        PlayCard = 5,
-        RedrawCard = 6,
-        Resurrect = 7,
-        UseBattleKingCard = 8
+        StartGame = 1,
+        PickStartingPlayer = 2,
+        RedrawCard = 3,
+        EndRedrawCard = 4,
+        ForfeitGame = 5,
+        Pass = 6,
+        PlayCard = 7,
+        Resurrect = 8,
+        UseBattleKingCard = 9
     }
 }

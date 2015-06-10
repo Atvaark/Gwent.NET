@@ -246,7 +246,7 @@
                 connection = $.hubConnection(signalRUrl, { useDefaultPath: false });
                 gameHubService.setAuthorizationQueryString();
                 gameHubProxy = connection.createHubProxy('gameHub');
-                gameHubProxy.on('recieveServerCommand', gameHubService.recieveCommand);
+                gameHubProxy.on('recieveServerEvent', gameHubService.recieveServerEvent);
                 connection.start()
                     .done(function () {
                         console.log('connected');
@@ -266,10 +266,10 @@
                 }
             };
 
-            gameHubService.recieveCommand = function (command) {
-                var commandString = JSON.stringify(command);
-                $log.info('server command recieved' + commandString);
-                $rootScope.$broadcast('serverCommandRecieved', command);
+            gameHubService.recieveServerEvent = function (event) {
+                var eventString = JSON.stringify(event);
+                $log.info('server event recieved' + eventString);
+                $rootScope.$broadcast('serverEventRecieved', event);
             };
 
             gameHubService.sendCommand = function (command) {

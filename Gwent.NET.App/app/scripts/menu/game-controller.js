@@ -78,16 +78,13 @@
             methods.resumeGame = function () {
                 gameHubService.connect()
                     .then(function () {
-                        gameHubService.authenticate();
+                        gameHubService.authenticate(); /* TODO: Wait for the authentication to finish before sending the next command. */
+                        /* Test command*/
+                        gameHubService.sendCommand({
+                            type: "StartGame"
+                        });
                         $state.go('menu.game.lobby');
 
-                        /* Test command*/
-                        //gameHubService.sendCommand({
-                        //    type: "EndRedrawCard",
-                        //    cardId: 1,
-                        //    slot: "MeleeModifier",
-                        //    playerId: 0
-                        //});
                     });
             };
 
