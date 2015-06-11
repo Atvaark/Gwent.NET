@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Gwent.NET.Events;
 using Gwent.NET.Exceptions;
@@ -10,59 +9,43 @@ namespace Gwent.NET.Commands
 {
     public class StartGameCommand : Command
     {
-        private const int InitialHandCardCount = 10;
         private const int RequiredPlayerCount = 2;
 
-        public override IEnumerable<Event> Execute(int senderUserId, Game game)
+        public override IEnumerable<Event> Execute(Game game)
         {
-            Validate(senderUserId, game);
+            State nextState;
+            if (game.Players.Any(p => p.Deck.Faction == GwentFaction.Scoiatael))
+            {
+                nextState = new PickStartingPlayerState();
+            }
+            else
+            {
+                // TODO: Chose a starting player ramdomly
+                nextState = new RedrawState();
+            }
             
-            Player senderPlayer = game.GetPlayerByUserId(senderUserId);
-            Player opponentPlayer = game.GetOpponentPlayerByUserId(senderUserId);
-
-            yield return DrawInitialCards(senderPlayer);
-            yield return DrawInitialCards(opponentPlayer);
-            game.State = new RedrawState();
-            yield return new StateChangeEvent(game.GetAllUserIds())
-            {
-                State = game.State
-            };
+            return SetNextState(game, nextState);
         }
 
-        private HandChangedEvent DrawInitialCards(Player player)
-        {
-            Random random = new Random();
-            var cards = player.Deck.Cards.ToList();
-            cards.Shuffle(random);
-            var handCards = cards.Take(InitialHandCardCount).ToList();
-            player.DeckCards.AddRange(cards);
-            player.HandCards.AddRange(handCards);
-            return new HandChangedEvent(new[] {player.User.Id})
-            {
-                HandCards = handCards.Select(c => c.Index).ToList()
-            };
-
-        }
-
-        private static void Validate(int senderUserId, Game game)
+        public override void Validate(Game game)
         {
             LobbyState state = game.State as LobbyState;
             if (state == null)
             {
-                throw new InvalidCommandException();
+                throw new CommandException();
             }
-            Player senderPlayer = game.GetPlayerByUserId(senderUserId);
-            if (senderPlayer == null)
+            Player sender = game.GetPlayerByUserId(SenderUserId);
+            if (sender == null)
             {
-                throw new InvalidCommandException();
+                throw new CommandException();
             }
-            if (!senderPlayer.IsOwner)
+            if (!sender.IsOwner)
             {
-                throw new InvalidCommandException();
+                throw new CommandException();
             }
             if (game.Players.Count != RequiredPlayerCount)
             {
-                throw new InvalidCommandException();
+                throw new CommandException();
             }
         }
     }

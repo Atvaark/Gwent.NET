@@ -49,9 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Command.cs" />
-    <Compile Include="Commands\CommandFactory.cs" />
     <Compile Include="Commands\CommandType.cs" />
     <Compile Include="Commands\EndRedrawCardCommand.cs" />
+    <Compile Include="Events\ForfeitEvent.cs" />
     <Compile Include="Events\Event.cs" />
     <Compile Include="Commands\PassCommand.cs" />
     <Compile Include="Commands\PickStartingPlayerCommand.cs" />
@@ -72,7 +72,7 @@
     <Compile Include="DTOs\UserDto.cs" />
     <Compile Include="Events\HandChangedEvent.cs" />
     <Compile Include="Events\StateChangeEvent.cs" />
-    <Compile Include="Exceptions\InvalidCommandException.cs" />
+    <Compile Include="Exceptions\CommandException.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="GwentModule.cs" />
     <Compile Include="Model\GwintSlot.cs" />
@@ -103,13 +103,13 @@
     <Compile Include="Interfaces\IUserRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="States\GameEndState.cs" />
-    <Compile Include="States\GameStartState.cs" />
     <Compile Include="States\LobbyState.cs" />
+    <Compile Include="States\PickStartingPlayerState.cs" />
+    <Compile Include="States\Substates\RedrawPlayerSubstate.cs" />
     <Compile Include="States\RedrawState.cs" />
     <Compile Include="States\ResurrectState.cs" />
-    <Compile Include="States\RoundEndState.cs" />
-    <Compile Include="States\RoundStartState.cs" />
     <Compile Include="States\RoundState.cs" />
+    <Compile Include="States\Substates\PickStartingPlayerSubstate.cs" />
     <Compile Include="States\State.cs" />
   </ItemGroup>
   <ItemGroup>

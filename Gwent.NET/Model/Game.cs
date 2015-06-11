@@ -15,6 +15,11 @@ namespace Gwent.NET.Model
         public State State { get; set; }
         public List<Player> Players { get; set; }
 
+        public Player GetPlayerByIndex(int index)
+        {
+            return Players.ElementAtOrDefault(index);
+        }
+
         public Player GetPlayerByUserId(int userId)
         {
             return Players.FirstOrDefault(p => p.User.Id == userId);

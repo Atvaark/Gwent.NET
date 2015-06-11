@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using Gwent.NET.Commands;
 using Gwent.NET.DTOs;
+using Gwent.NET.Events;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
 using Gwent.NET.Webservice.Auth;
@@ -75,12 +77,19 @@ namespace Gwent.NET.Webservice.Hubs
         {
             Command command = CreateCommand(commandDto);
             int userId = int.Parse(Context.User.Identity.GetUserId());
+            command.SenderUserId = userId;
             Game game = _gameRepository.FindByUserId(userId).FirstOrDefault(g => !g.State.IsOver);
             if (game == null)
             {
                 throw new Exception("No running game found.");
             }
-            var gameEvents = command.Execute(userId, game);
+            command.Validate(game);
+            var gameEvents = command.Execute(game);
+            SendEvents(gameEvents);
+        }
+
+        private void SendEvents(IEnumerable<Event> gameEvents)
+        {
             foreach (var gameEvent in gameEvents)
             {
                 foreach (var recipient in gameEvent.Recipients)
@@ -93,8 +102,7 @@ namespace Gwent.NET.Webservice.Hubs
                 }
             }
         }
-
-
+        
         private Command CreateCommand(CommandDto commandDto)
         {
             if (commandDto == null) throw new ArgumentNullException("commandDto");
@@ -115,7 +123,7 @@ namespace Gwent.NET.Webservice.Hubs
                     }
                     return new PickStartingPlayerCommand
                     {
-                        StartPlayerId = commandDto.StartPlayerId.Value
+                        StartingPlayerId = commandDto.StartPlayerId.Value
                     };
                 case CommandType.PlayCard:
                     if (!commandDto.CardId.HasValue || !commandDto.Slot.HasValue)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Gwent.NET.Events;
 using Gwent.NET.Model;
 
@@ -6,9 +7,14 @@ namespace Gwent.NET.Commands
 {
     public class PassCommand : Command
     {
-        public override IEnumerable<Event> Execute(int senderUserId, Game game)
+        public override IEnumerable<Event> Execute(Game game)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
+        }
+
+        public override void Validate(Game game)
+        {
+            throw new NotImplementedException();
         }
     }
 }
