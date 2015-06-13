@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Gwent.NET.Model
 {
@@ -6,13 +7,14 @@ namespace Gwent.NET.Model
     {
         public User()
         {
-            Decks = new List<Deck>();
+            Decks = new HashSet<Deck>();
         }
 
+        [Key]
         public int Id { get; set; }
         public string Name { get; set; }
         public string PasswordHash { get; set; }
         public string Picture { get; set; }
-        public List<Deck> Decks { get; set; }
+        public virtual ICollection<Deck> Decks { get; set; }
     }
 }

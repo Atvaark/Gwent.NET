@@ -3,7 +3,7 @@ using System.Web.Http;
 using Gwent.NET.DTOs;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
-using Gwent.NET.States;
+using Gwent.NET.Model.States;
 
 namespace Gwent.NET.Webservice.Controllers
 {
@@ -70,17 +70,14 @@ namespace Gwent.NET.Webservice.Controllers
                 return BadRequest();
             }
 
+
+            var player = UserRepository.CreatePlayer(user);
             Game game = new Game
             {
                 State = new LobbyState(),
                 Players =
                 {
-                    new Player
-                    {
-                        User = user,
-                        IsOwner = true,
-                        Deck = GenerateDemoDeck() // TODO: Read the default player deck.
-                    }
+                    player
                 }
             };
             game = _gameRepository.Create(game);

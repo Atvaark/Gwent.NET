@@ -27,7 +27,7 @@ namespace Gwent.NET.Webservice.Auth
                 Name = user.UserName,
                 PasswordHash = user.PasswordHash
             };
-            newUser = _userRepository.Create(newUser);
+            newUser = _userRepository.CreateUser(newUser);
             user.Id = newUser.Id.ToString();
             return Task.FromResult(0);
         }

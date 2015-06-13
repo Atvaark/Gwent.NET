@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Gwent.NET.States;
+using Gwent.NET.Model.States;
 
 namespace Gwent.NET.Events
 {

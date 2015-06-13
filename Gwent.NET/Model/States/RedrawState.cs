@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Gwent.NET.Events;
-using Gwent.NET.Model;
-using Gwent.NET.States.Substates;
+using Gwent.NET.Model.States.Substates;
 
-namespace Gwent.NET.States
+namespace Gwent.NET.Model.States
 {
     public class RedrawState : State
     {
@@ -39,19 +38,26 @@ namespace Gwent.NET.States
             var cards = player.Deck.Cards.ToList();
             cards.Shuffle(random);
             var handCardCount = InitialHandCardCount;
-            if (player.Deck.BattleKingCard.GetGwintEffect().HasFlag(GwintEffect.EleventhCard))
+            if (player.Deck.BattleKingCard.GetGwintEffects().HasFlag(GwintEffect.EleventhCard))
             {
                 handCardCount = InitialBuffedHandCardCount;
             }
 
-            // TODO: remove the taken cards
             var handCards = cards.Take(handCardCount).ToList();
             cards.RemoveRange(0, handCardCount);
-            player.DeckCards.AddRange(cards);
-            player.HandCards.AddRange(handCards);
+
+            foreach (var card in cards)
+            {
+                player.DeckCards.Add(card);
+            }
+            foreach (var handCard in handCards)
+            {
+                player.HandCards.Add(handCard);
+            }
+
             return new HandChangedEvent(new[] { player.User.Id })
             {
-                HandCards = handCards.Select(c => c.Index).ToList()
+                HandCards = handCards.Select(c => c.Id).ToList()
             };
         }
     }

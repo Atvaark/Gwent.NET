@@ -7,10 +7,11 @@ namespace Gwent.NET.Interfaces
         User FindById(int id);
         User FindById(string id);
         User FindByName(string username);
-        User Create(User user);
+        User CreateUser(User user);
         void Update(int id, User user);
         void AddDeck(int id, Deck deck);
         void Delete(int id);
         void Delete(string id);
+        Player CreatePlayer(User user);
     }
 }

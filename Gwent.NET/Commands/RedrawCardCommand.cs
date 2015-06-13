@@ -4,7 +4,7 @@ using System.Linq;
 using Gwent.NET.Events;
 using Gwent.NET.Exceptions;
 using Gwent.NET.Model;
-using Gwent.NET.States;
+using Gwent.NET.Model.States;
 
 namespace Gwent.NET.Commands
 {
@@ -21,7 +21,7 @@ namespace Gwent.NET.Commands
             var opponentSubstate = state.Substates.FirstOrDefault(s => s.UserId == opponent.User.Id);
             substate.RedrawCardCount -= 1;
 
-            var card = sender.HandCards.First(c => c.Index == CardId);
+            var card = sender.HandCards.First(c => c.Id == CardId);
             sender.HandCards.Remove(card);
             sender.DeckCards.Add(card);
 
@@ -62,7 +62,7 @@ namespace Gwent.NET.Commands
                 throw new CommandException();
             }
 
-            if (sender.HandCards.All(c => c.Index != CardId))
+            if (sender.HandCards.All(c => c.Id != CardId))
             {
                 throw new CommandException();
             }

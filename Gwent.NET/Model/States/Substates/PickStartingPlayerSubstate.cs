@@ -1,8 +1,7 @@
-namespace Gwent.NET.States.Substates
+namespace Gwent.NET.Model.States.Substates
 {
-    public class PickStartingPlayerSubstate
+    public class PickStartingPlayerSubstate : Substate
     {
-        public int UserId { get; set; }
         public bool CanPickStartingPlayer { get; set; }
         public int? StartingPlayerId { get; set; }
     }

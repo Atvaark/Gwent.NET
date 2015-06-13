@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 
@@ -12,9 +14,10 @@ namespace Gwent.NET.Model
             EffectFlags = new List<GwintEffectFlag>();
             SummonFlags = new List<GwintSummonFlag>();
         }
-
+        
         [XmlAttribute("index")]
-        public int Index { get; set; }
+        [Key]
+        public int Id { get; set; }
 
         [XmlAttribute("title")]
         public string Title { get; set; }
@@ -34,17 +37,64 @@ namespace Gwent.NET.Model
         [XmlArray("type_flags")]
         [XmlArrayItem("flag")]
         [JsonIgnore]
+        [NotMapped]
         public List<GwintTypeFlag> TypeFlags { get; set; }
+
+        [XmlIgnore]
+        public GwintType Types { get; set; }
         
         [XmlArray("effect_flags")]
         [XmlArrayItem("flag")]
         [JsonIgnore]
+        [NotMapped]
         public List<GwintEffectFlag> EffectFlags { get; set; }
+
+        [XmlIgnore]
+        public GwintEffect Effects { get; set; }
         
         [XmlArray("summonFlags", IsNullable = true)]
         [XmlArrayItem("card")]
+        [InverseProperty("SummonerCard")]
         public List<GwintSummonFlag> SummonFlags { get; set; }
 
+        [XmlIgnore]
         public bool IsBattleKing { get; set; }
+
+        [XmlIgnore]
+        [InverseProperty("BattleKingCard")]
+        public virtual ICollection<Deck> BattleKingCardDecks { get; set; }
+        
+        [XmlIgnore]
+        [InverseProperty("Cards")]
+        public virtual ICollection<Deck> Decks { get; set; }
+
+        [XmlIgnore]
+        [InverseProperty("DeckCards")]
+        public virtual ICollection<Player> DeckPlayer { get; set; }
+
+        [XmlIgnore]
+        [InverseProperty("HandCards")]
+        public virtual ICollection<Player> HandPlayer { get; set; }
+        
+        [XmlIgnore]
+        [InverseProperty("GraveyardCards")]
+        public virtual ICollection<Player> GraveyardPlayer { get; set; }
+
+        //[XmlIgnore]
+        //[InverseProperty("CloseCombatCards")]
+        //public virtual ICollection<Player> CloseCombatPlayer { get; set; }
+
+        //[XmlIgnore]
+        //[InverseProperty("RangeCards")]
+        //public virtual ICollection<Player> RangePlayers { get; set; }
+
+        //[XmlIgnore]
+        //[InverseProperty("SiegeCards")]
+        //public virtual ICollection<Player> SiegePlayer { get; set; }
+
+        [XmlIgnore]
+        [InverseProperty("Card")]
+        public virtual ICollection<PlayerCardSlot> PlayerSlots { get; set; }
+
     }
 }

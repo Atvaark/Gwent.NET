@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
 
@@ -9,19 +7,17 @@ namespace Gwent.NET.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly Dictionary<int, User> _users;
-        private int _userId;
-        private int _deckId;
-        
-        public UserRepository()
+        private readonly IGwintContext _context;
+
+        public UserRepository(IGwintContext gwintContext)
         {
-            _users = new Dictionary<int, User>();
+            _context = gwintContext;
         }
+
+
         public User FindById(int id)
         {
-            User user;
-            _users.TryGetValue(id, out user);
-            return user;
+            return _context.Users.Find(id);
         }
 
         public User FindById(string id)
@@ -36,52 +32,61 @@ namespace Gwent.NET.Repositories
 
         public User FindByName(string username)
         {
-            return _users.Values.FirstOrDefault(u => u.Name == username);
+            return _context.Users.FirstOrDefault(u => u.Name == username);
         }
 
-        public User Create(User user)
+        public User CreateUser(User user)
         {
             if (user == null) throw new ArgumentNullException("user");
 
-            User newUser = new User
-            {
-                Id = Interlocked.Increment(ref _userId),
-                Name = user.Name,
-                Picture = "",
-                PasswordHash = user.PasswordHash
-            };
-            _users.Add(newUser.Id, newUser);
+            var newUser = _context.Users.Create();
+            newUser.Name = user.Name;
+            newUser.Picture = "";
+            newUser.PasswordHash = user.PasswordHash;
+            _context.Users.Add(newUser);
+            _context.SaveChanges();
             return newUser;
         }
 
         public void Update(int id, User user)
         {
-            if (user == null) throw new ArgumentNullException("user");
-            if (!_users.ContainsKey(id) || user.Id != id)
+            var existingUser = _context.Users.Find(id);
+            if (existingUser == null)
             {
                 throw new ArgumentException("id");
             }
-            _users[id] = user;
+            existingUser.Name = user.Name;
+            existingUser.Picture = user.Picture;
+            existingUser.PasswordHash = user.PasswordHash;
+            _context.SaveChanges();
         }
 
         public void AddDeck(int id, Deck deck)
         {
-            User user = FindById(id);
+            var user = _context.Users.Find(id);
             if (user == null)
             {
                 throw new ArgumentException("id");
             }
-            deck.Id = Interlocked.Increment(ref _deckId);
-            user.Decks.Add(deck);
+
+            var newDeck = _context.Decks.Create();
+            newDeck.Faction = deck.Faction;
+            newDeck.BattleKingCard = deck.BattleKingCard;
+            newDeck.Cards.AddRange(deck.Cards); // BUG: Thanks to the composite primary key only one of each card type can be saved.
+            newDeck.IsPrimaryDeck = !user.Decks.Any();
+            user.Decks.Add(newDeck);
+            _context.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            if (!_users.ContainsKey(id))
+            var user = _context.Users.Find(id);
+            if (user == null)
             {
                 throw new ArgumentException("id");
             }
-            _users.Remove(id);
+            _context.Users.Remove(user);
+            _context.SaveChanges();
         }
 
         public void Delete(string id)
@@ -92,6 +97,15 @@ namespace Gwent.NET.Repositories
                 throw new ArgumentException("id");
             }
             Delete(userId);
+        }
+
+        public Player CreatePlayer(User user)
+        {
+            Player player = _context.Players.Create();
+            player.User = user;
+            player.Deck = user.Decks.FirstOrDefault(d => d.IsPrimaryDeck);
+            _context.SaveChanges();
+            return player;
         }
     }
 }

@@ -9,6 +9,6 @@ namespace Gwent.NET.Interfaces
         Game Find(int id);
         IEnumerable<Game> FindByUserId(int userId);
         Game Create(Game game);
-        void Update(int id, Game game);
+        //void Update(int id, Game game);
     }
 }

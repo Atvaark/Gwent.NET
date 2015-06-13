@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Gwent.NET.Events;
-using Gwent.NET.Model;
 using Newtonsoft.Json;
 
-namespace Gwent.NET.States
+namespace Gwent.NET.Model.States
 {
     public abstract class State
     {
+        [Key]
+        public int Id { get; set; }
 
         public string Name
         {

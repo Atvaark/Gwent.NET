@@ -136,7 +136,7 @@ namespace Gwent.NET.Webservice.Controllers
             }
             
             // Not too many special cards
-            int specialCardCount = deck.Cards.Count(c => IsSpecialCard(c.GetGwintType()));
+            int specialCardCount = deck.Cards.Count(IsSpecialCard);
             if (specialCardCount > 10)
             {
                 return false;
@@ -154,9 +154,9 @@ namespace Gwent.NET.Webservice.Controllers
             return true;
         }
 
-        private bool IsSpecialCard(GwintType gwintType)
+        private bool IsSpecialCard(Card card)
         {
-            return !gwintType.HasFlag(GwintType.Creature);
+            return !card.Types.HasFlag(GwintType.Creature);
         }
     }
 }

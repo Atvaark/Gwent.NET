@@ -2,7 +2,6 @@
 using System.Web.Http;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
-using Gwent.NET.Repositories;
 
 namespace Gwent.NET.Webservice.Controllers
 {
@@ -16,11 +15,6 @@ namespace Gwent.NET.Webservice.Controllers
             _cardRepository = cardRepository;
         }
 
-        public CardController()
-        {
-            _cardRepository = new CardRepository();
-        }
-        
         // GET: api/Card
         public IHttpActionResult Get()
         {

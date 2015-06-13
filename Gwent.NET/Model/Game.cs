@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Gwent.NET.States;
+using Gwent.NET.Model.States;
 
 namespace Gwent.NET.Model
 {
@@ -8,12 +9,13 @@ namespace Gwent.NET.Model
     {
         public Game()
         {
-            Players = new List<Player>();
+            Players = new HashSet<Player>();
         }
 
+        [Key]
         public int Id { get; set; }
-        public State State { get; set; }
-        public List<Player> Players { get; set; }
+        public virtual State State { get; set; }
+        public virtual ICollection<Player> Players { get; set; }
 
         public Player GetPlayerByIndex(int index)
         {

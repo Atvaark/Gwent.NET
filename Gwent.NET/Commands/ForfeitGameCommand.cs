@@ -2,7 +2,7 @@
 using Gwent.NET.Events;
 using Gwent.NET.Exceptions;
 using Gwent.NET.Model;
-using Gwent.NET.States;
+using Gwent.NET.Model.States;
 
 namespace Gwent.NET.Commands
 {

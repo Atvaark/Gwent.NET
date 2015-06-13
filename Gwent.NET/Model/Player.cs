@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gwent.NET.Model
 {
@@ -6,23 +8,31 @@ namespace Gwent.NET.Model
     {
         public Player()
         {
-            HandCards = new List<Card>();
-            DeckCards = new List<Card>();
-            DisposedCards = new List<Card>();
-            CloseCombatCards = new List<Card>();
-            RangeCards = new List<Card>();
-            SiegeCards = new List<Card>();
+            HandCards = new HashSet<Card>();
+            DeckCards = new HashSet<Card>();
+            GraveyardCards = new HashSet<Card>();
+            CardSlots = new List<PlayerCardSlot>();
         }
 
-        public User User { get; set; }
-        public Deck Deck { get; set; }
+        [Key]
+        public int Id { get; set; }
+
+        public virtual User User { get; set; }
+
+        public virtual Deck Deck { get; set; }
+
         public bool IsOwner { get; set; }
+
         public int Lives { get; set; }
-        public List<Card> HandCards { get; set; }
-        public List<Card> DeckCards { get; set; }
-        public List<Card> DisposedCards { get; set; }
-        public List<Card> CloseCombatCards { get; set; }
-        public List<Card> RangeCards { get; set; }
-        public List<Card> SiegeCards { get; set; }
+
+        public virtual ICollection<Card> HandCards { get; set; }
+
+        public virtual ICollection<Card> DeckCards { get; set; }
+
+        public virtual ICollection<Card> GraveyardCards { get; set; }
+
+
+        [InverseProperty("Player")]
+        public virtual ICollection<PlayerCardSlot> CardSlots  { get; set; }
     }
 }

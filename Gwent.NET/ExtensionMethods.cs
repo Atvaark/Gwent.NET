@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using Gwent.NET.DTOs;
 using Gwent.NET.Model;
@@ -8,12 +9,12 @@ namespace Gwent.NET
 {
     public static class ExtensionMethods
     {
-        public static GwintType GetGwintType(this Card card)
+        public static GwintType GetGwintTypes(this Card card)
         {
             return card.TypeFlags.Aggregate(GwintType.None, (current, typeFlag) => current | typeFlag.Name);
         }
 
-        public static GwintEffect GetGwintEffect(this Card card)
+        public static GwintEffect GetGwintEffects(this Card card)
         {
             return card.EffectFlags.Aggregate(GwintEffect.None, (current, effectFlag) => current | effectFlag.Name);
         }
@@ -32,15 +33,15 @@ namespace Gwent.NET
         {
             return new CardDto
             {
-                Index = card.Index,
+                Index = card.Id,
                 Title = card.Title,
                 Description = card.Description,
                 Power = card.Power,
                 Picture = card.Picture,
                 Faction = card.FactionIndex,
-                Type = card.GetGwintType(),
-                Effect = card.GetGwintEffect(),
-                SummonFlags = card.SummonFlags.Select(s => s.Id).ToList(),
+                Type = card.GetGwintTypes(),
+                Effect = card.GetGwintEffects(),
+                SummonFlags = card.SummonFlags.Select(s => s.SummonCardId).ToList(),
                 IsBattleKing = card.IsBattleKing
             };
         }
@@ -50,9 +51,10 @@ namespace Gwent.NET
             return new DeckDto
             {
                 Id = deck.Id,
-                Cards = deck.Cards.Select(c => c.Index).ToList(),
+                Cards = deck.Cards.Select(c => c.Id).ToList(),
                 Faction = deck.Faction,
-                BattleKingCard = deck.BattleKingCard.Index
+                BattleKingCard = deck.BattleKingCard.Id,
+                IsPrimaryDeck = deck.IsPrimaryDeck
             };
         }
 
@@ -71,15 +73,18 @@ namespace Gwent.NET
             return new PlayerDto
             {
                 User = player.User.Id,
-                Deck = player.Deck == null ? 0 : player.Deck.Id, // TODO: Set the deck beforehand
                 IsLobbyOwner = player.IsOwner,
                 Lives = player.Lives,
                 HandCardCount = player.HandCards.Count,
                 DeckCardCount = player.DeckCards.Count,
-                DisposedCards = player.DisposedCards.Select(c => c.Index).ToList(),
-                CloseCombatCards = player.CloseCombatCards.Select(c => c.Index).ToList(),
-                RangeCards = player.RangeCards.Select(c => c.Index).ToList(),
-                SiegeCards = player.RangeCards.Select(c => c.Index).ToList()
+                GraveyardCards = player.GraveyardCards.Select(c => c.Id).ToList(),
+                MeleeCards = player.CardSlots.Where(s => s.Slot == GwintSlot.Melee).Select(s => s.Card.Id).ToList(),
+                RangeCards = player.CardSlots.Where(s => s.Slot == GwintSlot.Ranged).Select(s => s.Card.Id).ToList(),
+                SiegeCards = player.CardSlots.Where(s => s.Slot == GwintSlot.Siege).Select(s => s.Card.Id).ToList(),
+                WeatherCards = player.CardSlots.Where(s => s.Slot == GwintSlot.Weather).Select(s => s.Card.Id).ToList(),
+                MeleeModifiers = player.CardSlots.Where(s => s.Slot == GwintSlot.MeleeModifier).Select(s => s.Card.Id).ToList(),
+                RangedModifiers = player.CardSlots.Where(s => s.Slot == GwintSlot.RangedModifier).Select(s => s.Card.Id).ToList(),
+                SiegeModifiers = player.CardSlots.Where(s => s.Slot == GwintSlot.SiegeModifier).Select(s => s.Card.Id).ToList()
             };
         }
 
@@ -95,5 +100,22 @@ namespace Gwent.NET
             list[i] = list[j];
             list[j] = temp;
         }
+
+        public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> items)
+        {
+            foreach (var item in items)
+            {
+                collection.Add(item);
+            }
+        }
+        public static void AddRange<TEntity>(this IDbSet<TEntity> set, IEnumerable<TEntity> items) where TEntity : class
+        {
+            foreach (var item in items)
+            {
+                set.Add(item);
+            }
+        }
+
+
     }
 }

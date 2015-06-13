@@ -13,7 +13,7 @@ namespace Gwent.NET.Webservice
         public static IContainer ConfigureAutofac(IAppBuilder app)
         {
             var builder = new ContainerBuilder();
-            builder.RegisterModule<GwentModule>();
+            builder.RegisterModule<GwentPerRequestModule>();
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             builder.RegisterHubs(Assembly.GetExecutingAssembly());
             builder.RegisterType<ApplicationUserManager>();

@@ -9,6 +9,7 @@ using Gwent.NET.DTOs;
 using Gwent.NET.Events;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
+using Gwent.NET.Repositories;
 using Gwent.NET.Webservice.Auth;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
@@ -26,7 +27,8 @@ namespace Gwent.NET.Webservice.Hubs
         public GameHub(ILifetimeScope lifetimeScope)
         {
             _lifetimeScope = lifetimeScope.BeginLifetimeScope();
-            _gameRepository = _lifetimeScope.Resolve<IGameRepository>();
+            _gameRepository = new GameRepository(new GwintContext()); // HACK: Until resolving IGwintContext works again.
+            //_gameRepository = _lifetimeScope.Resolve<IGameRepository>();
 
         }
 

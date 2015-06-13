@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
 
@@ -9,51 +8,48 @@ namespace Gwent.NET.Repositories
 {
     public class GameRepository : IGameRepository
     {
-        private readonly Dictionary<int, Game> _games;
-        private int _id;
+        private readonly IGwintContext _context;
 
-        public GameRepository()
+        public GameRepository(IGwintContext gwintContext)
         {
-            _games = new Dictionary<int, Game>();
+            _context = gwintContext;
         }
-
+        
         public IEnumerable<Game> Get()
         {
-            return _games.Values;
+            return _context.Games;
         }
 
         public Game Find(int id)
         {
-            Game game;
-            _games.TryGetValue(id, out game);
-            return game;
+            return _context.Games.Find(id);
         }
 
         public IEnumerable<Game> FindByUserId(int userId)
         {
-            return _games.Values.Where(g => g.Players.Any(p => p.User.Id == userId));
+            return _context.Games.Where(g => g.Players.Any(p => p.User.Id == userId));
         }
 
         public Game Create(Game game)
         {
-            Game newGame = new Game
-            {
-                Id = Interlocked.Increment(ref _id),
-                State = game.State,
-                Players = game.Players
-            };
-            _games.Add(newGame.Id, newGame);
+            var newGame = _context.Games.Create();
+            newGame.State = game.State;
+            newGame.Players = game.Players;
+            _context.Games.Add(newGame);
+            _context.SaveChanges();
             return newGame;
         }
 
         public void Update(int id, Game game)
         {
-            if (!_games.ContainsKey(id) || game.Id != id)
+            var existingGame = _context.Games.Find(id);
+            if (existingGame == null)
             {
                 throw new ArgumentException("id");
             }
-
-            _games[id] = game;
+            existingGame.Players.Clear();
+            existingGame.State = game.State;
+            _context.SaveChanges();
         }
     }
 }

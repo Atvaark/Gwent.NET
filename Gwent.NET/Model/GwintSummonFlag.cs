@@ -1,10 +1,26 @@
-﻿using System.Xml.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Xml.Serialization;
 
 namespace Gwent.NET.Model
 {
     public class GwintSummonFlag
     {
+        [XmlIgnore]
+        [Key, Column(Order = 0)]
+        public int SummonerCardId { get; set; }
+
         [XmlAttribute("id")]
-        public int Id { get; set; }
+        [Key, Column(Order = 1)]
+        public int SummonCardId { get; set; }
+
+        [XmlIgnore]
+        [ForeignKey("SummonCardId")]
+        public virtual Card SummonCard { get; set; }
+
+        [XmlIgnore]
+        [InverseProperty("SummonFlags")]
+        [ForeignKey("SummonerCardId")]
+        public virtual Card SummonerCard { get; set; } 
     }
 }

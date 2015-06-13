@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Gwent.NET.Events;
-using Gwent.NET.Model;
 
-namespace Gwent.NET.States
+namespace Gwent.NET.Model.States
 {
-    public class LobbyState : State
+    class ResurrectState : State
     {
-        public override bool IsJoinable
-        {
-            get { return true; }
-        }
-
         public override IEnumerable<Event> Initialize(Game game)
         {
             throw new NotImplementedException();
