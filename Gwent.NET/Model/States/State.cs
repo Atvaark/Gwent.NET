@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Gwent.NET.Events;
 
 namespace Gwent.NET.Model.States
@@ -8,7 +9,8 @@ namespace Gwent.NET.Model.States
     {
         [Key]
         public int Id { get; set; }
-
+        
+        [NotMapped]
         public string Name
         {
             get { return GetType().Name; }

@@ -125,10 +125,10 @@
                 });
             };
 
-            methods.sendRedrawCardCommand = function () {
+            methods.sendRedrawCardCommand = function (cardId) {
                 gameHubService.sendCommand({
                     type: "RedrawCard",
-                    cardId: 0
+                    cardId: cardId
                 }).done(function (result) {
                     if (result !== '') {
                         $log.info(result);
@@ -146,12 +146,12 @@
                 });
             };
 
-            methods.sendPlayCardCommand = function() {
+            methods.sendPlayCardCommand = function (cardId, slot) {
                 gameHubService.sendCommand({
                     type: "PlayCard",
-                    cardId: 0,
-                    resurrectCardId: 0,
-                    gwintSlot : 'Melee'
+                    cardId: cardId,
+                    //resurrectCardId: 0,
+                    gwintSlot: slot
                 }).done(function (result) {
                     if (result !== '') {
                         $log.info(result);
@@ -171,6 +171,7 @@
 
 
             methods.getActiveGame().then(function (game) {
+                methods.resumeGame();
             }, function () {
             });
 
