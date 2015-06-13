@@ -14,10 +14,14 @@ namespace Gwent.NET.DTOs
         public int? CardId { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public int? ResurrectCardId { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [JsonConverter(typeof(StringEnumConverter))]
         public GwintSlot? Slot { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int? StartPlayerId { get; set; }
+
     }
 }

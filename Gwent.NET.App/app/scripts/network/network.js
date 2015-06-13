@@ -126,13 +126,13 @@
                     }
                     var deferred = $q.defer();
                     $http.get(backendUrl + '/game/active')
-                        .success(function (game) {
+                        .success(function (game, status) {
+                            if (status === 204) {
+                                deferred.resolve(null);
+                            }
                             deferred.resolve(game);
                         })
                         .error(function (msg, status) {
-                            if (status === 404) {
-                                deferred.resolve(null);
-                            }
                             deferred.reject(msg);
                         });
                     return deferred.promise;
@@ -275,12 +275,12 @@
             gameHubService.sendCommand = function (command) {
                 var commandString = JSON.stringify(command);
                 $log.info('sending client command ' + commandString);
-                gameHubProxy.invoke('RecieveClientCommand', command);
+                return gameHubProxy.invoke('RecieveClientCommand', command);
             };
             
             gameHubService.authenticate = function() {
                 $log.info('authenticating client');
-                gameHubProxy.invoke('Authenticate');
+                return gameHubProxy.invoke('Authenticate');
             }
 
             $rootScope.$on('userChanged', function () {

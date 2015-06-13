@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
 using Gwent.NET.Model.States;
 using Gwent.NET.Model.States.Substates;
@@ -67,15 +68,6 @@ namespace Gwent.NET.Repositories
                 .HasRequired(s => s.SummonCard)
                 .WithMany()
                 .WillCascadeOnDelete(false);
-
-            //modelBuilder.Entity<Card>()
-            //    .HasMany(c => c.SummonFlags)
-            //    .WithRequired(s => s.SummonerCard)
-            //    .Map(sc =>
-            //    {
-            //        sc.ToTable("Test");
-            //        sc.MapKey("SummonerTestId");
-            //    });
         }
     }
 }

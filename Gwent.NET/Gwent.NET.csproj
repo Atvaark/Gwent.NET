@@ -61,12 +61,12 @@
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandType.cs" />
     <Compile Include="Commands\EndRedrawCardCommand.cs" />
+    <Compile Include="Events\CoinTossEvent.cs" />
     <Compile Include="Events\ForfeitEvent.cs" />
     <Compile Include="Events\Event.cs" />
     <Compile Include="Commands\PassCommand.cs" />
     <Compile Include="Commands\PickStartingPlayerCommand.cs" />
     <Compile Include="Commands\PlayCardCommand.cs" />
-    <Compile Include="Commands\ResurrectCommand.cs" />
     <Compile Include="Commands\UseBattleKingCardCommand.cs" />
     <Compile Include="DTOs\CommandDto.cs" />
     <Compile Include="Commands\ForfeitGameCommand.cs" />
@@ -82,6 +82,7 @@
     <Compile Include="DTOs\UserDto.cs" />
     <Compile Include="Events\HandChangedEvent.cs" />
     <Compile Include="Events\StateChangeEvent.cs" />
+    <Compile Include="Events\TurnEvent.cs" />
     <Compile Include="Exceptions\CommandException.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="GwentPerRequestModule.cs" />
@@ -96,8 +97,6 @@
     <Compile Include="Model\GwintTypeFlag.cs" />
     <Compile Include="Model\PlayerCardSlot.cs" />
     <Compile Include="Model\RedXml.cs" />
-    <Compile Include="Repositories\GameRepository.cs" />
-    <Compile Include="Interfaces\IGameRepository.cs" />
     <Compile Include="Model\Deck.cs" />
     <Compile Include="Model\Game.cs" />
     <Compile Include="Model\Player.cs" />
@@ -108,19 +107,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Repositories\CardRepository.cs" />
-    <Compile Include="Interfaces\ICardRepository.cs" />
-    <Compile Include="Interfaces\IUserRepository.cs" />
     <Compile Include="Repositories\GwintContext.cs" />
     <Compile Include="Repositories\GwintContextInitializer.cs" />
-    <Compile Include="Repositories\IGwintContext.cs" />
-    <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="Interfaces\IGwintContext.cs" />
     <Compile Include="Model\States\GameEndState.cs" />
     <Compile Include="Model\States\LobbyState.cs" />
     <Compile Include="Model\States\PickStartingPlayerState.cs" />
     <Compile Include="Model\States\Substates\RedrawPlayerSubstate.cs" />
     <Compile Include="Model\States\RedrawState.cs" />
-    <Compile Include="Model\States\ResurrectState.cs" />
     <Compile Include="Model\States\RoundState.cs" />
     <Compile Include="Model\States\Substates\PickStartingPlayerSubstate.cs" />
     <Compile Include="Model\States\State.cs" />

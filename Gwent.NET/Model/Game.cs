@@ -14,14 +14,10 @@ namespace Gwent.NET.Model
 
         [Key]
         public int Id { get; set; }
+        public bool IsActive { get; set; }
         public virtual State State { get; set; }
         public virtual ICollection<Player> Players { get; set; }
-
-        public Player GetPlayerByIndex(int index)
-        {
-            return Players.ElementAtOrDefault(index);
-        }
-
+        
         public Player GetPlayerByUserId(int userId)
         {
             return Players.FirstOrDefault(p => p.User.Id == userId);
@@ -36,6 +32,5 @@ namespace Gwent.NET.Model
         {
             return Players.Select(p => p.User.Id);
         }
-
     }
 }

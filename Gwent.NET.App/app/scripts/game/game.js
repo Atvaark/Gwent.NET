@@ -88,7 +88,7 @@
                 { id: 1, name: 'No Man\'s Land', perk: 'One randomly-chosen Monster Unit Card stays on the battlefield after each round.', validDeckFaction: true },
                 { id: 2, name: 'Nilfgaard', perk: 'Win whenever there is a draw.', validDeckFaction: true },
                 { id: 3, name: 'Northern Kingdom', perk: 'Draw a card from your deck whenever you win a round.', validDeckFaction: true },
-                { id: 4, name: 'Scoia\'tael', perk: 'You devide who goes first at the start of battle.', validDeckFaction: true },
+                { id: 4, name: 'Scoia\'tael', perk: 'You devide who goes first at the start of battle.', validDeckFaction: true }
             ];
             return gwintFactionService;
         })

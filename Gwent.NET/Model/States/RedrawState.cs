@@ -10,55 +10,66 @@ namespace Gwent.NET.Model.States
     {
         private const int InitialRedrawCount = 2;
         private const int InitialHandCardCount = 10;
-        private const int InitialBuffedHandCardCount = 11;
+        private const int InitialIncreasedHandCardCount = 11;
 
-        public List<RedrawPlayerSubstate> Substates { get; set; }
+        public virtual ICollection<RedrawPlayerSubstate> Substates { get; set; }
+
 
         public RedrawState()
         {
-            Substates = new List<RedrawPlayerSubstate>();
+            Substates = new HashSet<RedrawPlayerSubstate>();
         }
         
         public override IEnumerable<Event> Initialize(Game game)
         {
-            foreach (var player in game.Players)
-            {
-                yield return DrawInitialCards(player);
-                Substates.Add(new RedrawPlayerSubstate
-                {
-                    UserId = player.User.Id,
-                    RedrawCardCount = InitialRedrawCount
-                });
-            }
+            return game.Players.Select(InitializeHand);
         }
-        
-        private HandChangedEvent DrawInitialCards(Player player)
+
+        private HandChangedEvent InitializeHand(Player player)
         {
-            Random random = new Random();
-            var cards = player.Deck.Cards.ToList();
-            cards.Shuffle(random);
-            var handCardCount = InitialHandCardCount;
-            if (player.Deck.BattleKingCard.GetGwintEffects().HasFlag(GwintEffect.EleventhCard))
-            {
-                handCardCount = InitialBuffedHandCardCount;
-            }
+            var initialHandCardCount = GetInitialHandCardCount(player);
+            var shuffledCards = GetShuffledCards(player);
 
-            var handCards = cards.Take(handCardCount).ToList();
-            cards.RemoveRange(0, handCardCount);
-
-            foreach (var card in cards)
-            {
-                player.DeckCards.Add(card);
-            }
+            var handCards = shuffledCards.Take(initialHandCardCount).ToList();
+            shuffledCards.RemoveRange(0, initialHandCardCount);
             foreach (var handCard in handCards)
             {
                 player.HandCards.Add(handCard);
             }
 
+            foreach (var card in shuffledCards)
+            {
+                player.DeckCards.Add(card);
+            }
+            
+            Substates.Add(new RedrawPlayerSubstate
+            {
+                UserId = player.User.Id,
+                RedrawCardCount = InitialRedrawCount
+            });
+
             return new HandChangedEvent(new[] { player.User.Id })
             {
                 HandCards = handCards.Select(c => c.Id).ToList()
             };
+        }
+
+        private static List<Card> GetShuffledCards(Player player)
+        {
+            var shuffledCards = player.Deck.Cards.ToList();
+            shuffledCards.Shuffle();
+            return shuffledCards;
+        }
+
+        private static int GetInitialHandCardCount(Player player)
+        {
+            var handCardCount = InitialHandCardCount;
+            if (player.Deck.BattleKingCard.Effects.HasFlag(GwintEffect.EleventhCard))
+            {
+                handCardCount = InitialIncreasedHandCardCount;
+            }
+
+            return handCardCount;
         }
     }
 }

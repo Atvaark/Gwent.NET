@@ -7,24 +7,26 @@ namespace Gwent.NET.Commands
 {
     public abstract class Command
     {
-        public int SenderUserId { get; set; }
-
-        public abstract IEnumerable<Event> Execute(Game game);
-
-        // TODO: Move the validation logic into excecute when done implementing all commands.
-        public abstract void Validate(Game game);
-
-        protected IEnumerable<Event> SetNextState(Game game, State nextState)
+        public Command()
         {
-            foreach (var initializationEvent in nextState.Initialize(game))
-            {
-                yield return initializationEvent;
-            }
+            Events = new List<Event>();
+        }
+
+        public int SenderUserId { get; set; }
+        public ICollection<Event> Events { get; set; }
+
+        public abstract void Execute(Game game);
+        
+        protected void SetNextState(Game game, State nextState)
+        {
+            var nextStateEvents = nextState.Initialize(game);
+            Events.AddRange(nextStateEvents);
             game.State = nextState;
-            yield return new StateChangeEvent(game.GetAllUserIds())
+            var stateChangeEvent = new StateChangeEvent(game.GetAllUserIds())
             {
                 State = nextState
             };
+            Events.Add(stateChangeEvent);
         }
     }
 }

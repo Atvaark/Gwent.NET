@@ -7,20 +7,22 @@ namespace Gwent.NET.Model.States
 {
     public class PickStartingPlayerState : State
     {
-        public List<PickStartingPlayerSubstate> Substates { get; set; }
+        public virtual ICollection<PickStartingPlayerSubstate> Substates { get; set; }
 
         public PickStartingPlayerState()
         {
-            Substates = new List<PickStartingPlayerSubstate>();
+            Substates = new HashSet<PickStartingPlayerSubstate>();
         }
 
         public override IEnumerable<Event> Initialize(Game game)
         {
-            Substates.AddRange(game.Players.Select(p => new PickStartingPlayerSubstate
-            {
-                UserId = p.User.Id,
-                CanPickStartingPlayer = p.Deck.Faction == GwentFaction.Scoiatael
-            }));
+            var substates = game.Players
+                .Select(p => new PickStartingPlayerSubstate
+                {
+                    UserId = p.User.Id,
+                    CanPickStartingPlayer = p.Deck.Faction == GwentFaction.Scoiatael
+                });
+            Substates.AddRange(substates);
             yield break;
         }
     }

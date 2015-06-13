@@ -9,15 +9,12 @@ namespace Gwent.NET.Webservice.Controllers
     [Authorize]
     public class DeckController : AuthenticatedApiController
     {
-        private readonly ICardRepository _cardRepository;
-
-        public DeckController(IUserRepository userRepository, ICardRepository cardRepository) : base(userRepository)
+        public DeckController(IGwintContext context)
+            : base(context)
         {
-            _cardRepository = cardRepository;
+
         }
-
-        // TODO: Remove {userId} in the routes and use the claims instead.
-
+        
         // GET: api/deck
         [Route("api/deck")]
         public IHttpActionResult Get()
@@ -61,11 +58,13 @@ namespace Gwent.NET.Webservice.Controllers
                 return BadRequest();
             }
             var newDeck = DeckDtoToDeck(deck);
+            newDeck.IsPrimaryDeck = !user.Decks.Any();
             if (!ValidateDeck(newDeck))
             {
                 return BadRequest();
             }
-            UserRepository.AddDeck(user.Id, newDeck);
+            user.Decks.Add(newDeck);
+            Context.SaveChanges();
             return Ok(newDeck.ToDto());
         }
         
@@ -77,7 +76,7 @@ namespace Gwent.NET.Webservice.Controllers
             {
                 return BadRequest();
             }
-            User user = UserRepository.FindById(userId);
+            User user = Context.Users.Find(userId);
             if (user == null)
             {
                 return NotFound();
@@ -93,8 +92,10 @@ namespace Gwent.NET.Webservice.Controllers
                 return BadRequest();
             }
             existingDeck.BattleKingCard = newDeck.BattleKingCard;
-            existingDeck.Cards = newDeck.Cards;
+            existingDeck.Cards.Clear();
+            existingDeck.Cards.AddRange(newDeck.Cards);
             existingDeck.Faction = newDeck.Faction;
+            Context.SaveChanges();
             return Ok();
         }
 
@@ -102,9 +103,9 @@ namespace Gwent.NET.Webservice.Controllers
         {
             Deck newDeck = new Deck
             {
-                BattleKingCard = _cardRepository.Find(deck.BattleKingCard),
+                BattleKingCard = Context.Cards.Find(deck.BattleKingCard),
                 Faction = deck.Faction,
-                Cards = deck.Cards.Select(id => _cardRepository.Find(id)).ToList()
+                Cards = deck.Cards.Select(id => Context.Cards.Find(id)).ToList() // BUG: Thanks to the composite primary key only one of each card type can be saved.
             };
             return newDeck;
         }

@@ -1,20 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using Gwent.NET.Events;
+﻿using Gwent.NET.Exceptions;
 using Gwent.NET.Model;
+using Gwent.NET.Model.States;
 
 namespace Gwent.NET.Commands
 {
     public class PassCommand : Command
     {
-        public override IEnumerable<Event> Execute(Game game)
+        public override void Execute(Game game)
         {
-            throw new NotImplementedException();
-        }
+            RoundState state = game.State as RoundState;
+            if (state == null)
+            {
+                throw new CommandException();
+            }
 
-        public override void Validate(Game game)
-        {
-            throw new NotImplementedException();
+            Player sender = game.GetPlayerByUserId(SenderUserId);
+            if (sender == null)
+            {
+                throw new CommandException();
+            }
         }
     }
 }

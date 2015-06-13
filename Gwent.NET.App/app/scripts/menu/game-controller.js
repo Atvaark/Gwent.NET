@@ -79,14 +79,96 @@
                 gameHubService.connect()
                     .then(function () {
                         gameHubService.authenticate(); /* TODO: Wait for the authentication to finish before sending the next command. */
-                        /* Test command*/
-                        gameHubService.sendCommand({
-                            type: "StartGame"
-                        });
                         $state.go('menu.game.lobby');
 
                     });
             };
+
+            methods.sendStartCommand = function () {
+                gameHubService.sendCommand({
+                    type: "StartGame"
+                }).done(function (result) {
+                    if (result !== '') {
+                        $log.info(result);
+                    }
+                });
+            };
+
+            methods.sendPassCommand = function () {
+                gameHubService.sendCommand({
+                    type: "Pass"
+                }).done(function (result) {
+                    if (result !== '') {
+                        $log.info(result);
+                    }
+                });
+            };
+
+            methods.sendForfeitGameCommand = function () {
+                gameHubService.sendCommand({
+                    type: "ForfeitGame"
+                }).done(function (result) {
+                    if (result !== '') {
+                        $log.info(result);
+                    }
+                });
+            };
+
+            methods.sendPickStartingPlayerCommand = function () {
+                gameHubService.sendCommand({
+                    type: "PickStartingPlayer",
+                    startPlayerId: 1
+                }).done(function (result) {
+                    if (result !== '') {
+                        $log.info(result);
+                    }
+                });
+            };
+
+            methods.sendRedrawCardCommand = function () {
+                gameHubService.sendCommand({
+                    type: "RedrawCard",
+                    cardId: 0
+                }).done(function (result) {
+                    if (result !== '') {
+                        $log.info(result);
+                    }
+                });
+            };
+
+            methods.sendEndRedrawCardCommand = function () {
+                gameHubService.sendCommand({
+                    type: "EndRedrawCard"
+                }).done(function (result) {
+                    if (result !== '') {
+                        $log.info(result);
+                    }
+                });
+            };
+
+            methods.sendPlayCardCommand = function() {
+                gameHubService.sendCommand({
+                    type: "PlayCard",
+                    cardId: 0,
+                    resurrectCardId: 0,
+                    gwintSlot : 'Melee'
+                }).done(function (result) {
+                    if (result !== '') {
+                        $log.info(result);
+                    }
+                });
+            };
+            
+            methods.sendUseBattleKingCardCommand = function () {
+                gameHubService.sendCommand({
+                    type: "UseBattleKingCard"
+                }).done(function (result) {
+                    if (result !== '') {
+                        $log.info(result);
+                    }
+                });
+            };
+
 
             methods.getActiveGame().then(function (game) {
             }, function () {

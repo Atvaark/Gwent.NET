@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Integration.Owin;
 using Gwent.NET.Interfaces;
+using Gwent.NET.Repositories;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -18,8 +19,9 @@ namespace Gwent.NET.Webservice.Auth
             IdentityFactoryOptions<ApplicationUserManager> options,
             IOwinContext context)
         {
-            var userRepository = context.GetAutofacLifetimeScope().Resolve<IUserRepository>();
-            var manager = new ApplicationUserManager(new UserStore(userRepository));
+            var gwintContext = new GwintContext();
+            //var gwintContext = context.GetAutofacLifetimeScope().Resolve<IGwintContext>();
+            var manager = new ApplicationUserManager(new UserStore(gwintContext));
 
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {

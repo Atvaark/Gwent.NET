@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Data.Entity.Validation;
 using System.Threading;
 using System.Threading.Tasks;
 using Gwent.NET.Model;
 using Gwent.NET.Model.States;
 using Gwent.NET.Model.States.Substates;
 
-namespace Gwent.NET.Repositories
+namespace Gwent.NET.Interfaces
 {
-    public interface IGwintContext
+    public interface IGwintContext : IDisposable
     {
         IDbSet<Card> Cards { get; set; }
         IDbSet<Deck> Decks { get; set; }

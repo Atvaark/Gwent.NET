@@ -17,6 +17,7 @@ namespace Gwent.NET.Model
         
         [XmlAttribute("index")]
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
         [XmlAttribute("title")]

@@ -10,11 +10,11 @@ namespace Gwent.NET.Webservice.Controllers
 {
     public abstract class AuthenticatedApiController : ApiController
     {
-        protected readonly IUserRepository UserRepository;
+        protected readonly IGwintContext Context;
 
-        protected AuthenticatedApiController(IUserRepository userRepository)
+        protected AuthenticatedApiController(IGwintContext context)
         {
-            UserRepository = userRepository;
+            Context = context;
         }
 
         private IAuthenticationManager Authentication
@@ -30,7 +30,7 @@ namespace Gwent.NET.Webservice.Controllers
             {
                 return false;
             }
-            user = UserRepository.FindById(userId);
+            user = Context.Users.Find(userId);
             return user != null;
         }
 

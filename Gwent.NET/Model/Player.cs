@@ -23,6 +23,14 @@ namespace Gwent.NET.Model
 
         public bool IsOwner { get; set; }
 
+        public bool IsVictor { get; set; }
+
+        public bool IsRoundStarter { get; set; }
+
+        public bool IsTurn { get; set; }
+
+        public bool CanUseBattleKingCard { get; set; }
+
         public int Lives { get; set; }
 
         public virtual ICollection<Card> HandCards { get; set; }
@@ -34,5 +42,6 @@ namespace Gwent.NET.Model
 
         [InverseProperty("Player")]
         public virtual ICollection<PlayerCardSlot> CardSlots  { get; set; }
+
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Gwent.NET.Model.States.Substates
 {
-    public class Substate
+    public abstract class Substate
     {
         [Key]
         public int Id { get; set; }

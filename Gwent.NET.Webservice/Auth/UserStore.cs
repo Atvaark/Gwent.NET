@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
 using Microsoft.AspNet.Identity;
@@ -7,11 +8,11 @@ namespace Gwent.NET.Webservice.Auth
 {
     public class UserStore : IUserStore<ApplicationUser>, IUserPasswordStore<ApplicationUser>
     {
-        private readonly IUserRepository _userRepository;
-        
-        public UserStore(IUserRepository userRepository)
+        private readonly IGwintContext _context;
+
+        public UserStore(IGwintContext context)
         {
-            _userRepository = userRepository;
+            _context = context;
         }
 
 
@@ -22,33 +23,32 @@ namespace Gwent.NET.Webservice.Auth
 
         public Task CreateAsync(ApplicationUser user)
         {
-            User newUser = new User
-            {
-                Name = user.UserName,
-                PasswordHash = user.PasswordHash
-            };
-            newUser = _userRepository.CreateUser(newUser);
+            User newUser = _context.Users.Create();
+            newUser.Name = user.UserName;
+            newUser.PasswordHash = user.PasswordHash;
+            _context.Users.Add(newUser);
+            _context.SaveChanges();
             user.Id = newUser.Id.ToString();
             return Task.FromResult(0);
         }
 
         public Task UpdateAsync(ApplicationUser user)
         {
-            var existingUser = _userRepository.FindById(user.Id);
+            User existingUser = _context.Users.Find(user.Id);
             existingUser.Name = user.UserName;
-            _userRepository.Update(existingUser.Id, existingUser);
-            return Task.FromResult(0);
+            return _context.SaveChangesAsync();
         }
 
         public Task DeleteAsync(ApplicationUser user)
         {
-            _userRepository.Delete(user.Id);
-            return Task.FromResult(0);
+            User existingUser = _context.Users.Find(user.Id);
+            _context.Users.Remove(existingUser);
+            return _context.SaveChangesAsync();
         }
 
         public Task<ApplicationUser> FindByIdAsync(string userId)
         {
-            var user = _userRepository.FindById(userId);
+            var user = _context.Users.Find(int.Parse(userId));
             if (user == null)
             {
                 return Task.FromResult<ApplicationUser>(null);
@@ -62,7 +62,7 @@ namespace Gwent.NET.Webservice.Auth
 
         public Task<ApplicationUser> FindByNameAsync(string userName)
         {
-            var user = _userRepository.FindByName(userName);
+            var user = _context.Users.FirstOrDefault(u => u.Name == userName);
             if (user == null)
             {
                 return Task.FromResult<ApplicationUser>(null);

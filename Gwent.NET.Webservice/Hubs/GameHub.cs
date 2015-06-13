@@ -7,9 +7,9 @@ using Autofac;
 using Gwent.NET.Commands;
 using Gwent.NET.DTOs;
 using Gwent.NET.Events;
+using Gwent.NET.Exceptions;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
-using Gwent.NET.Repositories;
 using Gwent.NET.Webservice.Auth;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
@@ -20,16 +20,11 @@ namespace Gwent.NET.Webservice.Hubs
     public class GameHub : Hub
     {
         private readonly ILifetimeScope _lifetimeScope;
-        private readonly IGameRepository _gameRepository;
         // TODO: Use a bi-directional dictionary instead or a repository
         private static readonly ConcurrentDictionary<string, string> UserIdConnectionIdDictionary = new ConcurrentDictionary<string, string>();
-
         public GameHub(ILifetimeScope lifetimeScope)
         {
             _lifetimeScope = lifetimeScope.BeginLifetimeScope();
-            _gameRepository = new GameRepository(new GwintContext()); // HACK: Until resolving IGwintContext works again.
-            //_gameRepository = _lifetimeScope.Resolve<IGameRepository>();
-
         }
 
         protected override void Dispose(bool disposing)
@@ -75,19 +70,33 @@ namespace Gwent.NET.Webservice.Hubs
             MapConnectionIdToUserId();
         }
 
-        public void RecieveClientCommand(CommandDto commandDto)
+        public string RecieveClientCommand(CommandDto commandDto)
         {
             Command command = CreateCommand(commandDto);
             int userId = int.Parse(Context.User.Identity.GetUserId());
             command.SenderUserId = userId;
-            Game game = _gameRepository.FindByUserId(userId).FirstOrDefault(g => !g.State.IsOver);
-            if (game == null)
+
+            using (var context = _lifetimeScope.Resolve<IGwintContext>())
             {
-                throw new Exception("No running game found.");
+                Game game = context.Games
+                    .FirstOrDefault(g => g.IsActive && g.Players.Any(p => p.User.Id == userId));
+                if (game == null)
+                {
+                    return "No running game found.";
+                }
+                try
+                {
+                    command.Execute(game);
+                    context.SaveChanges();
+                }
+                catch (CommandException e)
+                {
+                    return e.Message;
+                }
             }
-            command.Validate(game);
-            var gameEvents = command.Execute(game);
-            SendEvents(gameEvents);
+
+            SendEvents(command.Events);
+            return "";
         }
 
         private void SendEvents(IEnumerable<Event> gameEvents)
@@ -112,6 +121,15 @@ namespace Gwent.NET.Webservice.Hubs
             {
                 case CommandType.StartGame:
                     return new StartGameCommand();
+                case CommandType.RedrawCard:
+                    if (!commandDto.CardId.HasValue)
+                    {
+                        throw new ArgumentException();
+                    }
+                    return new RedrawCardCommand
+                    {
+                        CardId = commandDto.CardId.Value
+                    };
                 case CommandType.EndRedrawCard:
                     return new EndRedrawCardCommand();
                 case CommandType.ForfeitGame:
@@ -135,25 +153,8 @@ namespace Gwent.NET.Webservice.Hubs
                     return new PlayCardCommand
                     {
                         CardId = commandDto.CardId.Value,
+                        ResurrectCardId = commandDto.ResurrectCardId,
                         Slot = commandDto.Slot.Value
-                    };
-                case CommandType.RedrawCard:
-                    if (!commandDto.CardId.HasValue)
-                    {
-                        throw new ArgumentException();
-                    }
-                    return new RedrawCardCommand
-                    {
-                        CardId = commandDto.CardId.Value
-                    };
-                case CommandType.Resurrect:
-                    if (!commandDto.CardId.HasValue)
-                    {
-                        throw new ArgumentException();
-                    }
-                    return new ResurrectCommand
-                    {
-                        CardId = commandDto.CardId.Value
                     };
                 case CommandType.UseBattleKingCard:
                     return new UseBattleKingCardCommand();

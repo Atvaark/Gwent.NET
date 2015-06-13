@@ -7,13 +7,9 @@ namespace Gwent.NET
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterAssemblyTypes(ThisAssembly)
-                .Where(t => t.Name.EndsWith("Repository"))
-                .InstancePerRequest()
-                .AsImplementedInterfaces();
-
             builder.RegisterType<GwintContext>()
-                .InstancePerRequest()
+                .InstancePerLifetimeScope()
+                //.InstancePerRequest()
                 .AsImplementedInterfaces();
             base.Load(builder);
         }

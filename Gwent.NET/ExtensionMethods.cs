@@ -77,6 +77,7 @@ namespace Gwent.NET
                 Lives = player.Lives,
                 HandCardCount = player.HandCards.Count,
                 DeckCardCount = player.DeckCards.Count,
+                HandCards = player.HandCards.Select(c => c.Id).ToList(),
                 GraveyardCards = player.GraveyardCards.Select(c => c.Id).ToList(),
                 MeleeCards = player.CardSlots.Where(s => s.Slot == GwintSlot.Melee).Select(s => s.Card.Id).ToList(),
                 RangeCards = player.CardSlots.Where(s => s.Slot == GwintSlot.Ranged).Select(s => s.Card.Id).ToList(),
@@ -88,10 +89,13 @@ namespace Gwent.NET
             };
         }
 
-        public static void Shuffle<T>(this IList<T> list, Random random)
+        public static void Shuffle<T>(this IList<T> list)
         {
+            Random random = new Random();
             for (var i = 0; i < list.Count; i++)
+            {
                 list.Swap(i, random.Next(i, list.Count));
+            }
         }
 
         private static void Swap<T>(this IList<T> list, int i, int j)

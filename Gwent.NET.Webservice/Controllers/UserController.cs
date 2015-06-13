@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Gwent.NET.DTOs;
@@ -16,7 +17,8 @@ namespace Gwent.NET.Webservice.Controllers
     {
         private ApplicationUserManager _userManager;
 
-        public UserController(IUserRepository userRepository) : base(userRepository)
+        public UserController(IGwintContext context)
+            : base(context)
         {
 
         }
@@ -37,7 +39,7 @@ namespace Gwent.NET.Webservice.Controllers
         [Authorize]
         public IHttpActionResult Get(int id)
         {
-            User user = UserRepository.FindById(id);
+            User user = Context.Users.Find(id);
             if (user == null)
             {
                 return NotFound();
@@ -56,7 +58,7 @@ namespace Gwent.NET.Webservice.Controllers
             {
                 return BadRequest();
             }
-            User user = UserRepository.FindById(userId);
+            User user = Context.Users.Find(userId);
             if (user == null)
             {
                 return NotFound();
@@ -73,7 +75,7 @@ namespace Gwent.NET.Webservice.Controllers
             Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
             return Ok();
         }
-        
+
         // POST: api/User/Register
         [HttpPost]
         [Route("api/user/register")]
@@ -93,7 +95,7 @@ namespace Gwent.NET.Webservice.Controllers
                 return BadRequest();
             }
 
-            User user = UserRepository.FindById(applicationUser.Id);
+            User user = Context.Users.Find(int.Parse(applicationUser.Id));
             return Ok(user.ToDto());
         }
 

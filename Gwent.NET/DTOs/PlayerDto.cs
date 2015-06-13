@@ -9,6 +9,7 @@ namespace Gwent.NET.DTOs
         public int Lives { get; set; }
         public int HandCardCount { get; set; }
         public int DeckCardCount { get; set; }
+        public List<int> HandCards { get; set; }
         public List<int> GraveyardCards { get; set; }
         public List<int> MeleeCards { get; set; }
         public List<int> RangeCards { get; set; }

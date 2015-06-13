@@ -10,7 +10,6 @@ namespace Gwent.NET.Commands
         ForfeitGame = 5,
         Pass = 6,
         PlayCard = 7,
-        Resurrect = 8,
-        UseBattleKingCard = 9
+        UseBattleKingCard = 8
     }
 }
