@@ -14,8 +14,11 @@ namespace Gwent.NET.Model
 
         [Key]
         public int Id { get; set; }
+
         public bool IsActive { get; set; }
+
         public virtual State State { get; set; }
+
         public virtual ICollection<Player> Players { get; set; }
         
         public Player GetPlayerByUserId(int userId)

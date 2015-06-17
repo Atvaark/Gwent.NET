@@ -11,42 +11,43 @@
             var methods = $scope.methods = {};
 
             methods.getGames = function () {
-                gameService.getGames().then(function (games) {
-                    $log.info('Getting games successful');
+                gameHubService.browseGames().then(function (games) {
+                    $log.info('getting games successful');
                     data.games = games;
                     data.error = '';
-                }, function (msg) {
-                    $log.error('Unable to get games');
-                    data.error = 'Unable to get games';
+
+                }, function () {
+                    $log.error('unable to get games');
+                    data.error = 'unable to get games';
                 });
             };
 
             methods.getActiveGame = function () {
                 var deferred = $q.defer();
 
-                gameService.getActiveGame().then(function (game) {
+                gameHubService.getActiveGame().then(function (game) {
                     if (game == null) {
                         $log.info('No active game found');
                     } else {
-                        $log.info('Active game found');
+                        $log.info('active game found');
                     }
                     data.game = game;
                     deferred.resolve(game);
-                }, function (msg) {
-                    $log.error('Unable to get active game');
-                    data.error = 'Unable to get active game';
-                    deferred.reject();
+                }, function (error) {
+                    $log.error(error);
+                    data.error = error;
+                    deferred.reject(error);
                 });
                 return deferred.promise;
             };
 
             methods.createGame = function () {
                 var deferred = $q.defer();
-                gameService.createGame().then(function (game) {
-                    $log.info('Game created');
+                gameHubService.createGame().then(function (game) {
+                    $log.info('game created');
                     data.game = game;
                     deferred.resolve(game);
-                }, function (msg) {
+                }, function (error) {
                     $log.error('Unable to create game');
                     data.error = 'Unable to create game';
                     data.game = {};
@@ -56,10 +57,10 @@
             };
 
             methods.joinGame = function (id) {
-                gameService.joinGame(id).then(function (game) {
+                gameHubService.joinGame(id).then(function (game) {
                     $log.info('Game joined');
                     data.game = game;
-                }, function (msg) {
+                }, function (error) {
                     $log.error('Unable to join game');
                     data.error = 'Unable to join game';
                     data.game = {};
@@ -78,39 +79,41 @@
             methods.resumeGame = function () {
                 gameHubService.connect()
                     .then(function () {
-                        gameHubService.authenticate(); /* TODO: Wait for the authentication to finish before sending the next command. */
-                        $state.go('menu.game.lobby');
-
+                        gameHubService.authenticate().then(function () {
+                            $state.go('menu.game.lobby');
+                        });
                     });
             };
 
             methods.sendStartCommand = function () {
                 gameHubService.sendCommand({
                     type: "StartGame"
-                }).done(function (result) {
-                    if (result !== '') {
-                        $log.info(result);
-                    }
+                }).then(function () {
+                    $log.info('game started');
+                }, function (error) {
+                    $log.error('unable to start game: ' + error);
                 });
             };
 
             methods.sendPassCommand = function () {
                 gameHubService.sendCommand({
                     type: "Pass"
-                }).done(function (result) {
-                    if (result !== '') {
-                        $log.info(result);
-                    }
+                }).then(function () {
+                    $log.info('round passed');
+                }, function(error) {
+                    $log.error('unable to pass round: ' + error);
                 });
             };
 
             methods.sendForfeitGameCommand = function () {
                 gameHubService.sendCommand({
                     type: "ForfeitGame"
-                }).done(function (result) {
-                    if (result !== '') {
-                        $log.info(result);
-                    }
+                }).then(function () {
+                    $log.info('game forfeited');
+                    data.game = null;
+                    $state.go('menu.game');
+                }, function(error) {
+                    $log.error('unable to forfeit game: ' + error);
                 });
             };
 
@@ -118,10 +121,10 @@
                 gameHubService.sendCommand({
                     type: "PickStartingPlayer",
                     startPlayerId: 1
-                }).done(function (result) {
-                    if (result !== '') {
-                        $log.info(result);
-                    }
+                }).then(function () {
+                    $log.info('starting player picked');
+                }, function(error) {
+                    $log.error('unable to pick starting player: ' + error);
                 });
             };
 
@@ -129,20 +132,20 @@
                 gameHubService.sendCommand({
                     type: "RedrawCard",
                     cardId: cardId
-                }).done(function (result) {
-                    if (result !== '') {
-                        $log.info(result);
-                    }
+                }).then(function () {
+                    $log.info('card redrawn');
+                }, function(error) {
+                    $log.error('unable to redraw card: ' + error);
                 });
             };
 
             methods.sendEndRedrawCardCommand = function () {
                 gameHubService.sendCommand({
                     type: "EndRedrawCard"
-                }).done(function (result) {
-                    if (result !== '') {
-                        $log.info(result);
-                    }
+                }).then(function () {
+                    $log.info('ended redrawing cards');
+                }, function(error) {
+                    $log.error('unable to end redrawing cards: ' + error);
                 });
             };
 
@@ -152,29 +155,36 @@
                     cardId: cardId,
                     //resurrectCardId: 0,
                     gwintSlot: slot
-                }).done(function (result) {
-                    if (result !== '') {
-                        $log.info(result);
-                    }
+                }).then(function () {
+                    $log.info('played card');
+                }, function(error) {
+                    $log.error('unable to play card: ' + error);
                 });
             };
-            
+
             methods.sendUseBattleKingCardCommand = function () {
                 gameHubService.sendCommand({
                     type: "UseBattleKingCard"
-                }).done(function (result) {
-                    if (result !== '') {
-                        $log.info(result);
-                    }
+                }).then(function () {
+                    $log.info('used battle king card');
+                }, function(error) {
+                    $log.error('unable to use battle king card: ' + error);
                 });
             };
 
 
-            methods.getActiveGame().then(function (game) {
-                methods.resumeGame();
+            // Initializing game page
+            gameHubService.connect().then(function () {
+                gameHubService.authenticate().then(function () {
+                    methods.getActiveGame().then(function (game) {
+                        $log.info('resuming game');
+                        methods.resumeGame();;
+                    });
+                }, function () {
+                    $log.error('could not authenticate');
+                });
             }, function () {
+                $log.error('could not connect');
             });
-
-            methods.getGames();
         });
 })();

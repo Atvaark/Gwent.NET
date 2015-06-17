@@ -1,5 +1,4 @@
-﻿using Gwent.NET.Commands;
-using Gwent.NET.Model;
+﻿using Gwent.NET.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -23,5 +22,8 @@ namespace Gwent.NET.DTOs
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int? StartPlayerId { get; set; }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public int? GameId { get; set; }
+        
     }
 }

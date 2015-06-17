@@ -107,76 +107,42 @@
             var gwintTypeService = {}
             gwintTypeService.types = [
                 { id: 0, name: 'None' },
-                { id: 1 << 0, name: 'Backstab' },
-                { id: 1 << 1, name: 'MoraleBoost' },
-                { id: 1 << 2, name: 'Ambush' },
-                { id: 1 << 3, name: 'ToughSkin' },
-                { id: 1 << 4, name: 'Bin2' },
-                { id: 1 << 5, name: 'Bin3' },
-                { id: 1 << 6, name: 'MeleeScorch' },
-                { id: 1 << 7, name: 'EleventhCard' },
-                { id: 1 << 8, name: 'ClearWeather' },
-                { id: 1 << 9, name: 'PickWeather' },
-                { id: 1 << 10, name: 'PickRain' },
-                { id: 1 << 11, name: 'PickFog' },
-                { id: 1 << 12, name: 'PickFrost' },
-                { id: 1 << 13, name: 'View3Enemy' },
-                { id: 1 << 14, name: 'Resurrect' },
-                { id: 1 << 15, name: 'ResurrectEnemy' },
-                { id: 1 << 16, name: 'Bin2Pick1' },
-                { id: 1 << 17, name: 'MeleeHorn' },
-                { id: 1 << 18, name: 'RangeHorn' },
-                { id: 1 << 19, name: 'SiegeHorn' },
-                { id: 1 << 20, name: 'SiegScorch' },
-                { id: 1 << 21, name: 'CounerKing' },
-                { id: 1 << 22, name: 'Melee' },
-                { id: 1 << 23, name: 'Ranged' },
-                { id: 1 << 24, name: 'Siege' },
-                { id: 1 << 25, name: 'UnsummonDummy' },
-                { id: 1 << 26, name: 'Horn' },
-                { id: 1 << 27, name: 'Draw' },
-                { id: 1 << 28, name: 'Scorch' },
-                { id: 1 << 29, name: 'ClearSky' },
-                { id: 1 << 30, name: 'SummonClones' },
-                { id: 1 << 31, name: 'ImproveNeighbours' },
-                { id: 1 << 32, name: 'Nurse' },
-                { id: 1 << 33, name: 'Draw2' },
-                { id: 1 << 34, name: 'SameTypeMorale' }
+                { id: 1, name: 'Backstab' },
+                { id: 2, name: 'MoraleBoost' },
+                { id: 3, name: 'Ambush' },
+                { id: 4, name: 'ToughSkin' },
+                { id: 5, name: 'Bin2' },
+                { id: 6, name: 'Bin3' },
+                { id: 7, name: 'MeleeScorch' },
+                { id: 8, name: 'EleventhCard' },
+                { id: 9, name: 'ClearWeather' },
+                { id: 10, name: 'PickWeather' },
+                { id: 11, name: 'PickRain' },
+                { id: 12, name: 'PickFog' },
+                { id: 13, name: 'PickFrost' },
+                { id: 14, name: 'View3Enemy' },
+                { id: 15, name: 'Resurrect' },
+                { id: 16, name: 'ResurrectEnemy' },
+                { id: 17, name: 'Bin2Pick1' },
+                { id: 18, name: 'MeleeHorn' },
+                { id: 19, name: 'RangeHorn' },
+                { id: 20, name: 'SiegeHorn' },
+                { id: 21, name: 'SiegScorch' },
+                { id: 22, name: 'CounerKing' },
+                { id: 23, name: 'Melee' },
+                { id: 24, name: 'Ranged' },
+                { id: 25, name: 'Siege' },
+                { id: 26, name: 'UnsummonDummy' },
+                { id: 27, name: 'Horn' },
+                { id: 28, name: 'Draw' },
+                { id: 29, name: 'Scorch' },
+                { id: 30, name: 'ClearSky' },
+                { id: 31, name: 'SummonClones' },
+                { id: 32, name: 'ImproveNeighbours' },
+                { id: 33, name: 'Nurse' },
+                { id: 34, name: 'Draw2' },
+                { id: 35, name: 'SameTypeMorale' }
             ];
-            gwintTypeService.methods = {
-                getTypes: function (types) {
-                    var tempTypes = [];
-                    angular.forEach(gwintTypeService.types, function (type) {
-                        if (types & type.id) {
-                            tempTypes.push(type);
-                        }
-                    });
-                    return tempTypes;
-                },
-                hasType: function (types, typeName) {
-                    var type;
-                    for (var i = 0; i < gwintTypeService.types.length; i++) {
-                        type = gwintTypeService.types[i];
-                        if (type.name === typeName && (types & type.id)) {
-                            return true;
-                        }
-                    }
-                    return false;
-                },
-                hasAnyType: function (types, typeNames) {
-                    var type;
-                    for (var i = 0; i < gwintTypeService.types.length; i++) {
-                        type = gwintTypeService.types[i];
-                        for (var j = 0; j < typeNames.length; j++) {
-                            if (type.name === typeNames[j] && (types & type.id)) {
-                                return true;
-                            }
-                        }
-                    }
-                    return false;
-                }
-            };
-
             return gwintTypeService;
         })
         .filter('gwintType', function () {

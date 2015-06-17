@@ -59,8 +59,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Command.cs" />
-    <Compile Include="Commands\CommandType.cs" />
+    <Compile Include="DTOs\CommandType.cs" />
     <Compile Include="Commands\EndRedrawCardCommand.cs" />
+    <Compile Include="DTOs\GameHubResult.cs" />
     <Compile Include="Events\CoinTossEvent.cs" />
     <Compile Include="Events\ForfeitEvent.cs" />
     <Compile Include="Events\Event.cs" />
@@ -84,9 +85,12 @@
     <Compile Include="Events\StateChangeEvent.cs" />
     <Compile Include="Events\TurnEvent.cs" />
     <Compile Include="Exceptions\CommandException.cs" />
+    <Compile Include="Exceptions\CommandParseException.cs" />
+    <Compile Include="Exceptions\GwintException.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="GwentPerRequestModule.cs" />
     <Compile Include="Model\Card.cs" />
+    <Compile Include="Model\GwentConstants.cs" />
     <Compile Include="Model\CustomGwintCardDefinitions.cs" />
     <Compile Include="Model\GwentFaction.cs" />
     <Compile Include="Model\GwintEffect.cs" />

@@ -1,4 +1,4 @@
-namespace Gwent.NET.Commands
+namespace Gwent.NET.DTOs
 {
     public enum CommandType
     {

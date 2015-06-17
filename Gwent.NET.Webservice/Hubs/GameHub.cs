@@ -10,6 +10,7 @@ using Gwent.NET.Events;
 using Gwent.NET.Exceptions;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
+using Gwent.NET.Model.States;
 using Gwent.NET.Webservice.Auth;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
@@ -22,6 +23,12 @@ namespace Gwent.NET.Webservice.Hubs
         private readonly ILifetimeScope _lifetimeScope;
         // TODO: Use a bi-directional dictionary instead or a repository
         private static readonly ConcurrentDictionary<string, string> UserIdConnectionIdDictionary = new ConcurrentDictionary<string, string>();
+
+        private int UserId
+        {
+            get { return int.Parse(Context.User.Identity.GetUserId()); }
+        }
+
         public GameHub(ILifetimeScope lifetimeScope)
         {
             _lifetimeScope = lifetimeScope.BeginLifetimeScope();
@@ -70,36 +77,228 @@ namespace Gwent.NET.Webservice.Hubs
             MapConnectionIdToUserId();
         }
 
-        public string RecieveClientCommand(CommandDto commandDto)
+        public GameHubResult<ICollection<GameBrowseDto>> BrowseGames()
         {
-            Command command = CreateCommand(commandDto);
-            int userId = int.Parse(Context.User.Identity.GetUserId());
-            command.SenderUserId = userId;
+            using (var context = _lifetimeScope.Resolve<IGwintContext>())
+            {
+                return new GameHubResult<ICollection<GameBrowseDto>>
+                {
+                    Data = context.Games
+                    .Where(g => g.IsActive && g.IsActive)
+                    .AsEnumerable()
+                    .Select(g => new GameBrowseDto
+                    {
+                        Id = g.Id,
+                        State = g.State.GetType().Name,
+                        PlayerCount = g.Players.Count
+                    }).ToList()
+                };
+            }
+        }
+
+        public GameHubResult<GameDto> GetActiveGame()
+        {
+            using (var context = _lifetimeScope.Resolve<IGwintContext>())
+            {
+                var userId = UserId;
+                var game = GetActiveGameByUserId(context, userId);
+                if (game == null)
+                {
+                    return new GameHubResult<GameDto>
+                    {
+                        Error = "Hub: No active game found."
+                    };
+                }
+                return new GameHubResult<GameDto>
+                {
+                    Data = game.ToDto().StripOpponentPrivateInfo(userId)
+                };
+            }
+        }
+
+
+        public GameHubResult<GameDto> CreateGame()
+        {
+            int userId = UserId;
 
             using (var context = _lifetimeScope.Resolve<IGwintContext>())
             {
-                Game game = context.Games
-                    .FirstOrDefault(g => g.IsActive && g.Players.Any(p => p.User.Id == userId));
+                var activeGame = GetActiveGameByUserId(context, userId);
+                if (activeGame != null)
+                {
+                    return new GameHubResult<GameDto>
+                    {
+                        Error = "Game still running."
+                    };
+                }
+
+                var primaryDeck = GenerateDemoDeck(context);
+                //var primaryDeck = user.Decks.FirstOrDefault(d => d.IsPrimaryDeck); // TODO: Renable picking the primary deck
+                if (primaryDeck == null)
+                {
+                    return new GameHubResult<GameDto>
+                    {
+                        Error = "No deck found."
+                    };
+                }
+
+                var user = context.Users.FirstOrDefault(u => u.Id == userId);
+                var player = context.Players.Create();
+                player.User = user;
+                player.Deck = primaryDeck;
+                player.IsOwner = true;
+
+                var game = context.Games.Create();
+                game.IsActive = true;
+                game.State = new LobbyState();
+                game.Players.Add(player);
+                context.Games.Add(game);
+                context.SaveChanges();
+                return new GameHubResult<GameDto>
+                {
+                    Data = game.ToDto().StripOpponentPrivateInfo(user.Id)
+                };
+            }
+        }
+
+        private Deck GenerateDemoDeck(IGwintContext context)
+        {
+            var demoDeck = new Deck
+            {
+                Faction = GwentFaction.Scoiatael,
+                BattleKingCard = context.Cards.Find(3002),
+                Cards =
+                {
+                    context.Cards.Find(0),
+                    context.Cards.Find(0),
+                    context.Cards.Find(1),
+                    context.Cards.Find(2),
+                    context.Cards.Find(3),
+                    context.Cards.Find(4),
+                    context.Cards.Find(5),
+                    context.Cards.Find(6),
+                    context.Cards.Find(7),
+                    context.Cards.Find(8),
+                    context.Cards.Find(9),
+                    context.Cards.Find(10),
+                    context.Cards.Find(11),
+                    context.Cards.Find(12),
+                    context.Cards.Find(306),
+                    context.Cards.Find(306),
+                    context.Cards.Find(306),
+                    context.Cards.Find(306),
+                    context.Cards.Find(306),
+                    context.Cards.Find(306),
+                    context.Cards.Find(306),
+                    context.Cards.Find(306),
+                    context.Cards.Find(306),
+                },
+                IsPrimaryDeck = true
+            };
+            return demoDeck;
+        }
+
+        public GameHubResult<GameDto> JoinGame(int gameId)
+        {
+            using (var context = _lifetimeScope.Resolve<IGwintContext>())
+            {
+                var user = context.Users.FirstOrDefault(u => u.Id == UserId);
+                var game = context.Games.Find(gameId);
                 if (game == null)
                 {
-                    return "No running game found.";
+                    return new GameHubResult<GameDto>
+                    {
+                        Error = "Game not found."
+                    };
                 }
-                try
+
+                if (game.Players.Count == GwentConstants.MaxPlayerCount)
                 {
+                    return new GameHubResult<GameDto>
+                    {
+                        Error = "Game is full."
+                    };
+                }
+
+                if (GetActiveGameByUserId(context, user.Id) != null)
+                {
+                    return new GameHubResult<GameDto>
+                    {
+                        Error = "Other game still running."
+                    };
+                }
+
+                var primaryDeck = GenerateDemoDeck(context);
+                //var primaryDeck = user.Decks.FirstOrDefault(d => d.IsPrimaryDeck); // TODO: Renable picking the primary deck
+                if (primaryDeck == null)
+                {
+                    return new GameHubResult<GameDto>
+                    {
+                        Error = "No deck found."
+                    };
+                }
+                var player = context.Players.Create();
+                player.User = user;
+                player.Deck = primaryDeck;
+                game.Players.Add(player);
+                context.SaveChanges();
+                return new GameHubResult<GameDto>
+                {
+                    Data = game.ToDto().StripOpponentPrivateInfo(user.Id)
+                };
+            }
+        }
+
+        public GameHubResult<GameDto> RecieveClientCommand(CommandDto commandDto)
+        {
+            try
+            {
+                Command command = CreateCommand(commandDto);
+                int userId = UserId;
+                command.SenderUserId = userId;
+
+                using (var context = _lifetimeScope.Resolve<IGwintContext>())
+                {
+                    Game game = GetActiveGameByUserId(context, userId);
+                    if (game == null)
+                    {
+                        return new GameHubResult<GameDto>
+                        {
+                            Error = "No running game found."
+                        };
+                    }
+
                     command.Execute(game);
                     context.SaveChanges();
                 }
-                catch (CommandException e)
-                {
-                    return e.Message;
-                }
-            }
 
-            SendEvents(command.Events);
-            return "";
+                DispatchEvents(command.Events);
+                return new GameHubResult<GameDto>();
+            }
+            catch (Exception e)
+            {
+                GwintException gwintException = e as GwintException;
+                if (gwintException != null)
+                {
+                    return new GameHubResult<GameDto>
+                    {
+                        Error = e.Message
+                    };
+                }
+
+                return new GameHubResult<GameDto>
+                {
+                    Error = "Internal server error"
+                };
+            }
         }
 
-        private void SendEvents(IEnumerable<Event> gameEvents)
+        private static Game GetActiveGameByUserId(IGwintContext context, int userId)
+        {
+            return context.Games.FirstOrDefault(g => g.IsActive && g.Players.Any(p => p.User.Id == userId));
+        }
+
+        private void DispatchEvents(IEnumerable<Event> gameEvents)
         {
             foreach (var gameEvent in gameEvents)
             {
@@ -113,8 +312,8 @@ namespace Gwent.NET.Webservice.Hubs
                 }
             }
         }
-        
-        private Command CreateCommand(CommandDto commandDto)
+
+        private Command CreateCommand(CommandDto commandDto) // TODO: Move to a command factory class
         {
             if (commandDto == null) throw new ArgumentNullException("commandDto");
             switch (commandDto.Type)
@@ -124,7 +323,7 @@ namespace Gwent.NET.Webservice.Hubs
                 case CommandType.RedrawCard:
                     if (!commandDto.CardId.HasValue)
                     {
-                        throw new ArgumentException();
+                        throw new CommandParseException();
                     }
                     return new RedrawCardCommand
                     {
@@ -139,7 +338,7 @@ namespace Gwent.NET.Webservice.Hubs
                 case CommandType.PickStartingPlayer:
                     if (!commandDto.StartPlayerId.HasValue)
                     {
-                        throw new ArgumentException();
+                        throw new CommandParseException();
                     }
                     return new PickStartingPlayerCommand
                     {
@@ -148,7 +347,7 @@ namespace Gwent.NET.Webservice.Hubs
                 case CommandType.PlayCard:
                     if (!commandDto.CardId.HasValue || !commandDto.Slot.HasValue)
                     {
-                        throw new ArgumentException();
+                        throw new CommandParseException();
                     }
                     return new PlayCardCommand
                     {
@@ -159,7 +358,7 @@ namespace Gwent.NET.Webservice.Hubs
                 case CommandType.UseBattleKingCard:
                     return new UseBattleKingCardCommand();
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new CommandParseException("Unknown command");
             }
         }
     }

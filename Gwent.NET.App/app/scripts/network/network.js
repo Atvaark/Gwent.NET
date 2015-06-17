@@ -219,6 +219,7 @@
         .factory('gameHubService', function ($rootScope, $log, $q, userService) {
             var signalRUrl = 'http://localhost:9029/signalr';
             var gameHubService = {};
+            var connected = false;
             var connection = null;
             var gameHubProxy = null;
 
@@ -237,9 +238,10 @@
                 if (userService.getUser() == null) {
                     return $q.reject('No user logged in.');
                 }
-                if (connection !== null) {
-                    console.log('already connected');
-                    $q.when();
+
+                if (connected) {
+                    $log.info('already connected');
+                    return $q.when();
                 }
                 var deferred = $q.defer();
                 $log.info('connecting');
@@ -247,12 +249,17 @@
                 gameHubService.setAuthorizationQueryString();
                 gameHubProxy = connection.createHubProxy('gameHub');
                 gameHubProxy.on('recieveServerEvent', gameHubService.recieveServerEvent);
+                $log.info('starting connection');
                 connection.start()
                     .done(function () {
-                        console.log('connected');
+                        $log.info('connected');
+                        connected = true;
                         deferred.resolve();
                     })
                     .fail(function () {
+                        $log.error('connection failed');
+                        gameHubService = null;
+                        connection = null;
                         deferred.reject();
                     });
                 return deferred.promise;
@@ -261,6 +268,7 @@
             gameHubService.disconnect = function () {
                 if (connection !== null) {
                     connection.stop();
+                    connected = false;
                     connection = null;
                     gameHubProxy = null;
                 }
@@ -272,15 +280,135 @@
                 $rootScope.$broadcast('serverEventRecieved', event);
             };
 
+            gameHubService.authenticate = function () {
+                if (!gameHubProxy) {
+                    return $q.reject('Not connected to the game hub.');
+                }
+
+                var deferred = $q.defer();
+
+                $log.info('authenticating client');
+                gameHubProxy.invoke('Authenticate')
+                    .done(function () {
+                        deferred.resolve();
+                    })
+                    .fail(function () {
+                        deferred.reject();
+                    });
+
+                return deferred.promise;
+            }
+
             gameHubService.sendCommand = function (command) {
+                if (!gameHubProxy) {
+                    return $q.reject('Not connected to the game hub.');
+                }
+
+                var deferred = $q.defer();
                 var commandString = JSON.stringify(command);
                 $log.info('sending client command ' + commandString);
-                return gameHubProxy.invoke('RecieveClientCommand', command);
+                gameHubProxy.invoke('RecieveClientCommand', command)
+                    .done(function (result) {
+                        if (result.Error) {
+                            deferred.reject(result.Error);
+                        } else {
+                            deferred.resolve(result.Data);
+                        }
+                    })
+                    .fail(function () {
+                        deferred.reject();
+                    });
+
+                return deferred.promise;
             };
-            
-            gameHubService.authenticate = function() {
-                $log.info('authenticating client');
-                return gameHubProxy.invoke('Authenticate');
+
+            gameHubService.browseGames = function () {
+                if (!gameHubProxy) {
+                    $log.error('brose game failed');
+                    return $q.reject('Not connected to the game hub.');
+                }
+
+                var deferred = $q.defer();
+                $log.info('browsing games');
+                gameHubProxy.invoke('BrowseGames')
+                    .done(function (result) {
+                        if (result.Error) {
+                            deferred.reject(result.Error);
+                        } else {
+                            deferred.resolve(result.Data);
+                        }
+                    })
+                    .fail(function () {
+                        deferred.reject();
+                    });
+
+                return deferred.promise;
+            }
+
+            gameHubService.getActiveGame = function () {
+                if (!gameHubProxy) {
+                    return $q.reject('Not connected to the game hub.');
+                }
+
+                var deferred = $q.defer();
+                $log.info('getting active game');
+                gameHubProxy.invoke('GetActiveGame')
+                    .done(function (result) {
+                        if (result.Error) {
+                            deferred.reject(result.Error);
+                        } else {
+                            deferred.resolve(result.Data);
+                        }
+                    })
+                    .fail(function () {
+                        deferred.reject();
+                    });
+
+                return deferred.promise;
+            }
+
+            gameHubService.createGame = function () {
+                if (!gameHubProxy) {
+                    return $q.reject('Not connected to the game hub.');
+                }
+
+                var deferred = $q.defer();
+                $log.info('creating game');
+                gameHubProxy.invoke('CreateGame')
+                    .done(function (result) {
+                        if (result.Error) {
+                            deferred.reject(result.Error);
+                        } else {
+                            deferred.resolve(result.Data);
+                        }
+                    })
+                    .fail(function () {
+                        deferred.reject();
+                    });
+
+                return deferred.promise;
+            }
+
+            gameHubService.joinGame = function (gameId) {
+                if (!gameHubProxy) {
+                    return $q.reject('Not connected to the game hub.');
+                }
+
+                var deferred = $q.defer();
+                $log.info('joining game');
+                gameHubProxy.invoke('JoinGame', gameId)
+                    .done(function (result) {
+                        if (result.Error) {
+                            deferred.reject(result.Error);
+                        } else {
+                            deferred.resolve(result.Data);
+                        }
+                    })
+                    .fail(function () {
+                        deferred.reject();
+                    });
+
+                return deferred.promise;
             }
 
             $rootScope.$on('userChanged', function () {

@@ -3,7 +3,7 @@
 namespace Gwent.NET.Exceptions
 {
     [Serializable]
-    public class CommandException : ApplicationException
+    public class CommandException : GwintException
     {
         private const string DefaultMessage = "Command was rejected by the server.";
 

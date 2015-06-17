@@ -16,7 +16,7 @@
             methods.login = function () {
                 userService.login(data.login.username, data.login.password)
                     .then(function (user) {
-                        $log.info('Login successful');
+                        $log.info('login successful');
                         setUser(user);
                         data.login.error = '';
                         data.login.username = '';

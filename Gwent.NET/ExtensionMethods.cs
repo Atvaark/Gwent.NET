@@ -11,7 +11,7 @@ namespace Gwent.NET
     {
         public static GwintType GetGwintTypes(this Card card)
         {
-            return card.TypeFlags.Aggregate(GwintType.None, (current, typeFlag) => current | typeFlag.Name);
+            return card.TypeFlags.Aggregate(GwintType.None, (current, typeFlag) => typeFlag.Name);
         }
 
         public static GwintEffect GetGwintEffects(this Card card)
