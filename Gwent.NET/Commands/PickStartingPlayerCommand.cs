@@ -60,7 +60,10 @@ namespace Gwent.NET.Commands
             {
                 var startingPlayer = game.Players.OrderBy(p => new Guid()).First();
                 startingPlayer.IsRoundStarter = true;
-                Events.Add(new CoinTossEvent(game.GetAllUserIds()));
+                Events.Add(new CoinTossEvent(game.GetAllUserIds())
+                {
+                    StartingPlayerId = startingPlayer.User.Id
+                });
             }
         }
     }

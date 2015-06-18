@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Gwent.NET.Events;
 using Gwent.NET.Exceptions;
 using Gwent.NET.Model;
 using Gwent.NET.Model.States;
@@ -40,6 +41,10 @@ namespace Gwent.NET.Commands
             {
                 var startingPlayer = game.Players.OrderBy(p => new Guid()).First();
                 startingPlayer.IsRoundStarter = true;
+                Events.Add(new CoinTossEvent(game.GetAllUserIds())
+                {
+                    StartingPlayerId = startingPlayer.User.Id
+                });
                 nextState = new RedrawState();
             }
             

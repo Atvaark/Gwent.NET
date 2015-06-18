@@ -4,8 +4,12 @@ namespace Gwent.NET.Events
 {
     public class CoinTossEvent : Event
     {
-        public CoinTossEvent(IEnumerable<int> eventRecipients) : base(eventRecipients)
+        public int StartingPlayerId { get; set; }
+
+        public CoinTossEvent(IEnumerable<int> eventRecipients)
+            : base(eventRecipients)
         {
         }
+
     }
 }

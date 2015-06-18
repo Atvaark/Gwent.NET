@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Web.Http;
 using Gwent.NET.DTOs;
+using Gwent.NET.Exceptions;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
 
@@ -59,10 +60,15 @@ namespace Gwent.NET.Webservice.Controllers
             }
             var newDeck = DeckDtoToDeck(deck);
             newDeck.IsPrimaryDeck = !user.Decks.Any();
-            if (!ValidateDeck(newDeck))
+            try
             {
-                return BadRequest();
+                ValidateDeck(newDeck);
             }
+            catch (InvalidDeckException e)
+            {
+                return BadRequest(e.Message);
+            }
+
             user.Decks.Add(newDeck);
             Context.SaveChanges();
             return Ok(newDeck.ToDto());
@@ -87,10 +93,15 @@ namespace Gwent.NET.Webservice.Controllers
                 return NotFound();
             }
             var newDeck = DeckDtoToDeck(deck);
-            if (!ValidateDeck(newDeck))
+            try
             {
-                return BadRequest();
+                ValidateDeck(newDeck);
             }
+            catch (InvalidDeckException e)
+            {
+                return BadRequest(e.Message);
+            }
+
             existingDeck.BattleKingCard = newDeck.BattleKingCard;
             existingDeck.Cards.Clear();
             existingDeck.Cards.AddRange(newDeck.Cards);
@@ -110,37 +121,47 @@ namespace Gwent.NET.Webservice.Controllers
             return newDeck;
         }
 
-        private bool ValidateDeck(Deck deck)
+        private void ValidateDeck(Deck deck)
         {
             // Enough cards in the deck
             if (deck.Cards.Count < 22)
             {
-                return false;
+                throw new InvalidDeckException("Not enough cards");
             }
 
-            // None of the cards is a battle king
+            // None of the deck cards is a battle king
             if (deck.Cards.Any(c => c.IsBattleKing))
             {
-                return false;
+                throw new InvalidDeckException("Invalid card in deck");
             }
             
             // The battle king card is actually a battle king
             if (!deck.BattleKingCard.IsBattleKing)
             {
-                return false;
+                throw new InvalidDeckException("Invalid battle king card");
             }
             
             // The faction of the battle king card is not neutral
             if (deck.BattleKingCard.FactionIndex == GwentFaction.Neutral)
             {
-                return false;
+                throw new InvalidDeckException("Invalid battle king card");
             }
             
             // Not too many special cards
             int specialCardCount = deck.Cards.Count(IsSpecialCard);
             if (specialCardCount > 10)
             {
-                return false;
+                throw new InvalidDeckException("Too many special cards in deck");
+            }
+
+            // No duplicate hero cards
+            int maxHeroCardCount = deck.Cards
+                .Where(c => c.Types.HasFlag(GwintType.Hero))
+                .GroupBy(c => c.Id)
+                .Max(g => g.Count());
+            if (maxHeroCardCount > 1)
+            {
+                throw new InvalidDeckException("Duplicate of hero card in deck");
             }
 
             // All cards are either neutral or belong to the battle king faction
@@ -149,10 +170,8 @@ namespace Gwent.NET.Webservice.Controllers
                 .All(c => c.FactionIndex == battleKingFaction || c.FactionIndex == GwentFaction.Neutral);
             if (!allCardsNeutralOrBattleKingFaction)
             {
-                return false;
+                throw new InvalidDeckException("Card with invalid faction in deck");
             }
-
-            return true;
         }
 
         private bool IsSpecialCard(Card card)

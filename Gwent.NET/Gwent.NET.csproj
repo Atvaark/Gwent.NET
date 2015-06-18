@@ -88,6 +88,7 @@
     <Compile Include="Exceptions\CommandException.cs" />
     <Compile Include="Exceptions\CommandParseException.cs" />
     <Compile Include="Exceptions\GwintException.cs" />
+    <Compile Include="Exceptions\InvalidDeckException.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="GwentPerRequestModule.cs" />
     <Compile Include="Model\Card.cs" />
