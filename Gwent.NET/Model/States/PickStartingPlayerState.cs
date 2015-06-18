@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Gwent.NET.Events;
 using Gwent.NET.Model.States.Substates;
 
@@ -8,11 +7,17 @@ namespace Gwent.NET.Model.States
     public class PickStartingPlayerState : State
     {
         public virtual ICollection<PickStartingPlayerSubstate> Substates { get; set; }
+        
+        public override string Name
+        {
+            get { return "PickStartingPlayer"; }
+        }
 
         public PickStartingPlayerState()
         {
             Substates = new HashSet<PickStartingPlayerSubstate>();
         }
+
 
         public override IEnumerable<Event> Initialize(Game game)
         {

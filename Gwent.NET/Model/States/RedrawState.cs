@@ -12,12 +12,18 @@ namespace Gwent.NET.Model.States
         private const int InitialIncreasedHandCardCount = 11;
 
         public virtual ICollection<RedrawPlayerSubstate> Substates { get; set; }
-        
+
+        public override string Name
+        {
+            get { return "Redraw"; }
+        }
+
         public RedrawState()
         {
             Substates = new HashSet<RedrawPlayerSubstate>();
         }
-        
+
+
         public override IEnumerable<Event> Initialize(Game game)
         {
             return game.Players.Select(InitializeHand);

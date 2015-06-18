@@ -10,11 +10,7 @@ namespace Gwent.NET.Model.States
         [Key]
         public int Id { get; set; }
         
-        [NotMapped]
-        public string Name
-        {
-            get { return GetType().Name; }
-        }
+        public abstract string Name { get; }
         
         public abstract IEnumerable<Event> Initialize(Game game);
     }

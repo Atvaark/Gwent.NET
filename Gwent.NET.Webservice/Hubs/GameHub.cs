@@ -89,7 +89,7 @@ namespace Gwent.NET.Webservice.Hubs
                     .Select(g => new GameBrowseDto
                     {
                         Id = g.Id,
-                        State = g.State.GetType().Name,
+                        State = g.State.Name,
                         PlayerCount = g.Players.Count
                     }).ToList()
                 };
@@ -246,11 +246,14 @@ namespace Gwent.NET.Webservice.Hubs
                         Error = "No deck found."
                     };
                 }
+
+                var playerJoinedEvent = new PlayerJoinedEvent(game.GetAllUserIds());
                 var player = context.Players.Create();
                 player.User = user;
                 player.Deck = primaryDeck;
                 game.Players.Add(player);
                 context.SaveChanges();
+                DispatchEvents(new Event[] { playerJoinedEvent });
                 return new GameHubResult<GameDto>
                 {
                     Data = game.ToDto().StripOpponentPrivateInfo(user.Id)
