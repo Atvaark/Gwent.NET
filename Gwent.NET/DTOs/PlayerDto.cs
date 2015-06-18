@@ -4,7 +4,8 @@ namespace Gwent.NET.DTOs
 {
     public class PlayerDto
     {
-        public int User { get; set; }
+        public int UserId { get; set; }
+        public string UserName { get; set; }
         public bool IsLobbyOwner { get; set; }
         public int Lives { get; set; }
         public int HandCardCount { get; set; }

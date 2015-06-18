@@ -1,24 +1,31 @@
-﻿<div>
-    <button type="button" ui-sref="menu.game.browser">Browse games</button>
-    <button type="button" ng-show="data.game == null" ng-click="methods.startGame()">Start game</button>
-    <button type="button" ng-show="data.game != null" ng-click="methods.resumeGame()">Resume game</button>
-    <button type="button" ng-show="data.game != null" ng-click="methods.getActiveGame()">Force refresh game</button>
+﻿<div ng-show="data.game == null">
+    <button type="button" ng-click="methods.browseGames()">Browse games</button>
+    <button type="button" ng-click="methods.startGame()">Start game</button>
 </div>
-<div>
-    <button type="button" ng-show="data.game != null" ng-click="methods.sendStartCommand()">Start</button>
-    <button type="button" ng-show="data.game != null" ng-click="methods.sendPickStartingPlayerCommand()">Pick player</button>
-    <button type="button" ng-show="data.game != null" ng-click="methods.sendEndRedrawCardCommand()">End redrawing</button>
-    <button type="button" ng-show="data.game != null" ng-click="methods.sendPassCommand()">Pass</button>
-    <button type="button" ng-show="data.game != null" ng-click="methods.sendForfeitGameCommand()">Forfeit</button>
-    <button type="button" ng-show="data.game != null" ng-click="methods.sendUseBattleKingCardCommand()">Use battle king card</button>
-    <div ng-show="data.game != null">
-        <input type="text" ng-model="data.input.redrawCard" />
-        <button type="button" ng-show="data.game != null" ng-click="methods.sendRedrawCardCommand(data.input.redrawCard)">Redraw</button>
+<div ng-show="data.game != null">
+    <button type="button" ng-click="methods.resumeGame()">Resume game</button>
+    <button type="button" ng-click="methods.getActiveGame()">Force refresh game</button>
+</div>
+<div ng-show="data.game != null">
+    <button type="button" ng-click="methods.sendStartCommand()">Start</button>
+    <button type="button" ng-click="methods.sendEndRedrawCardCommand()">End redrawing</button>
+    <button type="button" ng-click="methods.sendPassCommand()">Pass</button>
+    <button type="button" ng-click="methods.sendForfeitGameCommand()">Forfeit</button>
+    <button type="button" ng-click="methods.sendUseBattleKingCardCommand()">Use battle king card</button>
+    <div>
+        <select name="startingPlayer" ng-model="data.input.startingPlayer">
+            <option ng-repeat="player in data.game.Players" value="{{player.UserId}}">{{player.UserName}}</option>
+        </select>
+        <button type="button" ng-click="methods.sendPickStartingPlayerCommand(data.input.startingPlayer)">Pick player</button>
     </div>
-    <div ng-show="data.game != null">
+    <div>
+        <input type="text" ng-model="data.input.redrawCard" />
+        <button type="button" ng-click="methods.sendRedrawCardCommand(data.input.redrawCard)">Redraw</button>
+    </div>
+    <div>
         <input type="text" ng-model="data.input.playCard" />
         <input type="text" ng-model="data.input.playCardSlot" />
-        <button type="button" ng-show="data.game != null" ng-click="methods.sendPlayCardCommand(data.input.playCard, data.input.playCardSlot)">Play card</button>
+        <button type="button" ng-click="methods.sendPlayCardCommand(data.input.playCard, data.input.playCardSlot)">Play card</button>
     </div>
 </div>
 <div ui-view></div>

@@ -11,15 +11,20 @@
             var methods = $scope.methods = {};
 
             methods.getGames = function () {
-                gameHubService.browseGames().then(function (games) {
+                var deferred = $q.defer();
+                gameHubService.browseGames().then(function(games) {
                     $log.info('getting games successful');
                     data.games = games;
                     data.error = '';
+                    deferred.resolve();
 
                 }, function () {
                     $log.error('unable to get games');
                     data.error = 'unable to get games';
-                });
+                    deferred.reject();
+                    });
+
+                return deferred.promise;
             };
 
             methods.getActiveGame = function () {
@@ -67,6 +72,14 @@
                     data.game = {};
                 });
             }
+
+            methods.browseGames = function() {
+                methods.getGames().then(function() {
+                    $state.go('menu.game.browser');
+                }, function() {
+                    $state.go('menu.game.browser');
+                });
+            };
 
             methods.startGame = function () {
                 gameHubService.connect()
@@ -122,10 +135,10 @@
                 });
             };
 
-            methods.sendPickStartingPlayerCommand = function () {
+            methods.sendPickStartingPlayerCommand = function (userId) {
                 gameHubService.sendCommand({
                     type: "PickStartingPlayer",
-                    startPlayerId: 1
+                    startPlayerId: userId
                 }).then(function () {
                     $log.info('starting player picked');
                 }, function (error) {

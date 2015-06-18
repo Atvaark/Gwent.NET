@@ -26,7 +26,7 @@ namespace Gwent.NET.DTOs
         {
             foreach (var playerDto in Players)
             {
-                if (playerDto.User != userId)
+                if (playerDto.UserId != userId)
                 {
                     playerDto.HandCards.Clear();
                 }

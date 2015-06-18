@@ -83,6 +83,7 @@
     <Compile Include="DTOs\RegistrationDto.cs" />
     <Compile Include="DTOs\UserDto.cs" />
     <Compile Include="Events\HandChangedEvent.cs" />
+    <Compile Include="Events\PlayerJoinedEvent.cs" />
     <Compile Include="Events\StateChangeEvent.cs" />
     <Compile Include="Events\TurnEvent.cs" />
     <Compile Include="Exceptions\CommandException.cs" />

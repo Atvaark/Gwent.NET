@@ -72,7 +72,8 @@ namespace Gwent.NET
         {
             return new PlayerDto
             {
-                User = player.User.Id,
+                UserId = player.User.Id,
+                UserName = player.User.Name,
                 IsLobbyOwner = player.IsOwner,
                 Lives = player.Lives,
                 HandCardCount = player.HandCards.Count,
