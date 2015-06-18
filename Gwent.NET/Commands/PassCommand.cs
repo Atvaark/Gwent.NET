@@ -1,4 +1,5 @@
-﻿using Gwent.NET.Exceptions;
+﻿using Gwent.NET.Events;
+using Gwent.NET.Exceptions;
 using Gwent.NET.Model;
 using Gwent.NET.Model.States;
 
@@ -15,10 +16,32 @@ namespace Gwent.NET.Commands
             }
 
             Player sender = game.GetPlayerByUserId(SenderUserId);
-            if (sender == null)
+            Player opponent = game.GetOpponentPlayerByUserId(SenderUserId);
+            if (sender == null || opponent == null)
             {
                 throw new CommandException();
             }
+
+            if (!sender.IsTurn)
+            {
+                throw new CommandException();
+            }
+
+            if (opponent.IsPassing)
+            {
+                // TODO: Calculate round winner, begin a new round or end the game.
+            }
+
+
+            sender.IsPassing = true;
+            sender.IsTurn = false;
+            opponent.IsTurn = true;
+
+            Events.Add(new PassEvent(new[] { opponent.User.Id }));
+            Events.Add(new TurnEvent(new[] { opponent.User.Id })
+            {
+                TurnUserId = opponent.User.Id
+            });
         }
     }
 }

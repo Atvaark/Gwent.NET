@@ -50,6 +50,7 @@ namespace Gwent.NET.Commands
             sender.HandCards.Add(drawnCard);
             sender.DeckCards.Clear();
             sender.DeckCards.AddRange(deckCards);
+            sender.IsTurn = substate.RedrawCardCount > 0;
             
             if (substate.RedrawCardCount != 0 || opponentSubstate.RedrawCardCount != 0)
             {

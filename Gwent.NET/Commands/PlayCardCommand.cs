@@ -18,10 +18,19 @@ namespace Gwent.NET.Commands
             }
 
             Player sender = game.GetPlayerByUserId(SenderUserId);
-            if (sender == null)
+            Player opponent = game.GetOpponentPlayerByUserId(SenderUserId);
+            if (sender == null || opponent == null)
             {
                 throw new CommandException();
             }
+
+            if (sender.IsTurn == false)
+            {
+                throw new CommandException();
+            }
+
+            sender.IsTurn = false;
+            opponent.IsTurn = true;
 
             // TODO: Implement card playing
         }

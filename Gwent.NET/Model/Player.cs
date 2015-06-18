@@ -29,6 +29,8 @@ namespace Gwent.NET.Model
 
         public bool IsTurn { get; set; }
 
+        public bool IsPassing { get; set; }
+
         public bool CanUseBattleKingCard { get; set; }
 
         public int Lives { get; set; }

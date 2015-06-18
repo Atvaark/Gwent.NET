@@ -15,7 +15,13 @@ namespace Gwent.NET.Commands
             }
 
             Player sender = game.GetPlayerByUserId(SenderUserId);
-            if (sender == null)
+            Player opponent = game.GetOpponentPlayerByUserId(SenderUserId);
+            if (sender == null || opponent == null)
+            {
+                throw new CommandException();
+            }
+
+            if (!sender.IsTurn)
             {
                 throw new CommandException();
             }
@@ -24,6 +30,8 @@ namespace Gwent.NET.Commands
             {
                 throw new CommandException();
             }
+
+            opponent.IsTurn = true;
 
             // TODO: Implement battle king card abilities
         }

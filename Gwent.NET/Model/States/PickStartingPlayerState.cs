@@ -16,13 +16,16 @@ namespace Gwent.NET.Model.States
 
         public override IEnumerable<Event> Initialize(Game game)
         {
-            var substates = game.Players
-                .Select(p => new PickStartingPlayerSubstate
+            foreach (var player in game.Players)
+            {
+                bool canPickStartingPlayer = player.Deck.Faction == GwentFaction.Scoiatael;
+                player.IsTurn = canPickStartingPlayer;
+                Substates.Add(new PickStartingPlayerSubstate
                 {
-                    UserId = p.User.Id,
-                    CanPickStartingPlayer = p.Deck.Faction == GwentFaction.Scoiatael
+                    UserId = player.User.Id,
+                    CanPickStartingPlayer = canPickStartingPlayer
                 });
-            Substates.AddRange(substates);
+            }
             yield break;
         }
     }

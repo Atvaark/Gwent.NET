@@ -27,7 +27,7 @@
 
                 gameHubService.getActiveGame().then(function (game) {
                     if (game == null) {
-                        $log.info('No active game found');
+                        $log.info('no active game found');
                     } else {
                         $log.info('active game found');
                     }
@@ -48,8 +48,8 @@
                     data.game = game;
                     deferred.resolve(game);
                 }, function (error) {
-                    $log.error('Unable to create game');
-                    data.error = 'Unable to create game';
+                    $log.error('unable to create game');
+                    data.error = 'unable to create game';
                     data.game = {};
                     deferred.reject();
                 });
@@ -58,22 +58,27 @@
 
             methods.joinGame = function (id) {
                 gameHubService.joinGame(id).then(function (game) {
-                    $log.info('Game joined');
+                    $log.info('game joined');
                     data.game = game;
+                    $state.go('menu.game.lobby');
                 }, function (error) {
-                    $log.error('Unable to join game');
-                    data.error = 'Unable to join game';
+                    $log.error('unable to join game');
+                    data.error = 'unable to join game';
                     data.game = {};
                 });
             }
 
             methods.startGame = function () {
-                methods.createGame().then(function () {
-                    gameHubService.connect()
-                        .then(function () {
+                gameHubService.connect()
+                    .then(function () {
+                        methods.createGame().then(function () {
+                            $log.info('game created');
                             $state.go('menu.game.lobby');
+                        }, function(error) {
+                            $log.error('unable to create game: ' + error);
                         });
-                });
+                    });
+
             };
 
             methods.resumeGame = function () {
@@ -100,7 +105,7 @@
                     type: "Pass"
                 }).then(function () {
                     $log.info('round passed');
-                }, function(error) {
+                }, function (error) {
                     $log.error('unable to pass round: ' + error);
                 });
             };
@@ -112,7 +117,7 @@
                     $log.info('game forfeited');
                     data.game = null;
                     $state.go('menu.game');
-                }, function(error) {
+                }, function (error) {
                     $log.error('unable to forfeit game: ' + error);
                 });
             };
@@ -123,7 +128,7 @@
                     startPlayerId: 1
                 }).then(function () {
                     $log.info('starting player picked');
-                }, function(error) {
+                }, function (error) {
                     $log.error('unable to pick starting player: ' + error);
                 });
             };
@@ -134,7 +139,7 @@
                     cardId: cardId
                 }).then(function () {
                     $log.info('card redrawn');
-                }, function(error) {
+                }, function (error) {
                     $log.error('unable to redraw card: ' + error);
                 });
             };
@@ -144,7 +149,7 @@
                     type: "EndRedrawCard"
                 }).then(function () {
                     $log.info('ended redrawing cards');
-                }, function(error) {
+                }, function (error) {
                     $log.error('unable to end redrawing cards: ' + error);
                 });
             };
@@ -157,7 +162,7 @@
                     gwintSlot: slot
                 }).then(function () {
                     $log.info('played card');
-                }, function(error) {
+                }, function (error) {
                     $log.error('unable to play card: ' + error);
                 });
             };
@@ -167,7 +172,7 @@
                     type: "UseBattleKingCard"
                 }).then(function () {
                     $log.info('used battle king card');
-                }, function(error) {
+                }, function (error) {
                     $log.error('unable to use battle king card: ' + error);
                 });
             };

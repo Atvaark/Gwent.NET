@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Gwent.NET.Events;
 
 namespace Gwent.NET.Model.States
@@ -9,7 +8,9 @@ namespace Gwent.NET.Model.States
 
         public override IEnumerable<Event> Initialize(Game game)
         {
-            throw new NotImplementedException();
+
+
+            yield break;
         }
     }
 }

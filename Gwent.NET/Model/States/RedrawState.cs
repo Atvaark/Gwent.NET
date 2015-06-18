@@ -12,8 +12,7 @@ namespace Gwent.NET.Model.States
         private const int InitialIncreasedHandCardCount = 11;
 
         public virtual ICollection<RedrawPlayerSubstate> Substates { get; set; }
-
-
+        
         public RedrawState()
         {
             Substates = new HashSet<RedrawPlayerSubstate>();
@@ -26,6 +25,7 @@ namespace Gwent.NET.Model.States
 
         private HandChangedEvent InitializeHand(Player player)
         {
+            player.IsTurn = true;
             var initialHandCardCount = GetInitialHandCardCount(player);
             var shuffledCards = GetShuffledCards(player);
 
@@ -40,7 +40,7 @@ namespace Gwent.NET.Model.States
             {
                 player.DeckCards.Add(card);
             }
-            
+
             Substates.Add(new RedrawPlayerSubstate
             {
                 UserId = player.User.Id,

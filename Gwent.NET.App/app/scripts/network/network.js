@@ -20,10 +20,10 @@
             var validateUser = function () {
                 $http.get(backendUrl + '/user/me')
                     .success(function () {
-                        $log.info('User validated successfully');
+                        $log.info('user validated successfully');
                     })
                     .error(function () {
-                        $log.info('User could not be validated.');
+                        $log.info('user could not be validated.');
                         userService.setUser(null);
                     });
             };
@@ -108,7 +108,7 @@
             return {
                 getGames: function () {
                     if (userService.getUser() == null) {
-                        return $q.reject('No user logged in.');
+                        return $q.reject('no user logged in.');
                     }
                     var deferred = $q.defer();
                     $http.get(backendUrl + '/game/browse')
@@ -122,7 +122,7 @@
                 },
                 getActiveGame: function () {
                     if (userService.getUser() == null) {
-                        return $q.reject('No user logged in.');
+                        return $q.reject('no user logged in.');
                     }
                     var deferred = $q.defer();
                     $http.get(backendUrl + '/game/active')
@@ -139,7 +139,7 @@
                 },
                 createGame: function () {
                     if (userService.getUser() == null) {
-                        return $q.reject('No user logged in.');
+                        return $q.reject('no user logged in.');
                     }
                     var deferred = $q.defer();
                     $http.post(backendUrl + '/game')
@@ -153,7 +153,7 @@
                 },
                 joinGame: function (gameId) {
                     if (userService.getUser() == null) {
-                        return $q.reject('No user logged in.');
+                        return $q.reject('no user logged in.');
                     }
                     var deferred = $q.defer();
                     $http.put(backendUrl + '/game/' + gameId + '/join')
@@ -282,7 +282,7 @@
 
             gameHubService.authenticate = function () {
                 if (!gameHubProxy) {
-                    return $q.reject('Not connected to the game hub.');
+                    return $q.reject('not connected to the game hub.');
                 }
 
                 var deferred = $q.defer();
@@ -301,7 +301,7 @@
 
             gameHubService.sendCommand = function (command) {
                 if (!gameHubProxy) {
-                    return $q.reject('Not connected to the game hub.');
+                    return $q.reject('not connected to the game hub.');
                 }
 
                 var deferred = $q.defer();
@@ -324,8 +324,8 @@
 
             gameHubService.browseGames = function () {
                 if (!gameHubProxy) {
-                    $log.error('brose game failed');
-                    return $q.reject('Not connected to the game hub.');
+                    $log.error('browse game failed');
+                    return $q.reject('not connected to the game hub.');
                 }
 
                 var deferred = $q.defer();
@@ -347,7 +347,7 @@
 
             gameHubService.getActiveGame = function () {
                 if (!gameHubProxy) {
-                    return $q.reject('Not connected to the game hub.');
+                    return $q.reject('not connected to the game hub.');
                 }
 
                 var deferred = $q.defer();
@@ -369,7 +369,7 @@
 
             gameHubService.createGame = function () {
                 if (!gameHubProxy) {
-                    return $q.reject('Not connected to the game hub.');
+                    return $q.reject('not connected to the game hub.');
                 }
 
                 var deferred = $q.defer();
@@ -391,7 +391,7 @@
 
             gameHubService.joinGame = function (gameId) {
                 if (!gameHubProxy) {
-                    return $q.reject('Not connected to the game hub.');
+                    return $q.reject('not connected to the game hub.');
                 }
 
                 var deferred = $q.defer();

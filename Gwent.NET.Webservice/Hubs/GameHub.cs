@@ -123,6 +123,15 @@ namespace Gwent.NET.Webservice.Hubs
 
             using (var context = _lifetimeScope.Resolve<IGwintContext>())
             {
+                var user = context.Users.FirstOrDefault(u => u.Id == userId);
+                if (user == null)
+                {
+                    return new GameHubResult<GameDto>
+                    {
+                        Error = "User not found"
+                    };
+                }
+
                 var activeGame = GetActiveGameByUserId(context, userId);
                 if (activeGame != null)
                 {
@@ -141,12 +150,12 @@ namespace Gwent.NET.Webservice.Hubs
                         Error = "No deck found."
                     };
                 }
-
-                var user = context.Users.FirstOrDefault(u => u.Id == userId);
+                
                 var player = context.Players.Create();
                 player.User = user;
                 player.Deck = primaryDeck;
                 player.IsOwner = true;
+                player.IsTurn = true;
 
                 var game = context.Games.Create();
                 game.IsActive = true;

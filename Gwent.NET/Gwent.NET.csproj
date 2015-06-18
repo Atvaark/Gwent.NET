@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Command.cs" />
+    <Compile Include="Events\PassEvent.cs" />
     <Compile Include="DTOs\CommandType.cs" />
     <Compile Include="Commands\EndRedrawCardCommand.cs" />
     <Compile Include="DTOs\GameHubResult.cs" />

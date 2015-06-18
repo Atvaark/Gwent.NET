@@ -37,6 +37,8 @@ namespace Gwent.NET.Commands
             }
 
             substate.StartingPlayerId = StartingPlayerId;
+            sender.IsTurn = false;
+
             if (state.Substates.Any(s => s.CanPickStartingPlayer && !s.StartingPlayerId.HasValue))
             {
                 return;

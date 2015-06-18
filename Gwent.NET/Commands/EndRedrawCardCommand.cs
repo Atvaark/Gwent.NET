@@ -30,6 +30,7 @@ namespace Gwent.NET.Commands
                 throw new CommandException();
             }
 
+            sender.IsTurn = false;
             substate.RedrawCardCount = 0;
             if (opponentSubstate.RedrawCardCount != 0)
             {

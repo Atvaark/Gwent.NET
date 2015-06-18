@@ -10,14 +10,16 @@ namespace Gwent.NET.Commands
         public override void Execute(Game game)
         {
             Player sender = game.GetPlayerByUserId(SenderUserId);
+            Player opponent = game.GetOpponentPlayerByUserId(SenderUserId);
             if (sender == null)
             {
                 throw new CommandException();
             }
+            sender.IsTurn = false;
 
-            Player opponent = game.GetOpponentPlayerByUserId(SenderUserId);
             if (opponent != null)
             {
+                opponent.IsTurn = false;
                 opponent.IsVictor = true;
             }
 
