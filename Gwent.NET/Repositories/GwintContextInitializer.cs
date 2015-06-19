@@ -11,8 +11,8 @@ using Gwent.NET.Properties;
 namespace Gwent.NET.Repositories
 {
     // TODO: Use CreateDatabaseIfNotExists as the base class when the the model is done.
-    public class GwintContextInitializer : DropCreateDatabaseAlways<GwintContext>
-    //public class GwintContextInitializer : DropCreateDatabaseIfModelChanges<GwintContext>
+    //public class GwintContextInitializer : DropCreateDatabaseAlways<GwintContext>
+    public class GwintContextInitializer : CreateDatabaseIfNotExists<GwintContext>
     {
         protected override void Seed(GwintContext context)
         {

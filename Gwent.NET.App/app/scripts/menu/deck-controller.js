@@ -17,11 +17,9 @@
                 cardService.methods.getCards().then(function (cards) {
                     $log.info('Cards updated.');
                     data.cards = cards;
-                    data.error = '';
                 }, function (msg) {
                     $log.error('Unable to retrieve cards.');
                     data.cards = [];
-                    data.error = 'Unable to retrieve cards.';
                 });
             };
 
@@ -29,11 +27,9 @@
                 backendService.methods.getDecks().then(function (decks) {
                     $log.info('Decks updated.');
                     data.decks = decks;
-                    data.error = '';
                 }, function (msg) {
                     $log.error('Unable to retrieve decks.');
                     data.decks = [];
-                    data.error = 'Unable to retrieve decks.';
                 });
             };
 
@@ -99,11 +95,9 @@
                 });
                 backendService.methods.createDeck(deckDto).then(function (response) {
                     $log.info('Deck created.');
-                    data.error = '';
                     methods.showDecks();
                 }, function (msg) {
                     $log.error('Unable to create deck.');
-                    data.error = 'Unable to create deck.';
                 });
             };
 
@@ -118,7 +112,7 @@
             methods.getUnitCardsCount = function () {
                 var unitCardCount = 0;
                 angular.forEach(data.create.cards, function (card) {
-                    if (gwintTypeService.methods.hasType(card.Type, 'Creature')) {
+                    if (gwintTypeService.hasType(card.Type, 'Creature')) {
                         unitCardCount += card.Count;
                     }
                 });
@@ -128,7 +122,7 @@
             methods.getSpecialCardsCount = function () {
                 var specialCardCount = 0;
                 angular.forEach(data.create.cards, function (card) {
-                    if (gwintTypeService.methods.hasAnyType(card.Type, ['Spell', 'RowModifier', 'GlobalEffect', 'Weather'])) {
+                    if (!gwintTypeService.hasType(card.Type, 'Creature')) {
                         specialCardCount += card.Count;
                     }
                 });
@@ -146,7 +140,7 @@
             methods.getHeroCardsCount = function () {
                 var heroCount = 0;
                 angular.forEach(data.create.cards, function (card) {
-                    if (gwintTypeService.methods.hasType(card.Type, 'Hero')) {
+                    if (gwintTypeService.hasType(card.Type, 'Hero')) {
                         heroCount += card.Count;
                     }
                 });

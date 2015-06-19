@@ -160,7 +160,6 @@
     <Compile Include="Controllers\AuthenticatedApiController.cs" />
     <Compile Include="Controllers\CardController.cs" />
     <Compile Include="Controllers\DeckController.cs" />
-    <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Command.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Events\PassEvent.cs" />
     <Compile Include="DTOs\CommandType.cs" />
     <Compile Include="Commands\EndRedrawCardCommand.cs" />
@@ -93,7 +94,6 @@
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="GwentPerRequestModule.cs" />
     <Compile Include="Model\Card.cs" />
-    <Compile Include="Model\GwentConstants.cs" />
     <Compile Include="Model\CustomGwintCardDefinitions.cs" />
     <Compile Include="Model\GwentFaction.cs" />
     <Compile Include="Model\GwintEffect.cs" />

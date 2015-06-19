@@ -6,32 +6,11 @@ namespace Gwent.NET.DTOs
     {
         public GameDto()
         {
-            Players = new List<PlayerDto>();
+            Players = new Dictionary<string, PlayerDto>();
         }
 
         public int Id { get; set; }
         public string State { get; set; }
-        public List<PlayerDto> Players { get; set; }
-
-        public GameDto StripPrivateInfo()
-        {
-            foreach (var playerDto in Players)
-            {
-                playerDto.HandCards.Clear();
-            }
-            return this;
-        }
-
-        public GameDto StripOpponentPrivateInfo(int userId)
-        {
-            foreach (var playerDto in Players)
-            {
-                if (playerDto.UserId != userId)
-                {
-                    playerDto.HandCards.Clear();
-                }
-            }
-            return this;
-        }
+        public Dictionary<string, PlayerDto> Players { get; set; }
     }
 }

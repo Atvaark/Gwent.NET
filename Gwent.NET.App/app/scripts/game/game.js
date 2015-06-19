@@ -105,60 +105,74 @@
         })
         .factory('gwintTypeService', function () {
             var gwintTypeService = {}
-            gwintTypeService.types = [
-                { id: 0, name: 'None' },
-                { id: 1, name: 'Backstab' },
-                { id: 2, name: 'MoraleBoost' },
-                { id: 3, name: 'Ambush' },
-                { id: 4, name: 'ToughSkin' },
-                { id: 5, name: 'Bin2' },
-                { id: 6, name: 'Bin3' },
-                { id: 7, name: 'MeleeScorch' },
-                { id: 8, name: 'EleventhCard' },
-                { id: 9, name: 'ClearWeather' },
-                { id: 10, name: 'PickWeather' },
-                { id: 11, name: 'PickRain' },
-                { id: 12, name: 'PickFog' },
-                { id: 13, name: 'PickFrost' },
-                { id: 14, name: 'View3Enemy' },
-                { id: 15, name: 'Resurrect' },
-                { id: 16, name: 'ResurrectEnemy' },
-                { id: 17, name: 'Bin2Pick1' },
-                { id: 18, name: 'MeleeHorn' },
-                { id: 19, name: 'RangeHorn' },
-                { id: 20, name: 'SiegeHorn' },
-                { id: 21, name: 'SiegScorch' },
-                { id: 22, name: 'CounerKing' },
-                { id: 23, name: 'Melee' },
-                { id: 24, name: 'Ranged' },
-                { id: 25, name: 'Siege' },
-                { id: 26, name: 'UnsummonDummy' },
-                { id: 27, name: 'Horn' },
-                { id: 28, name: 'Draw' },
-                { id: 29, name: 'Scorch' },
-                { id: 30, name: 'ClearSky' },
-                { id: 31, name: 'SummonClones' },
-                { id: 32, name: 'ImproveNeighbours' },
-                { id: 33, name: 'Nurse' },
-                { id: 34, name: 'Draw2' },
-                { id: 35, name: 'SameTypeMorale' }
-            ];
+            gwintTypeService.types = {
+                None: 0,
+                Melee: 1 << 0,
+                Ranged: 1 << 1,
+                RangedMelee: 1 << 0 | 1 << 1,
+                Siege: 1 << 2,
+                SiegeRangedMelee: 1 << 0 | 1 << 1 | 1 << 2,
+                Creature: 1 << 3,
+                Weather: 1 << 4,
+                Spell: 1 << 5,
+                RowModifier: 1 << 6,
+                Hero: 1 << 7,
+                Spy: 1 << 8,
+                FriendlyEffect: 1 << 9,
+                OffensiveEffect: 1 << 10,
+                GlobalEffect: 1 << 11
+            };
+
+            gwintTypeService.hasType = function (types, typeName) {
+                return (types & gwintTypeService.types[typeName]) > 0;
+            };
+
+            gwintTypeService.hasAnyType = function (type, typeNames) {
+                var typeMask = 0;
+
+                if (typeNames === undefined || typeNames === null || typeNames === []) {
+                    return false;
+                }
+
+                angular.forEach(typeNames, function (typeName) {
+                    typeMask = typeMask | gwintTypeService.types[typeName];
+                });
+
+                return (type & typeMask) > 0;
+            };
+
+            gwintTypeService.hasAllTypes = function (type, typeNames) {
+                var typeMask = 0;
+
+                if (typeNames === undefined || typeNames === null || typeNames === []) {
+                    return false;
+                }
+
+                angular.forEach(typeNames, function (typeName) {
+                    typeMask = typeMask | gwintTypeService.types[typeName];
+                });
+
+                return (type & typeMask) === typeMask;
+            };
+
             return gwintTypeService;
         })
-        .filter('gwintType', function () {
+        .filter('gwintType', function (gwintTypeService) {
             return function (cards, allowedTypes) {
                 var tempCards = [];
+                var allowedTypesMask = 0;
 
-                if (allowedTypes === undefined || allowedTypes === []) {
+                if (allowedTypes === undefined || allowedTypes === null || allowedTypes === []) {
                     return tempCards;
                 }
 
+                angular.forEach(allowedTypes, function (allowedType) {
+                    allowedTypesMask = allowedTypesMask | gwintTypeService.types[allowedType];
+                });
+
                 angular.forEach(cards, function (card) {
-                    for (var i = 0; i < allowedTypes.length; i++) {
-                        if (card.Type & allowedTypes[i]) {
-                            tempCards.push(card);
-                            return;
-                        }
+                    if (card.Type & allowedTypesMask) {
+                        tempCards.push(card);
                     }
                 });
 
@@ -167,57 +181,191 @@
         })
         .factory('gwintEffectService', function () {
             var gwintEffectService = {
-                effects: [
-                    { id: 0, name: 'None' },
-                    { id: 1 << 0, name: 'Melee' },
-                    { id: 1 << 1, name: 'Ranged' },
-                    { id: 1 << 0 | 1 << 1, name: 'RangedMelee' },
-                    { id: 1 << 2, name: 'Siege' },
-                    { id: 1 << 0 | 1 << 1 | 1 << 2, name: 'SiegeRangedMelee' },
-                    { id: 1 << 3, name: 'Creature' },
-                    { id: 1 << 4, name: 'Weather' },
-                    { id: 1 << 5, name: 'Spell' },
-                    { id: 1 << 6, name: 'RowModifier' },
-                    { id: 1 << 7, name: 'Hero' },
-                    { id: 1 << 8, name: 'Spy' },
-                    { id: 1 << 9, name: 'FriendlyEffect' },
-                    { id: 1 << 10, name: 'OffensiveEffect' },
-                    { id: 1 << 11, name: 'GlobalEffect' }
-                ]
-            };
-            gwintEffectService.methods = {
-                getEffects: function (effects) {
-                    var tempEffects = [];
-                    angular.forEach(gwintEffectService.effects, function (effect) {
-                        if (effects & effect.id) {
-                            tempEffects.push(effect);
-                        }
-                    });
-                    return tempEffects;
+                effects: {
+                    None: 0,
+                    Backstab: 1,
+                    MoraleBoost: 2,
+                    Ambush: 3,
+                    ToughSkin: 4,
+                    Bin2: 5,
+                    Bin3: 6,
+                    MeleeScorch: 7,
+                    EleventhCard: 8,
+                    ClearWeather: 9,
+                    PickWeather: 10,
+                    PickRain: 11,
+                    PickFog: 12,
+                    PickFrost: 13,
+                    View3Enemy: 14,
+                    Resurrect: 15,
+                    ResurrectEnemy: 16,
+                    Bin2Pick1: 17,
+                    MeleeHorn: 18,
+                    RangeHorn: 19,
+                    SiegeHorn: 20,
+                    SiegScorch: 21,
+                    CounerKing: 22,
+                    Melee: 23,
+                    Ranged: 24,
+                    Siege: 25,
+                    UnsummonDummy: 26,
+                    Horn: 27,
+                    Draw: 28,
+                    Scorch: 29,
+                    ClearSky: 30,
+                    SummonClones: 31,
+                    ImproveNeighbours: 32,
+                    Nurse: 33,
+                    Draw2: 34,
+                    SameTypeMorale: 35
                 }
-            }
+            };
+
+            gwintEffectService.hasEffect = function (effect, effectName) {
+                return effect === gwintEffectService.effects[effectName];
+            };
+
+            gwintEffectService.hasNotEffect = function (effect, effectName) {
+                return effect !== gwintEffectService.effects[effectName];
+            };
+
+            gwintEffectService.hasAnyEffect = function (effect, effectNames) {
+                if (effectNames === undefined || effectNames === null || effectNames === []) {
+                    return false;
+                }
+
+                for (var i = 0; i < effectNames.length; i++) {
+                    if (effect === gwintEffectService.effects[effectNames[i]]) {
+                        return true;
+                    }
+                }
+                return false;
+            };
 
             return gwintEffectService;
         })
-        .filter('gwintEffect', function () {
+        .filter('gwintEffect', function (gwintEffectService) {
             return function (cards, allowedEffects) {
                 var tempCards = [];
 
-                if (allowedEffects === undefined || allowedEffects === []) {
+                if (allowedEffects === undefined || allowedEffects === null || allowedEffects === []) {
                     return tempCards;
                 }
 
                 angular.forEach(cards, function (card) {
-                    for (var i = 0; i < allowedEffects.length; i++) {
-                        if (card.Effect & allowedEffects[i]) {
-                            tempCards.push(card);
-                            return;
-                        }
+                    if (gwintEffectService.hasAnyEffect(card.Effect, allowedEffects)) {
+                        tempCards.push(card);
                     }
                 });
 
                 return tempCards;
             }
+        })
+        .factory('gwintSideService', function (gwintTypeService) {
+            var gwintSideService = {};
+            gwintSideService.sides = {
+                Self: {
+                    canPlayCard: function (card) {
+                        return !gwintTypeService.hasAnyType(card.Type, ['Spy', 'OffensiveEffect']);
+                    }
+                },
+                Opponent: {
+                    canPlayCard: function (card) {
+                        return gwintTypeService.hasAnyType(card.Type, ['Spy', 'OffensiveEffect', 'GlobalEffect']);
+                    }
+                }
+            };
+
+            gwintSideService.canPlayCard = function (card, sideName) {
+                for (var side in gwintSideService.sides) {
+                    if (!gwintSideService.sides.hasOwnProperty(side)) {
+                        continue;
+                    }
+
+                    if (side !== sideName) {
+                        continue;
+                    }
+
+                    return gwintSideService.sides[side].canPlayCard(card);
+                }
+
+                return false;
+            }
+
+            return gwintSideService;
+        })
+        .factory('gwintSlotService', function (gwintTypeService) {
+            var gwintSlotService = {};
+
+            gwintSlotService.slots = {
+                None: {
+                    id: 0,
+                    canPlayCard: function () {
+                        return false;
+                    }
+                },
+                Melee: {
+                    id: 1,
+                    canPlayCard: function (card) {
+                        return gwintTypeService.hasAllTypes(card.Type, ['Melee', 'Creature']);
+                    }
+                },
+                Ranged: {
+                    id: 2,
+                    canPlayCard: function (card) {
+                        return gwintTypeService.hasAllTypes(card.Type, ['Ranged', 'Creature']);
+                    }
+                },
+                Siege: {
+                    id: 3,
+                    canPlayCard: function (card) {
+                        return gwintTypeService.hasAllTypes(card.Type, ['Siege', 'Creature']);
+                    }
+                },
+                MeleeModifier: {
+                    id: 4,
+                    canPlayCard: function (card) {
+                        return gwintTypeService.hasAllTypes(card.Type, ['Melee', 'RowModifier']);
+                    }
+                },
+                RangedModifier: {
+                    id: 5,
+                    canPlayCard: function (card) {
+                        return gwintTypeService.hasAllTypes(card.Type, ['Melee', 'RowModifier']);
+                    }
+                },
+                SiegeModifier: {
+                    id: 6,
+                    canPlayCard: function (card) {
+                        return gwintTypeService.hasAllTypes(card.Type, ['Melee', 'RowModifier']);
+                    }
+                },
+                Weather: {
+                    id: 7,
+                    canPlayCard: function (card) {
+                        return gwintTypeService.hasType(card.Type, 'Weather');
+                    }
+                }
+            };
+
+            gwintSlotService.canPlayCard = function (card, slotId) {
+                for (var slotName in gwintSlotService.slots) {
+                    if (!gwintSlotService.slots.hasOwnProperty(slotName)) {
+                        continue;
+                    }
+
+                    var slot = gwintSlotService.slots[slotName];
+                    if (slot.id !== slotId) {
+                        continue;
+                    }
+
+                    return slot.canPlayCard(card);
+                }
+
+                return false;
+            };
+
+            return gwintSlotService;
         })
         .directive('gwCard', function () {
             return {

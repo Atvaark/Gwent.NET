@@ -11,12 +11,12 @@ namespace Gwent.NET
     {
         public static GwintType GetGwintTypes(this Card card)
         {
-            return card.TypeFlags.Aggregate(GwintType.None, (current, typeFlag) => typeFlag.Name);
+            return card.TypeFlags.Aggregate(GwintType.None, (current, typeFlag) => current | typeFlag.Name);
         }
 
         public static GwintEffect GetGwintEffects(this Card card)
         {
-            return card.EffectFlags.Aggregate(GwintEffect.None, (current, effectFlag) => current | effectFlag.Name);
+            return card.EffectFlags.Aggregate(GwintEffect.None, (current, effectFlag) => effectFlag.Name);
         }
 
         public static UserDto ToDto(this User user)
@@ -39,8 +39,8 @@ namespace Gwent.NET
                 Power = card.Power,
                 Picture = card.Picture,
                 Faction = card.FactionIndex,
-                Type = card.GetGwintTypes(),
-                Effect = card.GetGwintEffects(),
+                Type = card.Types,
+                Effect = card.Effects,
                 SummonFlags = card.SummonFlags.Select(s => s.SummonCardId).ToList(),
                 IsBattleKing = card.IsBattleKing
             };
@@ -58,13 +58,38 @@ namespace Gwent.NET
             };
         }
 
-        public static GameDto ToDto(this Game game)
+        public static GameBrowseDto ToGameBrowseDto(this Game game)
         {
+            return new GameBrowseDto
+            {
+                Id = game.Id,
+                State = game.State.Name,
+                PlayerCount = game.Players.Count
+            };
+        }
+
+        public static GameDto ToPersonalizedDto(this Game game, int userId)
+        {
+            Dictionary<string, PlayerDto> players = new Dictionary<string, PlayerDto>();
+            foreach (var player in game.Players)
+            {
+                if (player.User.Id == userId)
+                {
+                    players[Constants.PlayerKeySelf] = player.ToDto();
+                }
+                else
+                {
+                    var opponentDto = player.ToDto();
+                    opponentDto.HandCards.Clear();
+                    players[Constants.PlayerKeyOpponent] = opponentDto;
+                }
+            }
+            
             return new GameDto
             {
                 Id = game.Id,
                 State = game.State.Name,
-                Players = game.Players.Select(p => p.ToDto()).ToList()
+                Players = players
             };
         }
 
@@ -72,8 +97,8 @@ namespace Gwent.NET
         {
             return new PlayerDto
             {
-                UserId = player.User.Id,
-                UserName = player.User.Name,
+                Id = player.User.Id,
+                Name = player.User.Name,
                 IsLobbyOwner = player.IsOwner,
                 Lives = player.Lives,
                 HandCardCount = player.HandCards.Count,

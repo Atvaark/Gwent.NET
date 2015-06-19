@@ -9,8 +9,6 @@ namespace Gwent.NET.Commands
 {
     public class StartGameCommand : Command
     {
-        private const int RequiredPlayerCount = 2;
-
         public override void Execute(Game game)
         {
             LobbyState state = game.State as LobbyState;
@@ -27,7 +25,7 @@ namespace Gwent.NET.Commands
             {
                 throw new CommandException();
             }
-            if (game.Players.Count != RequiredPlayerCount)
+            if (game.Players.Count != Constants.MinPlayerCount)
             {
                 throw new CommandException();
             }

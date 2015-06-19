@@ -7,10 +7,6 @@ namespace Gwent.NET.Model.States
 {
     public class RedrawState : State
     {
-        private const int InitialRedrawCount = 2;
-        private const int InitialHandCardCount = 10;
-        private const int InitialIncreasedHandCardCount = 11;
-
         public virtual ICollection<RedrawPlayerSubstate> Substates { get; set; }
 
         public override string Name
@@ -50,7 +46,7 @@ namespace Gwent.NET.Model.States
             Substates.Add(new RedrawPlayerSubstate
             {
                 UserId = player.User.Id,
-                RedrawCardCount = InitialRedrawCount
+                RedrawCardCount = Constants.InitialRedrawCount
             });
 
             return new HandChangedEvent(new[] { player.User.Id })
@@ -68,10 +64,10 @@ namespace Gwent.NET.Model.States
 
         private static int GetInitialHandCardCount(Player player)
         {
-            var handCardCount = InitialHandCardCount;
+            var handCardCount = Constants.InitialHandCardCount;
             if (player.Deck.BattleKingCard.Effects.HasFlag(GwintEffect.EleventhCard))
             {
-                handCardCount = InitialIncreasedHandCardCount;
+                handCardCount = Constants.InitialIncreasedHandCardCount;
             }
 
             return handCardCount;

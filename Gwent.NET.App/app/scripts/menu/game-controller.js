@@ -15,12 +15,10 @@
                 gameHubService.browseGames().then(function(games) {
                     $log.info('getting games successful');
                     data.games = games;
-                    data.error = '';
                     deferred.resolve();
 
                 }, function () {
                     $log.error('unable to get games');
-                    data.error = 'unable to get games';
                     deferred.reject();
                     });
 
@@ -36,11 +34,11 @@
                     } else {
                         $log.info('active game found');
                     }
+
                     data.game = game;
                     deferred.resolve(game);
                 }, function (error) {
                     $log.error(error);
-                    data.error = error;
                     deferred.reject(error);
                 });
                 return deferred.promise;
@@ -53,9 +51,8 @@
                     data.game = game;
                     deferred.resolve(game);
                 }, function (error) {
-                    $log.error('unable to create game');
-                    data.error = 'unable to create game';
-                    data.game = {};
+                    $log.error('unable to create game: ' +error);
+                    data.game = null;
                     deferred.reject();
                 });
                 return deferred.promise;
@@ -67,9 +64,8 @@
                     data.game = game;
                     $state.go('menu.game.lobby');
                 }, function (error) {
-                    $log.error('unable to join game');
-                    data.error = 'unable to join game';
-                    data.game = {};
+                    $log.error('unable to join game: ' +error);
+                    data.game = null;
                 });
             }
 

@@ -31,11 +31,9 @@
             methods.logout = function () {
                 userService.logout().then(function () {
                     $log.info('Logout successful');
-                    data.error = '';
                     setUser(null);
                 }, function () {
                     $log.error('Logout failed');
-                    data.error = 'Logout failed';
                     setUser(null);
                 });
             };

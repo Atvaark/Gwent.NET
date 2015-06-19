@@ -22,7 +22,7 @@ namespace Gwent.NET.Webservice.Hubs
     {
         private readonly ILifetimeScope _lifetimeScope;
         // TODO: Use a bi-directional dictionary instead or a repository
-        private static readonly ConcurrentDictionary<string, string> UserIdConnectionIdDictionary = new ConcurrentDictionary<string, string>();
+        private static readonly ConcurrentDictionary<string, string> UserIdToConnectionIdDictionary = new ConcurrentDictionary<string, string>();
 
         private int UserId
         {
@@ -52,16 +52,16 @@ namespace Gwent.NET.Webservice.Hubs
         {
             string userId = Context.User.Identity.GetUserId();
             var connectionId = Context.ConnectionId;
-            UserIdConnectionIdDictionary.AddOrUpdate(userId, connectionId, (key, oldValue) => connectionId);
+            UserIdToConnectionIdDictionary.AddOrUpdate(userId, connectionId, (key, oldValue) => connectionId);
         }
 
         public override Task OnDisconnected(bool stopCalled)
         {
-            var keys = UserIdConnectionIdDictionary.Where(kv => kv.Value == Context.ConnectionId).Select(kv => kv.Key);
+            var keys = UserIdToConnectionIdDictionary.Where(kv => kv.Value == Context.ConnectionId).Select(kv => kv.Key);
             foreach (var key in keys)
             {
                 string connectionId;
-                UserIdConnectionIdDictionary.TryRemove(key, out connectionId);
+                UserIdToConnectionIdDictionary.TryRemove(key, out connectionId);
             }
 
             return base.OnDisconnected(stopCalled);
@@ -84,18 +84,25 @@ namespace Gwent.NET.Webservice.Hubs
                 return new GameHubResult<ICollection<GameBrowseDto>>
                 {
                     Data = context.Games
-                    .Where(g => g.IsActive && g.IsActive)
+                    .Where(g => g.IsActive)
+                    .Select(g => new
+                    {
+                        Id = g.Id,
+                        State = g.State,
+                        PlayerCount = g.Players.Count
+                    })
                     .AsEnumerable()
                     .Select(g => new GameBrowseDto
                     {
                         Id = g.Id,
                         State = g.State.Name,
-                        PlayerCount = g.Players.Count
-                    }).ToList()
+                        PlayerCount = g.PlayerCount
+                    })
+                    .ToList()
                 };
             }
         }
-
+        
         public GameHubResult<GameDto> GetActiveGame()
         {
             using (var context = _lifetimeScope.Resolve<IGwintContext>())
@@ -111,7 +118,7 @@ namespace Gwent.NET.Webservice.Hubs
                 }
                 return new GameHubResult<GameDto>
                 {
-                    Data = game.ToDto().StripOpponentPrivateInfo(userId)
+                    Data = game.ToPersonalizedDto(userId)
                 };
             }
         }
@@ -128,7 +135,7 @@ namespace Gwent.NET.Webservice.Hubs
                 {
                     return new GameHubResult<GameDto>
                     {
-                        Error = "User not found"
+                        Error = "Hub: User not found"
                     };
                 }
 
@@ -137,7 +144,7 @@ namespace Gwent.NET.Webservice.Hubs
                 {
                     return new GameHubResult<GameDto>
                     {
-                        Error = "Game still running."
+                        Error = "Hub: Game still running."
                     };
                 }
 
@@ -147,7 +154,7 @@ namespace Gwent.NET.Webservice.Hubs
                 {
                     return new GameHubResult<GameDto>
                     {
-                        Error = "No deck found."
+                        Error = "Hub: No deck found."
                     };
                 }
                 
@@ -165,7 +172,7 @@ namespace Gwent.NET.Webservice.Hubs
                 context.SaveChanges();
                 return new GameHubResult<GameDto>
                 {
-                    Data = game.ToDto().StripOpponentPrivateInfo(user.Id)
+                    Data = game.ToPersonalizedDto(userId)
                 };
             }
         }
@@ -217,15 +224,15 @@ namespace Gwent.NET.Webservice.Hubs
                 {
                     return new GameHubResult<GameDto>
                     {
-                        Error = "Game not found."
+                        Error = "Hub: Game not found."
                     };
                 }
 
-                if (game.Players.Count == GwentConstants.MaxPlayerCount)
+                if (game.Players.Count == Constants.MaxPlayerCount)
                 {
                     return new GameHubResult<GameDto>
                     {
-                        Error = "Game is full."
+                        Error = "Hub: Game is full."
                     };
                 }
 
@@ -233,7 +240,7 @@ namespace Gwent.NET.Webservice.Hubs
                 {
                     return new GameHubResult<GameDto>
                     {
-                        Error = "Other game still running."
+                        Error = "Hub: Other game still running."
                     };
                 }
 
@@ -243,7 +250,7 @@ namespace Gwent.NET.Webservice.Hubs
                 {
                     return new GameHubResult<GameDto>
                     {
-                        Error = "No deck found."
+                        Error = "Hub: No deck found."
                     };
                 }
 
@@ -256,7 +263,7 @@ namespace Gwent.NET.Webservice.Hubs
                 DispatchEvents(new Event[] { playerJoinedEvent });
                 return new GameHubResult<GameDto>
                 {
-                    Data = game.ToDto().StripOpponentPrivateInfo(user.Id)
+                    Data = game.ToPersonalizedDto(user.Id)
                 };
             }
         }
@@ -276,7 +283,7 @@ namespace Gwent.NET.Webservice.Hubs
                     {
                         return new GameHubResult<GameDto>
                         {
-                            Error = "No running game found."
+                            Error = "Hub: No running game found."
                         };
                     }
 
@@ -300,7 +307,7 @@ namespace Gwent.NET.Webservice.Hubs
 
                 return new GameHubResult<GameDto>
                 {
-                    Error = "Internal server error"
+                    Error = "Hub: Internal server error"
                 };
             }
         }
@@ -317,7 +324,7 @@ namespace Gwent.NET.Webservice.Hubs
                 foreach (var recipient in gameEvent.Recipients)
                 {
                     string connectionId;
-                    if (UserIdConnectionIdDictionary.TryGetValue(recipient.ToString(), out connectionId))
+                    if (UserIdToConnectionIdDictionary.TryGetValue(recipient.ToString(), out connectionId))
                     {
                         Clients.Client(connectionId).recieveServerEvent(gameEvent);
                     }
