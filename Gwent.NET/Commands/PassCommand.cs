@@ -38,10 +38,6 @@ namespace Gwent.NET.Commands
             opponent.IsTurn = true;
 
             Events.Add(new PassEvent(new[] { opponent.User.Id }));
-            Events.Add(new TurnEvent(new[] { opponent.User.Id })
-            {
-                TurnUserId = opponent.User.Id
-            });
         }
     }
 }

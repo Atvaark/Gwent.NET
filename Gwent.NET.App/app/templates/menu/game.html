@@ -5,6 +5,7 @@
 <div ng-show="data.game != null">
     <button type="button" ng-click="methods.resumeGame()">Resume game</button>
     <button type="button" ng-click="methods.getActiveGame()">Force refresh game</button>
+    <button type="button" ng-show="data.game.State == 'GameEnd'" ng-click="methods.leaveGame()">Leave game</button>
 </div>
 <div ng-show="data.game != null">
     <button type="button" ng-show="data.game.State == 'Lobby'" ng-click="methods.sendStartCommand()">Start</button>

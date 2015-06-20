@@ -285,7 +285,7 @@
 
             gameHubService.recieveServerEvent = function (event) {
                 var eventString = JSON.stringify(event);
-                $log.info('server event recieved' + eventString);
+                $log.info('server event recieved: ' + eventString);
                 $rootScope.$broadcast('serverEventRecieved', event);
             };
 

@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
-using Gwent.NET.Model.States;
+using Gwent.NET.DTOs;
 
 namespace Gwent.NET.Events
 {
     public class StateChangeEvent : Event
     {
-        public State State { get; set; }
+        public GameDto Game { get; set; }
 
-        public StateChangeEvent(IEnumerable<int> eventRecipients) : base(eventRecipients)
+        public StateChangeEvent(int eventRecipient) : base(eventRecipient)
         {
 
         }

@@ -25,6 +25,10 @@
                 return deferred.promise;
             };
 
+            methods.leaveGame = function() {
+                data.game = null;
+            };
+
             methods.getActiveGame = function () {
                 var deferred = $q.defer();
 
@@ -185,7 +189,21 @@
                     $log.error('unable to use battle king card: ' + error);
                 });
             };
+            
+            var onServerEventRecieved = function (event, args) {
+                $log.info('game-controller: handling event: ' + args.Name);
+                if (args.Name === 'StateChangeEvent' ||
+                    args.Name === 'PlayerJoinedEvent') {
+                    data.game = args.Game;
+                    $log.info('game-controller: ' + args.Name + ' handled');
+                } else if (args.Name === 'HandChangedEvent') {
+                    data.game.Players['Self'].HandCards = args.HandCards;
+                    $log.info('game-controller: ' + args.Name + ' handled');
+                }
+                $scope.$apply();
+            };
 
+            $scope.$on('serverEventRecieved', onServerEventRecieved);
 
             // Initializing game page
             gameHubService.connect().then(function () {

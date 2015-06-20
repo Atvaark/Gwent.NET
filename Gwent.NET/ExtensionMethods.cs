@@ -100,9 +100,15 @@ namespace Gwent.NET
                 Id = player.User.Id,
                 Name = player.User.Name,
                 IsLobbyOwner = player.IsOwner,
+
+                IsPassing = player.IsPassing,
+                IsTurn = player.IsTurn,
+                CanUseBattleKingCard = player.CanUseBattleKingCard,
                 Lives = player.Lives,
+
                 HandCardCount = player.HandCards.Count,
                 DeckCardCount = player.DeckCards.Count,
+
                 HandCards = player.HandCards.Select(c => c.Id).ToList(),
                 GraveyardCards = player.GraveyardCards.Select(c => c.Id).ToList(),
                 MeleeCards = player.CardSlots.Where(s => s.Slot == GwintSlot.Melee).Select(s => s.Card.Id).ToList(),

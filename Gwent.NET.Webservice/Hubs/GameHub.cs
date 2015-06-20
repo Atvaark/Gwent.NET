@@ -126,10 +126,9 @@ namespace Gwent.NET.Webservice.Hubs
 
         public GameHubResult<GameDto> CreateGame()
         {
-            int userId = UserId;
-
             using (var context = _lifetimeScope.Resolve<IGwintContext>())
             {
+                int userId = UserId;
                 var user = context.Users.FirstOrDefault(u => u.Id == userId);
                 if (user == null)
                 {
@@ -219,6 +218,13 @@ namespace Gwent.NET.Webservice.Hubs
             using (var context = _lifetimeScope.Resolve<IGwintContext>())
             {
                 var user = context.Users.FirstOrDefault(u => u.Id == UserId);
+                if (user == null)
+                {
+                    return new GameHubResult<GameDto>
+                    {
+                        Error = "Hub: User not found"
+                    };
+                }
                 var game = context.Games.Find(gameId);
                 if (game == null)
                 {
@@ -254,12 +260,17 @@ namespace Gwent.NET.Webservice.Hubs
                     };
                 }
 
-                var playerJoinedEvent = new PlayerJoinedEvent(game.GetAllUserIds());
                 var player = context.Players.Create();
                 player.User = user;
                 player.Deck = primaryDeck;
                 game.Players.Add(player);
                 context.SaveChanges();
+
+                var opponentUserId = game.GetOpponentPlayerByUserId(user.Id).User.Id;
+                var playerJoinedEvent = new PlayerJoinedEvent(opponentUserId)
+                {
+                    Game = game.ToPersonalizedDto(opponentUserId)
+                };
                 DispatchEvents(new Event[] { playerJoinedEvent });
                 return new GameHubResult<GameDto>
                 {
@@ -273,12 +284,12 @@ namespace Gwent.NET.Webservice.Hubs
             try
             {
                 Command command = CreateCommand(commandDto);
-                int userId = UserId;
-                command.SenderUserId = userId;
+                int senderUserId = UserId;
+                command.SenderUserId = senderUserId;
 
                 using (var context = _lifetimeScope.Resolve<IGwintContext>())
                 {
-                    Game game = GetActiveGameByUserId(context, userId);
+                    Game game = GetActiveGameByUserId(context, senderUserId);
                     if (game == null)
                     {
                         return new GameHubResult<GameDto>
@@ -334,7 +345,7 @@ namespace Gwent.NET.Webservice.Hubs
 
         private Command CreateCommand(CommandDto commandDto) // TODO: Move to a command factory class
         {
-            if (commandDto == null) throw new ArgumentNullException("commandDto");
+            if (commandDto == null) throw new CommandParseException("Unknown command");
             switch (commandDto.Type)
             {
                 case CommandType.StartGame:

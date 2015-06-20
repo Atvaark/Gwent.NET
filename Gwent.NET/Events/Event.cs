@@ -19,6 +19,11 @@ namespace Gwent.NET.Events
             get { return _recipients; }
         }
 
+        public Event(int eventRecipient)
+        {
+            _recipients = new List<int> { eventRecipient };
+        }
+
         public Event(IEnumerable<int> eventRecipients)
         {
             _recipients = eventRecipients.ToList();

@@ -15,7 +15,12 @@ namespace Gwent.NET.Model.States
         {
             var roundStarter = game.Players.First(g => g.IsRoundStarter);
             roundStarter.IsTurn = true;
-            yield return new TurnEvent(game.GetAllUserIds());
+
+            return game.Players.Select(player => new TurnEvent(player.User.Id)
+            {
+                Game = game.ToPersonalizedDto(player.User.Id)
+            });
+
         }
     }
 }

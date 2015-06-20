@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Gwent.NET.Events;
 using Gwent.NET.Exceptions;
 using Gwent.NET.Model;
 using Gwent.NET.Model.States;
@@ -51,6 +52,12 @@ namespace Gwent.NET.Commands
             sender.DeckCards.Clear();
             sender.DeckCards.AddRange(deckCards);
             sender.IsTurn = substate.RedrawCardCount > 0;
+
+
+            Events.Add(new HandChangedEvent(sender.User.Id)
+            {
+                HandCards = sender.HandCards.Select(c => c.Id).ToList()
+            });
             
             if (substate.RedrawCardCount != 0 || opponentSubstate.RedrawCardCount != 0)
             {

@@ -6,7 +6,8 @@ namespace Gwent.NET.Events
     {
         public List<int> HandCards { get; set; }
 
-        public HandChangedEvent(IEnumerable<int> eventRecipients) : base(eventRecipients)
+        public HandChangedEvent(int eventRecipient)
+            : base(eventRecipient)
         {
 
         }

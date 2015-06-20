@@ -2,7 +2,8 @@
     'use strict';
 
     angular.module('app.menu', [])
-        .config(function ($stateProvider) {
+        .config(function ($stateProvider, $locationProvider) {
+            //$locationProvider.html5Mode(true);
             $stateProvider
                 .state('menu', {
                     url: '',

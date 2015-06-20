@@ -49,7 +49,7 @@ namespace Gwent.NET.Model.States
                 RedrawCardCount = Constants.InitialRedrawCount
             });
 
-            return new HandChangedEvent(new[] { player.User.Id })
+            return new HandChangedEvent(player.User.Id)
             {
                 HandCards = handCards.Select(c => c.Id).ToList()
             };

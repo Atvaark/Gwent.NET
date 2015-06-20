@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Gwent.NET.Events;
 using Gwent.NET.Model;
 using Gwent.NET.Model.States;
@@ -22,11 +23,13 @@ namespace Gwent.NET.Commands
             var nextStateEvents = nextState.Initialize(game);
             Events.AddRange(nextStateEvents);
             game.State = nextState;
-            var stateChangeEvent = new StateChangeEvent(game.GetAllUserIds())
+
+            var stateChangeEvents = game.Players.Select(player => new StateChangeEvent(player.User.Id)
             {
-                State = nextState
-            };
-            Events.Add(stateChangeEvent);
+                Game = game.ToPersonalizedDto(player.User.Id)
+            });
+
+            Events.AddRange(stateChangeEvents);
         }
     }
 }
