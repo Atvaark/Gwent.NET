@@ -46,23 +46,23 @@
             };
 
             methods.addDeckCard = function (card) {
-                var deckCard = methods.findDeckCard(card.Index);
+                var deckCard = methods.findDeckCard(card.index);
                 if (deckCard) {
-                    deckCard.Count = deckCard.Count + 1;
+                    deckCard.count = deckCard.count + 1;
                     return;
                 }
                 deckCard = {
-                    Index: card.Index,
-                    Title: card.Title,
-                    Description: card.Description,
-                    Power: card.Power,
-                    Picture: card.Picture,
-                    Faction: card.Faction,
-                    Type: card.Type,
-                    Effect: card.Effect,
-                    SummonFlags: card.SummonFlags,
-                    IsBattleKing: card.IsBattleKing,
-                    Count: 1
+                    index: card.index,
+                    title: card.title,
+                    description: card.description,
+                    power: card.power,
+                    picture: card.picture,
+                    faction: card.faction,
+                    type: card.type,
+                    effect: card.effect,
+                    summonFlags: card.summonFlags,
+                    isBattleKing: card.isBattleKing,
+                    count: 1
                 };
                 data.create.cards.push(deckCard);
             };
@@ -74,7 +74,7 @@
             methods.findDeckCard = function (cardIndex) {
                 var foundCard = null;
                 angular.forEach(data.create.cards, function (deckCard) {
-                    if (deckCard.Index === cardIndex) {
+                    if (deckCard.index === cardIndex) {
                         foundCard = deckCard;
                         return;
                     }
@@ -85,12 +85,12 @@
             methods.createDeck = function () {
                 var deckDto = {
                     Cards: [],
-                    Faction: data.create.faction,
+                    faction: data.create.faction,
                     BattleKingCard: data.create.battleKing
                 };
                 angular.forEach(data.create.cards, function (card) {
-                    for (var i = 0; i < card.Count; i++) {
-                        deckDto.Cards.push(card.Index);
+                    for (var i = 0; i < card.count; i++) {
+                        deckDto.Cards.push(card.index);
                     }
                 });
                 backendService.methods.createDeck(deckDto).then(function (response) {
@@ -104,7 +104,7 @@
             methods.getTotalCardsInDeck = function () {
                 var count = 0;
                 angular.forEach(data.create.cards, function(card) {
-                    count += card.Count;
+                    count += card.count;
                 });
                 return count;
             };
@@ -112,8 +112,8 @@
             methods.getUnitCardsCount = function () {
                 var unitCardCount = 0;
                 angular.forEach(data.create.cards, function (card) {
-                    if (gwintTypeService.hasType(card.Type, 'Creature')) {
-                        unitCardCount += card.Count;
+                    if (gwintTypeService.hasType(card.type, 'Creature')) {
+                        unitCardCount += card.count;
                     }
                 });
                 return unitCardCount;
@@ -122,8 +122,8 @@
             methods.getSpecialCardsCount = function () {
                 var specialCardCount = 0;
                 angular.forEach(data.create.cards, function (card) {
-                    if (!gwintTypeService.hasType(card.Type, 'Creature')) {
-                        specialCardCount += card.Count;
+                    if (!gwintTypeService.hasType(card.type, 'Creature')) {
+                        specialCardCount += card.count;
                     }
                 });
                 return specialCardCount;
@@ -132,7 +132,7 @@
             methods.getTotalUnitCardStrength = function () {
                 var powerSum = 0;
                 angular.forEach(data.create.cards, function (card) {
-                    powerSum += card.Power * card.Count;
+                    powerSum += card.power * card.count;
                 });
                 return powerSum;
             };
@@ -140,8 +140,8 @@
             methods.getHeroCardsCount = function () {
                 var heroCount = 0;
                 angular.forEach(data.create.cards, function (card) {
-                    if (gwintTypeService.hasType(card.Type, 'Hero')) {
-                        heroCount += card.Count;
+                    if (gwintTypeService.hasType(card.type, 'Hero')) {
+                        heroCount += card.count;
                     }
                 });
                 return heroCount;

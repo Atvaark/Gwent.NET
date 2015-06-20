@@ -5,27 +5,27 @@
 <div ng-show="data.game != null">
     <button type="button" ng-click="methods.resumeGame()">Resume game</button>
     <button type="button" ng-click="methods.getActiveGame()">Force refresh game</button>
-    <button type="button" ng-show="data.game.State == 'GameEnd'" ng-click="methods.leaveGame()">Leave game</button>
+    <button type="button" ng-show="data.game.state == 'GameEnd'" ng-click="methods.leaveGame()">Leave game</button>
 </div>
 <div ng-show="data.game != null">
-    <button type="button" ng-show="data.game.State == 'Lobby'" ng-click="methods.sendStartCommand()">Start</button>
+    <button type="button" ng-show="data.game.state == 'Lobby'" ng-click="methods.sendStartCommand()">Start</button>
     <button type="button" ng-click="methods.sendForfeitGameCommand()">Forfeit</button>
-    <div ng-show="data.game.State == 'PickStartingPlayer'">
+    <div ng-show="data.game.state == 'PickStartingPlayer'">
         <select name="startingPlayer" ng-model="data.input.startingPlayer">
-            <option ng-repeat="player in data.game.Players" value="{{player.Id}}">{{player.Name}}</option>
+            <option ng-repeat="player in data.game.players" value="{{player.id}}">{{player.name}}</option>
         </select>
         <button type="button" ng-click="methods.sendPickStartingPlayerCommand(data.input.startingPlayer)">Pick player</button>
     </div>
-    <div ng-show="data.game.State == 'Redraw'">
+    <div ng-show="data.game.state == 'Redraw'">
         <select name="redrawCard" ng-model="data.input.redrawCard">
-            <option ng-repeat="handCard in data.game.Players['Self'].HandCards" value="{{handCard}}">{{handCard}}</option>
+            <option ng-repeat="handCard in data.game.players['self'].HandCards" value="{{handCard}}">{{handCard}}</option>
         </select>
         <button type="button" ng-click="methods.sendRedrawCardCommand(data.input.redrawCard)">Redraw</button>
         <button type="button" ng-click="methods.sendEndRedrawCardCommand()">End redrawing</button>
     </div>
-    <div ng-show="data.game.State == 'Round'">
+    <div ng-show="data.game.state == 'Round'">
         <select name="playCard" ng-model="data.input.playCard">
-            <option ng-repeat="handCard in data.game.Players['Self'].HandCards" value="{{handCard}}">{{handCard}}</option>
+            <option ng-repeat="handCard in data.game.players['self'].HandCards" value="{{handCard}}">{{handCard}}</option>
         </select>
         <input type="text" ng-model="data.input.playCardSlot"/>
         <button type="button" ng-click="methods.sendPlayCardCommand(data.input.playCard, data.input.playCardSlot)">Play card</button>

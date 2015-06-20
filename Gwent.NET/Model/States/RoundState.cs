@@ -16,6 +16,11 @@ namespace Gwent.NET.Model.States
             var roundStarter = game.Players.First(g => g.IsRoundStarter);
             roundStarter.IsTurn = true;
 
+            foreach (var player in game.Players)
+            {
+                player.Lives = Constants.InitialLifeCount;
+            }
+
             return game.Players.Select(player => new TurnEvent(player.User.Id)
             {
                 Game = game.ToPersonalizedDto(player.User.Id)

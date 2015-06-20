@@ -2,13 +2,15 @@
 {
     public static class Constants
     {
-        public const string PlayerKeySelf = "Self";
+        public const string PlayerKeySelf = "self";
 
-        public const string PlayerKeyOpponent = "Opponent";
+        public const string PlayerKeyOpponent = "opponent";
 
         public const int MaxPlayerCount = 2;
 
         public const int MinPlayerCount = 2;
+
+        public const int InitialLifeCount = 2;
 
         public const int InitialRedrawCount = 2;
 

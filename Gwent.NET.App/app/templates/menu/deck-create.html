@@ -4,7 +4,7 @@
 </select>
 <label for="battleKing">Leader</label>
 <select id="battleKing" name="battleKing" ng-model="data.create.battleKing">
-    <option ng-repeat="card in data.cards | battleKing | faction: data.create.faction" value="{{card.Index}}">{{card.Title}}</option>
+    <option ng-repeat="card in data.cards | battleKing | faction: data.create.faction" value="{{card.index}}">{{card.title}}</option>
 </select>
 <h4>Card Collection</h4>
 <table>
@@ -18,11 +18,11 @@
     </tr>
     <!-- HACK: 0 for the neutral faction.-->
     <tr ng-repeat="card in data.cards | notBattleKing | factions: [0, data.create.faction]">
-        <td>{{card.Title}}</td>
-        <td>{{card.Faction}}</td>
-        <td>{{card.Power}}</td>
-        <td>{{card.Effect}}</td>
-        <td>{{card.Type}}</td>
+        <td>{{card.title}}</td>
+        <td>{{card.faction}}</td>
+        <td>{{card.power}}</td>
+        <td>{{card.effect}}</td>
+        <td>{{card.type}}</td>
         <td><a ng-click="methods.addDeckCard(card)">Add</a></td>
     </tr>
 </table>
@@ -38,12 +38,12 @@
         <th></th>
     </tr>
     <tr ng-repeat="card in data.create.cards">
-        <td>{{card.Title}}</td>
-        <td>{{card.Faction}}</td>
-        <td>{{card.Power}}</td>
-        <td>{{card.Effect}}</td>
-        <td>{{card.Type}}</td>
-        <td>{{card.Count}}</td>
+        <td>{{card.title}}</td>
+        <td>{{card.faction}}</td>
+        <td>{{card.power}}</td>
+        <td>{{card.effect}}</td>
+        <td>{{card.type}}</td>
+        <td>{{card.count}}</td>
         <td><a ng-click="methods.removeDeckCard($index)">Remove</a></td>
     </tr>
 </table>

@@ -7,9 +7,9 @@
         <th></th>
     </tr>
     <tr ng-repeat="game in data.games">
-        <td>{{game.Id}}</td>
-        <td>{{game.PlayerCount}}</td>
-        <td>{{game.State}}</td>
-        <td><a ng-click="methods.joinGame(game.Id)">Join</a></td>
+        <td>{{game.id}}</td>
+        <td>{{game.playerCount}}</td>
+        <td>{{game.state}}</td>
+        <td><a ng-click="methods.joinGame(game.id)">Join</a></td>
     </tr>
 </table>

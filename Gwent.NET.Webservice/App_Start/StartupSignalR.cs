@@ -1,7 +1,12 @@
-﻿using Autofac;
+﻿using System;
+using System.Reflection;
+using Autofac;
 using Autofac.Integration.SignalR;
 using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Infrastructure;
 using Microsoft.Owin.Cors;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Owin;
 
 namespace Gwent.NET.Webservice
@@ -15,7 +20,7 @@ namespace Gwent.NET.Webservice
                 map.UseCors(CorsOptions.AllowAll);
                 var hubConfiguration = new HubConfiguration
                 {
-                    EnableJavaScriptProxies = true,
+                    EnableJavaScriptProxies = false,
                     EnableDetailedErrors = true,
                     Resolver = new AutofacDependencyResolver(container)
                 };

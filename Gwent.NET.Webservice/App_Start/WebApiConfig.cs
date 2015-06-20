@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using Newtonsoft.Json.Serialization;
 
 namespace Gwent.NET.Webservice
 {
@@ -13,6 +14,9 @@ namespace Gwent.NET.Webservice
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver =
+                new CamelCasePropertyNamesContractResolver();
         }
 
     }

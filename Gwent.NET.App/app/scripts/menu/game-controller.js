@@ -12,7 +12,7 @@
 
             methods.getGames = function () {
                 var deferred = $q.defer();
-                gameHubService.browseGames().then(function(games) {
+                gameHubService.browseGames().then(function (games) {
                     $log.info('getting games successful');
                     data.games = games;
                     deferred.resolve();
@@ -20,12 +20,12 @@
                 }, function () {
                     $log.error('unable to get games');
                     deferred.reject();
-                    });
+                });
 
                 return deferred.promise;
             };
 
-            methods.leaveGame = function() {
+            methods.leaveGame = function () {
                 data.game = null;
             };
 
@@ -55,7 +55,7 @@
                     data.game = game;
                     deferred.resolve(game);
                 }, function (error) {
-                    $log.error('unable to create game: ' +error);
+                    $log.error('unable to create game: ' + error);
                     data.game = null;
                     deferred.reject();
                 });
@@ -68,15 +68,15 @@
                     data.game = game;
                     $state.go('menu.game.lobby');
                 }, function (error) {
-                    $log.error('unable to join game: ' +error);
+                    $log.error('unable to join game: ' + error);
                     data.game = null;
                 });
             }
 
-            methods.browseGames = function() {
-                methods.getGames().then(function() {
+            methods.browseGames = function () {
+                methods.getGames().then(function () {
                     $state.go('menu.game.browser');
-                }, function() {
+                }, function () {
                     $state.go('menu.game.browser');
                 });
             };
@@ -87,7 +87,7 @@
                         methods.createGame().then(function () {
                             $log.info('game created');
                             $state.go('menu.game.lobby');
-                        }, function(error) {
+                        }, function (error) {
                             $log.error('unable to create game: ' + error);
                         });
                     });
@@ -189,18 +189,19 @@
                     $log.error('unable to use battle king card: ' + error);
                 });
             };
-            
+
             var onServerEventRecieved = function (event, args) {
-                $log.info('game-controller: handling event: ' + args.Name);
-                if (args.Name === 'StateChangeEvent' ||
-                    args.Name === 'PlayerJoinedEvent') {
-                    data.game = args.Game;
-                    $log.info('game-controller: ' + args.Name + ' handled');
-                } else if (args.Name === 'HandChangedEvent') {
-                    data.game.Players['Self'].HandCards = args.HandCards;
-                    $log.info('game-controller: ' + args.Name + ' handled');
-                }
-                $scope.$apply();
+                $scope.$apply(function () {
+                    $log.info('game-controller: handling event: ' + args.name);
+                    if (args.name === 'StateChangeEvent' ||
+                        args.name === 'PlayerJoinedEvent') {
+                        data.game = args.game;
+                        $log.info('game-controller: ' + args.name + ' handled');
+                    } else if (args.name === 'HandChangedEvent') {
+                        data.game.players["self"].handCards = args.handCards;
+                        $log.info('game-controller: ' + args.name + ' handled');
+                    }
+                });
             };
 
             $scope.$on('serverEventRecieved', onServerEventRecieved);

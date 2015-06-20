@@ -92,7 +92,7 @@
 
             userService.register = function (username, password) {
                 var deferred = $q.defer();
-                $http.post(backendUrl + '/user/register', { Username: username, Password: password })
+                $http.post(backendUrl + '/user/register', { username: username, password: password })
                     .success(function (data) {
                         var user = {
                             id: data.userId,
@@ -318,10 +318,10 @@
                 $log.info('sending client command ' + commandString);
                 gameHubProxy.invoke('RecieveClientCommand', command)
                     .done(function (result) {
-                        if (result.Error) {
-                            deferred.reject(result.Error);
+                        if (result.error) {
+                            deferred.reject(result.error);
                         } else {
-                            deferred.resolve(result.Data);
+                            deferred.resolve(result.data);
                         }
                     })
                     .fail(function () {
@@ -341,10 +341,10 @@
                 $log.info('browsing games');
                 gameHubProxy.invoke('BrowseGames')
                     .done(function (result) {
-                        if (result.Error) {
-                            deferred.reject(result.Error);
+                        if (result.error) {
+                            deferred.reject(result.error);
                         } else {
-                            deferred.resolve(result.Data);
+                            deferred.resolve(result.data);
                         }
                     })
                     .fail(function () {
@@ -363,10 +363,10 @@
                 $log.info('getting active game');
                 gameHubProxy.invoke('GetActiveGame')
                     .done(function (result) {
-                        if (result.Error) {
-                            deferred.reject(result.Error);
+                        if (result.error) {
+                            deferred.reject(result.error);
                         } else {
-                            deferred.resolve(result.Data);
+                            deferred.resolve(result.data);
                         }
                     })
                     .fail(function () {
@@ -385,10 +385,10 @@
                 $log.info('creating game');
                 gameHubProxy.invoke('CreateGame')
                     .done(function (result) {
-                        if (result.Error) {
-                            deferred.reject(result.Error);
+                        if (result.error) {
+                            deferred.reject(result.error);
                         } else {
-                            deferred.resolve(result.Data);
+                            deferred.resolve(result.data);
                         }
                     })
                     .fail(function () {
@@ -407,10 +407,10 @@
                 $log.info('joining game');
                 gameHubProxy.invoke('JoinGame', gameId)
                     .done(function (result) {
-                        if (result.Error) {
-                            deferred.reject(result.Error);
+                        if (result.error) {
+                            deferred.reject(result.error);
                         } else {
-                            deferred.resolve(result.Data);
+                            deferred.resolve(result.data);
                         }
                     })
                     .fail(function () {

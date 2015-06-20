@@ -158,7 +158,9 @@ namespace Gwent.NET.Webservice.Controllers
             int maxHeroCardCount = deck.Cards
                 .Where(c => c.Types.HasFlag(GwintType.Hero))
                 .GroupBy(c => c.Id)
-                .Max(g => g.Count());
+                .Select(g => g.Count())
+                .DefaultIfEmpty(0)
+                .Max();
             if (maxHeroCardCount > 1)
             {
                 throw new InvalidDeckException("Duplicate of hero card in deck");

@@ -32,7 +32,7 @@
             return function (cards) {
                 var tempCards = [];
                 angular.forEach(cards, function (card) {
-                    if (card.IsBattleKing) {
+                    if (card.isBattleKing) {
                         tempCards.push(card);
                     }
                 });
@@ -43,7 +43,7 @@
             return function (cards) {
                 var tempCards = [];
                 angular.forEach(cards, function (card) {
-                    if (!card.IsBattleKing) {
+                    if (!card.isBattleKing) {
                         tempCards.push(card);
                     }
                 });
@@ -58,7 +58,7 @@
                 }
                 angular.forEach(cards, function (card) {
 
-                    if (card.Faction === Number(faction)) {
+                    if (card.faction === Number(faction)) {
                         tempCards.push(card);
                     }
                 });
@@ -73,7 +73,7 @@
                 }
                 angular.forEach(factions, function (faction) {
                     angular.forEach(cards, function (card) {
-                        if (card.Faction === Number(faction)) {
+                        if (card.faction === Number(faction)) {
                             tempCards.push(card);
                         }
                     });
@@ -171,7 +171,7 @@
                 });
 
                 angular.forEach(cards, function (card) {
-                    if (card.Type & allowedTypesMask) {
+                    if (card.type & allowedTypesMask) {
                         tempCards.push(card);
                     }
                 });
@@ -253,7 +253,7 @@
                 }
 
                 angular.forEach(cards, function (card) {
-                    if (gwintEffectService.hasAnyEffect(card.Effect, allowedEffects)) {
+                    if (gwintEffectService.hasAnyEffect(card.effect, allowedEffects)) {
                         tempCards.push(card);
                     }
                 });
@@ -264,14 +264,14 @@
         .factory('gwintSideService', function (gwintTypeService) {
             var gwintSideService = {};
             gwintSideService.sides = {
-                Self: {
+                self: {
                     canPlayCard: function (card) {
-                        return !gwintTypeService.hasAnyType(card.Type, ['Spy', 'OffensiveEffect']);
+                        return !gwintTypeService.hasAnyType(card.type, ['Spy', 'OffensiveEffect']);
                     }
                 },
-                Opponent: {
+                opponent: {
                     canPlayCard: function (card) {
-                        return gwintTypeService.hasAnyType(card.Type, ['Spy', 'OffensiveEffect', 'GlobalEffect']);
+                        return gwintTypeService.hasAnyType(card.type, ['Spy', 'OffensiveEffect', 'GlobalEffect']);
                     }
                 }
             };
@@ -307,43 +307,43 @@
                 Melee: {
                     id: 1,
                     canPlayCard: function (card) {
-                        return gwintTypeService.hasAllTypes(card.Type, ['Melee', 'Creature']);
+                        return gwintTypeService.hasAllTypes(card.type, ['Melee', 'Creature']);
                     }
                 },
                 Ranged: {
                     id: 2,
                     canPlayCard: function (card) {
-                        return gwintTypeService.hasAllTypes(card.Type, ['Ranged', 'Creature']);
+                        return gwintTypeService.hasAllTypes(card.type, ['Ranged', 'Creature']);
                     }
                 },
                 Siege: {
                     id: 3,
                     canPlayCard: function (card) {
-                        return gwintTypeService.hasAllTypes(card.Type, ['Siege', 'Creature']);
+                        return gwintTypeService.hasAllTypes(card.type, ['Siege', 'Creature']);
                     }
                 },
                 MeleeModifier: {
                     id: 4,
                     canPlayCard: function (card) {
-                        return gwintTypeService.hasAllTypes(card.Type, ['Melee', 'RowModifier']);
+                        return gwintTypeService.hasAllTypes(card.type, ['Melee', 'RowModifier']);
                     }
                 },
                 RangedModifier: {
                     id: 5,
                     canPlayCard: function (card) {
-                        return gwintTypeService.hasAllTypes(card.Type, ['Melee', 'RowModifier']);
+                        return gwintTypeService.hasAllTypes(card.type, ['Melee', 'RowModifier']);
                     }
                 },
                 SiegeModifier: {
                     id: 6,
                     canPlayCard: function (card) {
-                        return gwintTypeService.hasAllTypes(card.Type, ['Melee', 'RowModifier']);
+                        return gwintTypeService.hasAllTypes(card.type, ['Melee', 'RowModifier']);
                     }
                 },
                 Weather: {
                     id: 7,
                     canPlayCard: function (card) {
-                        return gwintTypeService.hasType(card.Type, 'Weather');
+                        return gwintTypeService.hasType(card.type, 'Weather');
                     }
                 }
             };
