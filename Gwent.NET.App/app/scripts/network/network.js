@@ -2,8 +2,17 @@
     'use strict';
 
     angular.module('app.network', [])
-        .factory('userService', function ($rootScope, $log, $q, $window, $http) {
-            var backendUrl = 'http://localhost:9029/api';
+        .factory('backendUrlService', function($location) {
+            var backendUrlService = {};
+            var host = $location.host();
+            var port = '13471';
+            var origin = 'http://' + host + ':' + port;
+            backendUrlService.backendUrl = origin + '/api';
+            backendUrlService.signalRUrl = origin + '/signalr';;
+            return backendUrlService;
+        })
+        .factory('userService', function ($rootScope, $log, $q, $window, $http, backendUrlService) {
+            var backendUrl = backendUrlService.backendUrl;
             var userService = {};
             var localStorage = $window['localStorage'];
             var user = null;
@@ -103,8 +112,8 @@
             init();
             return userService;
         })
-        .factory('gameService', function ($http, $q, userService) {
-            var backendUrl = 'http://localhost:9029/api';
+        .factory('gameService', function ($http, $q, userService, backendUrlService) {
+            var backendUrl = backendUrlService.backendUrl;
             return {
                 getGames: function () {
                     if (userService.getUser() == null) {
@@ -132,7 +141,7 @@
                             }
                             deferred.resolve(game);
                         })
-                        .error(function (msg, status) {
+                        .error(function (msg) {
                             deferred.reject(msg);
                         });
                     return deferred.promise;
@@ -167,8 +176,8 @@
                 }
             };
         })
-        .factory('backendService', function ($http, $q, userService) {
-            var backendUrl = 'http://localhost:9029/api';
+        .factory('backendService', function ($http, $q, userService, backendUrlService) {
+            var backendUrl = backendUrlService.backendUrl;
 
             // Cookie-based authentication
             // $http.defaults.withCredentials = true;
@@ -216,8 +225,8 @@
                 }
             };
         })
-        .factory('gameHubService', function ($rootScope, $log, $q, userService) {
-            var signalRUrl = 'http://localhost:9029/signalr';
+        .factory('gameHubService', function ($rootScope, $log, $q, userService, backendUrlService) {
+            var signalRUrl = backendUrlService.signalRUrl;
             var gameHubService = {};
             var connected = false;
             var connection = null;
