@@ -11,7 +11,7 @@ namespace Gwent.NET.Model
             HandCards = new HashSet<Card>();
             DeckCards = new HashSet<Card>();
             GraveyardCards = new HashSet<Card>();
-            CardSlots = new List<PlayerCardSlot>();
+            CardSlots = new HashSet<PlayerCardSlot>();
         }
 
         [Key]
@@ -35,13 +35,16 @@ namespace Gwent.NET.Model
 
         public int Lives { get; set; }
 
+        public GwentFaction Faction { get; set; }
+
+        public virtual Card BattleKingCard { get; set; }
+
         public virtual ICollection<Card> HandCards { get; set; }
 
         public virtual ICollection<Card> DeckCards { get; set; }
 
         public virtual ICollection<Card> GraveyardCards { get; set; }
-
-
+        
         [InverseProperty("Player")]
         public virtual ICollection<PlayerCardSlot> CardSlots  { get; set; }
 

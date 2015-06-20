@@ -103,8 +103,11 @@ namespace Gwent.NET
 
                 IsPassing = player.IsPassing,
                 IsTurn = player.IsTurn,
-                CanUseBattleKingCard = player.CanUseBattleKingCard,
                 Lives = player.Lives,
+
+                Faction = player.Faction,
+                BattleKingCard = player.BattleKingCard == null ? new int?() : player.BattleKingCard.Id,
+                CanUseBattleKingCard = player.CanUseBattleKingCard,
 
                 HandCardCount = player.HandCards.Count,
                 DeckCardCount = player.DeckCards.Count,

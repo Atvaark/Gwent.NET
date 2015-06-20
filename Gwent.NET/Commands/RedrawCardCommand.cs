@@ -38,21 +38,9 @@ namespace Gwent.NET.Commands
                 throw new CommandException();
             }
 
+            RedrawCard(sender);
             substate.RedrawCardCount -= 1;
-
-            var card = sender.HandCards.First(c => c.Id == CardId);
-            sender.HandCards.Remove(card);
-            sender.DeckCards.Add(card);
-
-            var deckCards = sender.DeckCards.ToList();
-            deckCards.Shuffle();
-            var drawnCard = deckCards.First();
-            deckCards.Remove(drawnCard);
-            sender.HandCards.Add(drawnCard);
-            sender.DeckCards.Clear();
-            sender.DeckCards.AddRange(deckCards);
             sender.IsTurn = substate.RedrawCardCount > 0;
-
 
             Events.Add(new HandChangedEvent(sender.User.Id)
             {
@@ -66,6 +54,22 @@ namespace Gwent.NET.Commands
 
             var nextState = new RoundState();
             SetNextState(game, nextState);
+        }
+
+        private void RedrawCard(Player player)
+        {
+            var card = player.HandCards.First(c => c.Id == CardId);
+            player.HandCards.Remove(card);
+            player.DeckCards.Add(card);
+
+            var deckCards = player.DeckCards.ToList();
+            deckCards.Shuffle();
+            var drawnCard = deckCards.First();
+            deckCards.Remove(drawnCard);
+            player.HandCards.Add(drawnCard);
+
+            player.DeckCards.Clear();
+            player.DeckCards.AddRange(deckCards);
         }
     }
 }

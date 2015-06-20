@@ -358,35 +358,35 @@
 </style>
 <div class="gw-board">
     <div id="gw-top-leader-holder" class="gw-leader-holder">
-        <div class="gw-leader-holder-card"></div>
-        <div class="gw-leader-holder-turn-indicator"></div>
+        <div class="gw-leader-holder-card">{{game.players['opponent'].battleKingCard}}</div>
+        <div class="gw-leader-holder-turn-indicator">{{game.players['opponent'].isTurn}}</div>
     </div>
     <div id="gw-top-player" class="gw-player">
         <div id="gw-top-player-portrait" class="gw-player-portrait"></div>
         <div id="gw-top-player-faction-icon" class="gw-player-faction-icon"></div>
-        <div id="gw-top-player-name" class="gw-player-name"></div>
-        <div id="gw-top-player-faction-name" class="gw-player-faction-name"></div>
-        <div id="gw-top-player-card-count" class="gw-player-card-count"></div>
-        <div id="gw-top-player-life-indicator" class="gw-player-life-indicator"></div>
-        <div id="gw-top-player-winning-round" class="gw-player-winning-round"></div>
-        <div id="gw-top-player-score" class="gw-player-score"></div>
-        <div id="gw-top-player-passed" class="gw-player-passed"></div>
+        <div id="gw-top-player-name" class="gw-player-name">{{game.players['opponent'].name}}</div>
+        <div id="gw-top-player-faction-name" class="gw-player-faction-name">{{game.players['opponent'].faction}}</div>
+        <div id="gw-top-player-card-count" class="gw-player-card-count">{{game.players['opponent'].handCardCount}}</div>
+        <div id="gw-top-player-life-indicator" class="gw-player-life-indicator">{{game.players['opponent'].lives}}</div>
+        <div id="gw-top-player-winning-round" class="gw-player-winning-round">{{game.players['opponent'].isWinning}}</div>
+        <div id="gw-top-player-score" class="gw-player-score">{{game.players['opponent'].score}}</div>
+        <div id="gw-top-player-passed" class="gw-player-passed">{{game.players['opponent'].isPassing}}</div>
     </div>
     <div id="gw-weather" class="gw-weather"></div>
     <div id="gw-bottom-player" class="gw-player">
         <div id="gw-bottom-player-portrait" class="gw-player-portrait"></div>
         <div id="gw-bottom-player-faction-icon" class="gw-player-faction-icon"></div>
-        <div id="gw-bottom-player-name" class="gw-player-name"></div>
-        <div id="gw-bottom-player-faction-name" class="gw-player-faction-name"></div>
-        <div id="gw-bottom-player-card-count" class="gw-player-card-count"></div>
-        <div id="gw-bottom-player-life-indicator" class="gw-player-life-indicator"></div>
-        <div id="gw-bottom-player-winning-round" class="gw-player-winning-round"></div>
-        <div id="gw-bottom-player-score" class="gw-player-score"></div>
-        <div id="gw-bottom-player-passed" class="gw-player-passed"></div>
+        <div id="gw-bottom-player-name" class="gw-player-name">{{game.players['self'].name}}</div>
+        <div id="gw-bottom-player-faction-name" class="gw-player-faction-name">{{game.players['self'].faction}}</div>
+        <div id="gw-bottom-player-card-count" class="gw-player-card-count">{{game.players['self'].handCardCount}}</div>
+        <div id="gw-bottom-player-life-indicator" class="gw-player-life-indicator">{{game.players['self'].lives}}</div>
+        <div id="gw-bottom-player-winning-round" class="gw-player-winning-round">{{game.players['self'].isWinning}}</div>
+        <div id="gw-bottom-player-score" class="gw-player-score">{{game.players['self'].score}}</div>
+        <div id="gw-bottom-player-passed" class="gw-player-passed">{{game.players['self'].isPassing}}</div>
     </div>
     <div id="gw-bottom-leader-holder" class="gw-leader-holder">
-        <div class="gw-leader-holder-card"></div>
-        <div class="gw-leader-holder-turn-indicator"></div>
+        <div class="gw-leader-holder-card">{{game.players['self'].battleKingCard}}</div>
+        <div class="gw-leader-holder-turn-indicator">{{game.players['self'].isTurn}}</div>
     </div>
     <div id="gw-top-row-siege" class="gw-row">
         <div class="gw-row-score">
@@ -430,10 +430,12 @@
         <div class="gw-row-modifier"></div>
         <div class="gw-row-cards"></div>
     </div>
-    <div id="gw-bottom-hand" class="gw-hand"></div>
-    <div id="gw-top-graveyard" class="gw-graveyard"></div>
-    <div id="gw-bottom-graveyard" class="gw-graveyard"></div>
-    <div id="gw-top-deck" class="gw-deck"></div>
+    <div id="gw-bottom-hand" class="gw-hand">
+        <gw-card-field ng-repeat="card in game.players['self'].handCards" ng-model="card" ng-click="methods.selectCard(card)" style="display: inline-block; width: 90px; height: 120px; margin-right: -5px"></gw-card-field>
+    </div>
+    <div id="gw-top-graveyard" class="gw-graveyard">{{game.players['opponent'].graveyardCards.length}}</div>
+    <div id="gw-bottom-graveyard" class="gw-graveyard">{{game.players['self'].graveyardCards.length}}</div>
+    <div id="gw-top-deck" class="gw-deck">{{game.players['opponent'].deckCardCount}}</div>
+    <div id="gw-bottom-deck" class="gw-deck">{{game.players['self'].deckCardCount}}</div>
     <div id="gw-card-preview" class="gw-card-preview "></div>
-    <div id="gw-bottom-deck" class="gw-deck"></div>
 </div>

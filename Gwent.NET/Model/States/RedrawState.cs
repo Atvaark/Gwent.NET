@@ -18,8 +18,7 @@ namespace Gwent.NET.Model.States
         {
             Substates = new HashSet<RedrawPlayerSubstate>();
         }
-
-
+        
         public override IEnumerable<Event> Initialize(Game game)
         {
             return game.Players.Select(InitializeHand);
@@ -29,7 +28,7 @@ namespace Gwent.NET.Model.States
         {
             player.IsTurn = true;
             var initialHandCardCount = GetInitialHandCardCount(player);
-            var shuffledCards = GetShuffledCards(player);
+            var shuffledCards = GetShuffledDeckCards(player);
 
             var handCards = shuffledCards.Take(initialHandCardCount).ToList();
             shuffledCards.RemoveRange(0, initialHandCardCount);
@@ -38,6 +37,7 @@ namespace Gwent.NET.Model.States
                 player.HandCards.Add(handCard);
             }
 
+            player.DeckCards.Clear();
             foreach (var card in shuffledCards)
             {
                 player.DeckCards.Add(card);
@@ -55,9 +55,9 @@ namespace Gwent.NET.Model.States
             };
         }
 
-        private static List<Card> GetShuffledCards(Player player)
+        private static List<Card> GetShuffledDeckCards(Player player)
         {
-            var shuffledCards = player.Deck.Cards.ToList();
+            var shuffledCards = player.DeckCards.ToList();
             shuffledCards.Shuffle();
             return shuffledCards;
         }

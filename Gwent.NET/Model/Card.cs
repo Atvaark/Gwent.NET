@@ -64,6 +64,10 @@ namespace Gwent.NET.Model
         [XmlIgnore]
         [InverseProperty("BattleKingCard")]
         public virtual ICollection<Deck> BattleKingCardDecks { get; set; }
+        [XmlIgnore]
+
+        [InverseProperty("BattleKingCard")]
+        public virtual ICollection<Player> BattleKingCardPlayers { get; set; }
         
         [XmlIgnore]
         [InverseProperty("Cards")]

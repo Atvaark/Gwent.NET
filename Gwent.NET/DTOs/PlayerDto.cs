@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using Gwent.NET.Model;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Gwent.NET.DTOs
 {
@@ -6,13 +9,16 @@ namespace Gwent.NET.DTOs
     {
         public int Id { get; set; }
         public string Name { get; set; }
-
         public bool IsLobbyOwner { get; set; }
+
         public bool IsPassing { get; set; }
         public bool IsTurn { get; set; }
-        public bool CanUseBattleKingCard { get; set; }
         public int Lives { get; set; }
 
+        public GwentFaction Faction { get; set; }
+        public int? BattleKingCard { get; set; }
+        public bool CanUseBattleKingCard { get; set; }
+        
         public int HandCardCount { get; set; }
         public int DeckCardCount { get; set; }
 

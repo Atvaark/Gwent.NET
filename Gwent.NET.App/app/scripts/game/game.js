@@ -386,9 +386,17 @@
             };
         })
         .directive('gwBoard', function () {
-            var controller = function () {
+            var controller = function ($scope, $log) {
+                var methods = $scope.methods = {};
+                var game = $scope.game;
+                var input = {};
 
+                methods.selectCard = function (card) {
+                    input.selectedCard = card;
+                    $log.info('card selected: ' + card);
+                }
             };
+
 
             return {
                 require: '^ngModel',

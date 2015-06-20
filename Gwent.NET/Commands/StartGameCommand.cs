@@ -30,6 +30,13 @@ namespace Gwent.NET.Commands
                 throw new CommandException();
             }
 
+            foreach (var player in game.Players)
+            {
+                player.DeckCards.AddRange(player.Deck.Cards);
+                player.BattleKingCard = player.Deck.BattleKingCard;
+                player.Faction = player.Deck.Faction;
+            }
+
             State nextState;
             if (game.Players.Any(p => p.Deck.Faction == GwentFaction.Scoiatael))
             {

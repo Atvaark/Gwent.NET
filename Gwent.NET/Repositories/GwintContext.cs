@@ -39,8 +39,8 @@ namespace Gwent.NET.Repositories
                 .Map(pc =>
                 {
                     pc.ToTable("PlayerHand");
-                    pc.MapLeftKey("CardId");
-                    pc.MapRightKey("PlayerId");
+                    pc.MapLeftKey("PlayerId");
+                    pc.MapRightKey("CardId");
                 });
 
             modelBuilder.Entity<Player>()
@@ -49,8 +49,8 @@ namespace Gwent.NET.Repositories
                 .Map(pc =>
                 {
                     pc.ToTable("PlayerDeck");
-                    pc.MapLeftKey("CardId");
-                    pc.MapRightKey("PlayerId");
+                    pc.MapLeftKey("PlayerId");
+                    pc.MapRightKey("CardId");
                 });
 
             modelBuilder.Entity<Player>()
@@ -59,8 +59,8 @@ namespace Gwent.NET.Repositories
                 .Map(pc =>
                 {
                     pc.ToTable("PlayerGraveyard");
-                    pc.MapLeftKey("CardId");
-                    pc.MapRightKey("PlayerId");
+                    pc.MapLeftKey("PlayerId");
+                    pc.MapRightKey("CardId");
                 });
 
             modelBuilder.Entity<GwintSummonFlag>()
