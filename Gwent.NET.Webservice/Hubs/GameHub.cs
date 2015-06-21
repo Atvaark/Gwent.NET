@@ -382,7 +382,7 @@ namespace Gwent.NET.Webservice.Hubs
                     return new PlayCardCommand
                     {
                         CardId = commandDto.CardId.Value,
-                        ResurrectCardId = commandDto.ResurrectCardId,
+                        TargetCardId = commandDto.ResurrectCardId,
                         Slot = commandDto.Slot.Value
                     };
                 case CommandType.UseBattleKingCard:

@@ -17,5 +17,10 @@
         public const int InitialHandCardCount = 10;
 
         public const int InitialIncreasedHandCardCount = 11;
+
+        public const int ScorchThresholdMelee = 10;
+
+        public const int ScorchThresholdSiege = 10;
+
     }
 }

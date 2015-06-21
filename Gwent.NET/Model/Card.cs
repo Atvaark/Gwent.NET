@@ -51,7 +51,7 @@ namespace Gwent.NET.Model
         public List<GwintEffectFlag> EffectFlags { get; set; }
 
         [XmlIgnore]
-        public GwintEffect Effects { get; set; }
+        public GwintEffect Effect { get; set; }
         
         [XmlArray("summonFlags", IsNullable = true)]
         [XmlArrayItem("card")]
@@ -100,6 +100,5 @@ namespace Gwent.NET.Model
         [XmlIgnore]
         [InverseProperty("Card")]
         public virtual ICollection<PlayerCardSlot> PlayerSlots { get; set; }
-
     }
 }

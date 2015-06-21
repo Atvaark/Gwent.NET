@@ -33,7 +33,7 @@ namespace Gwent.NET.Commands
             foreach (var player in game.Players)
             {
                 player.DeckCards.AddRange(player.Deck.Cards);
-                player.BattleKingCard = player.Deck.BattleKingCard;
+                player.BattleKingCard = player.Deck.BattleKingCard; // TODO: Trigger battle king card abilities such as "Cancel leader cards"
                 player.Faction = player.Deck.Faction;
             }
 

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Gwent.NET.DTOs;
+﻿using Gwent.NET.DTOs;
 
 namespace Gwent.NET.Events
 {

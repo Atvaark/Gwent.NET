@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
@@ -14,11 +15,19 @@ namespace Gwent.NET.Webservice.Auth
         {
             _context = context;
         }
-
-
+        
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
         }
 
         public Task CreateAsync(ApplicationUser user)

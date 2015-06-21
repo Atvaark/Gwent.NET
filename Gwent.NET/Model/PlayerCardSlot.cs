@@ -18,5 +18,7 @@ namespace Gwent.NET.Model
         public virtual Card Card { get; set; }
 
         public GwintSlot Slot { get; set; }
+
+        public int EffectivePower { get; set; }
     }
 }

@@ -28,7 +28,7 @@ namespace Gwent.NET.Repositories
             foreach (var card in gwintCards.GwintCardDefinitions)
             {
                 card.Types = card.GetGwintTypes();
-                card.Effects = card.GetGwintEffects();
+                card.Effect = card.GetGwintEffects();
                 yield return card;
             }
 
@@ -37,7 +37,7 @@ namespace Gwent.NET.Repositories
             foreach (var card in gwintBattleKingCards.GwintBattleKingCardDefinitions)
             {
                 card.Types = card.GetGwintTypes();
-                card.Effects = card.GetGwintEffects();
+                card.Effect = card.GetGwintEffects();
                 card.IsBattleKing = true;
                 yield return card;
             }

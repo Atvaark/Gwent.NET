@@ -65,7 +65,7 @@ namespace Gwent.NET.Model.States
         private static int GetInitialHandCardCount(Player player)
         {
             var handCardCount = Constants.InitialHandCardCount;
-            if (player.Deck.BattleKingCard.Effects.HasFlag(GwintEffect.EleventhCard))
+            if (player.Deck.BattleKingCard.Effect.HasFlag(GwintEffect.EleventhCard))
             {
                 handCardCount = Constants.InitialIncreasedHandCardCount;
             }

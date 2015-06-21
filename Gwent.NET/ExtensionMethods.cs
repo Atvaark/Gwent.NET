@@ -40,7 +40,7 @@ namespace Gwent.NET
                 Picture = card.Picture,
                 Faction = card.FactionIndex,
                 Type = card.Types,
-                Effect = card.Effects,
+                Effect = card.Effect,
                 SummonFlags = card.SummonFlags.Select(s => s.SummonCardId).ToList(),
                 IsBattleKing = card.IsBattleKing
             };

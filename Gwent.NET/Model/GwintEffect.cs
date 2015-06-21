@@ -67,7 +67,7 @@ namespace Gwent.NET.Model
         SiegScorch = 21,
 
         [XmlEnum("CP_COUNTER_KING_ABLILITY")]
-        CounerKing = 22,
+        CounterKing = 22,
 
         [XmlEnum("EFFECT_MELEE")]
         Melee = 23,
