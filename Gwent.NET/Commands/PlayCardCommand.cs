@@ -45,7 +45,7 @@ namespace Gwent.NET.Commands
 
             // TODO: Unit test this
             PlayCard(card, sender, opponent, Slot, TargetCardId);
-            // TODO: Calcualte the effecive power of each card, of each row and of each player
+            // TODO: Calculate the effecive power of each card, of each row and of each player
 
 
             sender.IsTurn = false;

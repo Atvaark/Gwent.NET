@@ -298,6 +298,7 @@ namespace Gwent.NET.Webservice.Hubs
                         };
                     }
 
+                    // TODO: lock() on the game, so that the players can't deadlock the game. Add a new class to request a lock on a game id
                     command.Execute(game);
                     context.SaveChanges();
                 }
