@@ -33,7 +33,7 @@ namespace Gwent.NET.Model
         public string Picture { get; set; }
 
         [XmlAttribute("faction_index")]
-        public GwentFaction FactionIndex { get; set; }
+        public GwintFaction FactionIndex { get; set; }
 
         [XmlArray("type_flags")]
         [XmlArrayItem("flag")]
@@ -62,6 +62,10 @@ namespace Gwent.NET.Model
         public bool IsBattleKing { get; set; }
 
         [XmlIgnore]
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
+
+        [XmlIgnore]
         [InverseProperty("BattleKingCard")]
         public virtual ICollection<Deck> BattleKingCardDecks { get; set; }
         [XmlIgnore]
@@ -84,19 +88,7 @@ namespace Gwent.NET.Model
         [XmlIgnore]
         [InverseProperty("GraveyardCards")]
         public virtual ICollection<Player> GraveyardPlayer { get; set; }
-
-        //[XmlIgnore]
-        //[InverseProperty("CloseCombatCards")]
-        //public virtual ICollection<Player> CloseCombatPlayer { get; set; }
-
-        //[XmlIgnore]
-        //[InverseProperty("RangeCards")]
-        //public virtual ICollection<Player> RangePlayers { get; set; }
-
-        //[XmlIgnore]
-        //[InverseProperty("SiegeCards")]
-        //public virtual ICollection<Player> SiegePlayer { get; set; }
-
+        
         [XmlIgnore]
         [InverseProperty("Card")]
         public virtual ICollection<PlayerCardSlot> PlayerSlots { get; set; }

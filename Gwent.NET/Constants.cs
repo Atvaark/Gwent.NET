@@ -22,5 +22,6 @@
 
         public const int ScorchThresholdSiege = 10;
 
+        public const int RetryExecuteCommandCount = 2;
     }
 }

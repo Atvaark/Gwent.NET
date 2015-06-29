@@ -15,7 +15,7 @@ namespace Gwent.NET.DTOs
         public bool IsTurn { get; set; }
         public int Lives { get; set; }
 
-        public GwentFaction Faction { get; set; }
+        public GwintFaction Faction { get; set; }
         public int? BattleKingCard { get; set; }
         public bool CanUseBattleKingCard { get; set; }
         

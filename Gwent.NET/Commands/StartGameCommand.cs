@@ -38,7 +38,7 @@ namespace Gwent.NET.Commands
             }
 
             State nextState;
-            if (game.Players.Any(p => p.Deck.Faction == GwentFaction.Scoiatael))
+            if (game.Players.Any(p => p.Deck.Faction == GwintFaction.Scoiatael))
             {
                 nextState = new PickStartingPlayerState();
             }

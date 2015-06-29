@@ -20,5 +20,6 @@ namespace Gwent.NET.Interfaces
         int SaveChanges();
         Task<int> SaveChangesAsync();
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+        void Reload<TEntity>(TEntity entity) where TEntity : class;
     }
 }

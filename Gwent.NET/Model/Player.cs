@@ -35,7 +35,7 @@ namespace Gwent.NET.Model
 
         public int Lives { get; set; }
 
-        public GwentFaction Faction { get; set; }
+        public GwintFaction Faction { get; set; }
 
         public virtual Card BattleKingCard { get; set; }
 
@@ -44,7 +44,10 @@ namespace Gwent.NET.Model
         public virtual ICollection<Card> DeckCards { get; set; }
 
         public virtual ICollection<Card> GraveyardCards { get; set; }
-        
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
+
         [InverseProperty("Player")]
         public virtual ICollection<PlayerCardSlot> CardSlots  { get; set; }
 

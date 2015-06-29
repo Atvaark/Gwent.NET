@@ -142,7 +142,7 @@ namespace Gwent.NET.Webservice.Controllers
             }
             
             // The faction of the battle king card is not neutral
-            if (deck.BattleKingCard.FactionIndex == GwentFaction.Neutral)
+            if (deck.BattleKingCard.FactionIndex == GwintFaction.Neutral)
             {
                 throw new InvalidDeckException("Invalid battle king card");
             }
@@ -169,7 +169,7 @@ namespace Gwent.NET.Webservice.Controllers
             // All cards are either neutral or belong to the battle king faction
             var battleKingFaction = deck.BattleKingCard.FactionIndex;
             bool allCardsNeutralOrBattleKingFaction = deck.Cards
-                .All(c => c.FactionIndex == battleKingFaction || c.FactionIndex == GwentFaction.Neutral);
+                .All(c => c.FactionIndex == battleKingFaction || c.FactionIndex == GwintFaction.Neutral);
             if (!allCardsNeutralOrBattleKingFaction)
             {
                 throw new InvalidDeckException("Card with invalid faction in deck");

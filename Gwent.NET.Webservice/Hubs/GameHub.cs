@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data.Entity.Core;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
@@ -102,7 +103,7 @@ namespace Gwent.NET.Webservice.Hubs
                 };
             }
         }
-        
+
         public GameHubResult<GameDto> GetActiveGame()
         {
             using (var context = _lifetimeScope.Resolve<IGwintContext>())
@@ -156,7 +157,7 @@ namespace Gwent.NET.Webservice.Hubs
                         Error = "Hub: No deck found."
                     };
                 }
-                
+
                 var player = context.Players.Create();
                 player.User = user;
                 player.Deck = primaryDeck;
@@ -180,7 +181,7 @@ namespace Gwent.NET.Webservice.Hubs
         {
             var demoDeck = new Deck
             {
-                Faction = GwentFaction.Scoiatael,
+                Faction = GwintFaction.Scoiatael,
                 BattleKingCard = context.Cards.Find(3002),
                 Cards =
                 {
@@ -298,9 +299,7 @@ namespace Gwent.NET.Webservice.Hubs
                         };
                     }
 
-                    // TODO: lock() on the game, so that the players can't deadlock the game. Add a new class to request a lock on a game id
-                    command.Execute(game);
-                    context.SaveChanges();
+                    TryExecuteCommand(command, game, context);
                 }
 
                 DispatchEvents(command.Events);
@@ -324,7 +323,27 @@ namespace Gwent.NET.Webservice.Hubs
             }
         }
 
-        private static Game GetActiveGameByUserId(IGwintContext context, int userId)
+        private void TryExecuteCommand(Command command, Game game, IGwintContext context)
+        {
+            int retryCount = Constants.RetryExecuteCommandCount;
+            while (retryCount > 0)
+            {
+                try
+                {
+                    command.Execute(game);
+                    context.SaveChanges();
+                    return;
+                }
+                catch (OptimisticConcurrencyException e)
+                {
+                    context.Reload(game);
+                    retryCount--;
+                }
+            }
+            throw new CommandException();
+        }
+
+        private Game GetActiveGameByUserId(IGwintContext context, int userId)
         {
             return context.Games.FirstOrDefault(g => g.IsActive && g.Players.Any(p => p.User.Id == userId));
         }

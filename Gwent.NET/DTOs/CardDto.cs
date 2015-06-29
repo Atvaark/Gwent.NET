@@ -15,7 +15,7 @@ namespace Gwent.NET.DTOs
 
         public string Picture { get; set; }
         
-        public GwentFaction Faction { get; set; }
+        public GwintFaction Faction { get; set; }
 
         public GwintType Type { get; set; }
 

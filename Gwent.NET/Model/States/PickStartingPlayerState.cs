@@ -23,7 +23,7 @@ namespace Gwent.NET.Model.States
         {
             foreach (var player in game.Players)
             {
-                bool canPickStartingPlayer = player.Deck.Faction == GwentFaction.Scoiatael;
+                bool canPickStartingPlayer = player.Deck.Faction == GwintFaction.Scoiatael;
                 player.IsTurn = canPickStartingPlayer;
                 Substates.Add(new PickStartingPlayerSubstate
                 {

@@ -7,7 +7,7 @@ namespace Gwent.NET.DTOs
     {
         public int Id { get; set; }
         public List<int> Cards { get; set; }
-        public GwentFaction Faction { get; set; }
+        public GwintFaction Faction { get; set; }
         public int BattleKingCard { get; set; }
         public bool IsPrimaryDeck { get; set; }
     }

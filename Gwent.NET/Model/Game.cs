@@ -20,6 +20,9 @@ namespace Gwent.NET.Model
         public virtual State State { get; set; }
 
         public virtual ICollection<Player> Players { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
         
         public Player GetPlayerByUserId(int userId)
         {

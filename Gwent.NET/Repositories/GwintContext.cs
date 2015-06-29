@@ -21,6 +21,11 @@ namespace Gwent.NET.Repositories
         public IDbSet<Substate> Substates { get; set; }
         public IDbSet<User> Users { get; set; }
 
+        public void Reload<T>(T entity) where T : class
+        {
+            Entry(entity).Reload();
+        }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Deck>()

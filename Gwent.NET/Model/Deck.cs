@@ -16,11 +16,14 @@ namespace Gwent.NET.Model
 
         public bool IsPrimaryDeck { get; set; }
 
-        public GwentFaction Faction { get; set; }
+        public GwintFaction Faction { get; set; }
 
         [InverseProperty("BattleKingCardDecks")]
         public virtual Card BattleKingCard { get; set; }
 
         public virtual ICollection<Card> Cards { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }

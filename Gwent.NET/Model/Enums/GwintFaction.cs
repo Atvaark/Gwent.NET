@@ -2,7 +2,7 @@
 
 namespace Gwent.NET.Model
 {
-    public enum GwentFaction
+    public enum GwintFaction
     {
         [XmlEnum("F_NEUTRAL")]
         Neutral = 0,

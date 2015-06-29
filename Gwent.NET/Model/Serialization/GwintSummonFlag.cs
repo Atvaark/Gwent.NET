@@ -21,6 +21,10 @@ namespace Gwent.NET.Model
         [XmlIgnore]
         [InverseProperty("SummonFlags")]
         [ForeignKey("SummonerCardId")]
-        public virtual Card SummonerCard { get; set; } 
+        public virtual Card SummonerCard { get; set; }
+
+        [XmlIgnore]
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }
