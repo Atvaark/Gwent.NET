@@ -2,6 +2,7 @@
 {
     public static class Constants
     {
+        public const int RetryJoinGameCount = 2;
         public const string PlayerKeySelf = "self";
 
         public const string PlayerKeyOpponent = "opponent";

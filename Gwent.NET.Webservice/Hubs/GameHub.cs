@@ -216,6 +216,27 @@ namespace Gwent.NET.Webservice.Hubs
 
         public GameHubResult<GameDto> JoinGame(int gameId)
         {
+            var retryJoinGameCount = Constants.RetryJoinGameCount;
+            while (retryJoinGameCount > 0)
+            {
+                try
+                {
+                    return ExecuteJoinGame(gameId);
+                }
+                catch (OptimisticConcurrencyException)
+                {
+                    retryJoinGameCount--;
+                }
+            }
+
+            return new GameHubResult<GameDto>
+            {
+                Error = string.Format("Hub: Unable to join game after {0} tries", Constants.RetryExecuteCommandCount)
+            };
+        }
+
+        private GameHubResult<GameDto> ExecuteJoinGame(int gameId)
+        {
             using (var context = _lifetimeScope.Resolve<IGwintContext>())
             {
                 var user = context.Users.FirstOrDefault(u => u.Id == UserId);
@@ -288,22 +309,23 @@ namespace Gwent.NET.Webservice.Hubs
                 int senderUserId = UserId;
                 command.SenderUserId = senderUserId;
 
-                using (var context = _lifetimeScope.Resolve<IGwintContext>())
+                int retryCount = Constants.RetryExecuteCommandCount;
+                while (retryCount > 0)
                 {
-                    Game game = GetActiveGameByUserId(context, senderUserId);
-                    if (game == null)
+                    try
                     {
-                        return new GameHubResult<GameDto>
-                        {
-                            Error = "Hub: No running game found."
-                        };
+                        return ExecuteClientCommand(command);
                     }
-
-                    TryExecuteCommand(command, game, context);
+                    catch (OptimisticConcurrencyException)
+                    {
+                        retryCount--;
+                    }
                 }
 
-                DispatchEvents(command.Events);
-                return new GameHubResult<GameDto>();
+                return new GameHubResult<GameDto>
+                {
+                    Error = string.Format("Hub: Unable to execute command after {0} tries", Constants.RetryExecuteCommandCount)
+                };
             }
             catch (Exception e)
             {
@@ -323,24 +345,24 @@ namespace Gwent.NET.Webservice.Hubs
             }
         }
 
-        private void TryExecuteCommand(Command command, Game game, IGwintContext context)
+        private GameHubResult<GameDto> ExecuteClientCommand(Command command)
         {
-            int retryCount = Constants.RetryExecuteCommandCount;
-            while (retryCount > 0)
+            using (var context = _lifetimeScope.Resolve<IGwintContext>())
             {
-                try
+                Game game = GetActiveGameByUserId(context, command.SenderUserId);
+                if (game == null)
                 {
-                    command.Execute(game);
-                    context.SaveChanges();
-                    return;
+                    return new GameHubResult<GameDto>
+                    {
+                        Error = "Hub: No running game found."
+                    };
                 }
-                catch (OptimisticConcurrencyException e)
-                {
-                    context.Reload(game);
-                    retryCount--;
-                }
+
+                command.Execute(game);
+                context.SaveChanges();
+                DispatchEvents(command.Events);
+                return new GameHubResult<GameDto>();
             }
-            throw new CommandException();
         }
 
         private Game GetActiveGameByUserId(IGwintContext context, int userId)
