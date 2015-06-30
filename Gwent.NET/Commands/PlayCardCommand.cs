@@ -143,7 +143,7 @@ namespace Gwent.NET.Commands
                 throw new CommandException();
             }
 
-            var nursedCard = opponent.GraveyardCards.FirstOrDefault(c => c.Id == targetCardId.Value && c.Types.HasFlag(GwintType.Creature));
+            var nursedCard = sender.GraveyardCards.FirstOrDefault(c => c.Id == targetCardId.Value && c.Types.HasFlag(GwintType.Creature));
             if (nursedCard == null)
             {
                 throw new CommandException();
@@ -229,12 +229,18 @@ namespace Gwent.NET.Commands
         private void SummonCardClones(Card card, Player sender, Player opponent)
         {
             var summonCardIds = card.SummonFlags.Select(s => s.SummonCard.Id).ToList();
-            var summonDeckCards = sender.DeckCards.Where(c => summonCardIds.Contains(c.Id));
-            foreach (var summonDeckCard in summonDeckCards)
+            SummonCloneCardsInSet(summonCardIds, sender, opponent, sender.DeckCards);
+            SummonCloneCardsInSet(summonCardIds, sender, opponent, sender.HandCards);
+        }
+
+        private void SummonCloneCardsInSet(List<int> summonCardIds, Player sender, Player opponent, ICollection<Card> cards)
+        {
+            var summonHandCards = cards.Where(h => summonCardIds.Contains(h.Id)).ToList();
+            foreach (var summonHandCard in summonHandCards)
             {
-                sender.DeckCards.Remove(summonDeckCard);
-                GwintSlot slot = GetDefaultCreatureSlot(summonDeckCard);
-                SpawnCreature(summonDeckCard, sender, opponent, slot);
+                cards.Remove(summonHandCard);
+                GwintSlot slot = GetDefaultCreatureSlot(summonHandCard);
+                SpawnCreature(summonHandCard, sender, opponent, slot);
             }
         }
 
