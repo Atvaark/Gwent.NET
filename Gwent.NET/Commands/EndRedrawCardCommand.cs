@@ -37,8 +37,7 @@ namespace Gwent.NET.Commands
                 return;
             }
 
-            var nextState = new RoundState();
-            SetNextState(game, nextState);
+            NextState = new RoundState();
         }
     }
 }

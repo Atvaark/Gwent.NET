@@ -138,7 +138,7 @@
             methods.sendPickStartingPlayerCommand = function (userId) {
                 gameHubService.sendCommand({
                     type: "PickStartingPlayer",
-                    startPlayerId: userId
+                    startingPlayerUserId: userId
                 }).then(function () {
                     $log.info('starting player picked');
                 }, function (error) {

@@ -15,14 +15,20 @@ namespace Gwent.NET.Commands
 
         public int SenderUserId { get; set; }
         public ICollection<Event> Events { get; set; }
+        public State NextState { get; set; }
 
         public abstract void Execute(Game game);
         
-        protected void SetNextState(Game game, State nextState)
+        public void TransitionToNextState(Game game)
         {
-            var nextStateEvents = nextState.Initialize(game);
+            if (NextState == null)
+            {
+                return;
+            }
+
+            var nextStateEvents = NextState.Initialize(game);
             Events.AddRange(nextStateEvents);
-            game.State = nextState;
+            game.State = NextState;
 
             var stateChangeEvents = game.Players.Select(player => new StateChangeEvent(player.User.Id)
             {

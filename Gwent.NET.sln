@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gwent.NET.Webservice", "Gwe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gwent.NET.App", "Gwent.NET.App\Gwent.NET.App.csproj", "{ABD39B17-F1DC-4F57-ACCB-7543F78C8EC8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gwent.NET.Test", "Gwent.NET.Test\Gwent.NET.Test.csproj", "{B6DA993C-42F0-4B29-ACD1-B09305EF33C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{ABD39B17-F1DC-4F57-ACCB-7543F78C8EC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABD39B17-F1DC-4F57-ACCB-7543F78C8EC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABD39B17-F1DC-4F57-ACCB-7543F78C8EC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6DA993C-42F0-4B29-ACD1-B09305EF33C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6DA993C-42F0-4B29-ACD1-B09305EF33C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6DA993C-42F0-4B29-ACD1-B09305EF33C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6DA993C-42F0-4B29-ACD1-B09305EF33C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

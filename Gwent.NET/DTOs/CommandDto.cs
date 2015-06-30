@@ -20,7 +20,7 @@ namespace Gwent.NET.DTOs
         public GwintSlot? Slot { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public int? StartPlayerId { get; set; }
+        public int? StartingPlayerUserId { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int? GameId { get; set; }

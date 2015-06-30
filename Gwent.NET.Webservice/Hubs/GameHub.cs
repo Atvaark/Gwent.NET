@@ -359,6 +359,7 @@ namespace Gwent.NET.Webservice.Hubs
                 }
 
                 command.Execute(game);
+                command.TransitionToNextState(game);
                 context.SaveChanges();
                 DispatchEvents(command.Events);
                 return new GameHubResult<GameDto>();
@@ -408,13 +409,13 @@ namespace Gwent.NET.Webservice.Hubs
                 case CommandType.Pass:
                     return new PassCommand();
                 case CommandType.PickStartingPlayer:
-                    if (!commandDto.StartPlayerId.HasValue)
+                    if (!commandDto.StartingPlayerUserId.HasValue)
                     {
                         throw new CommandParseException();
                     }
                     return new PickStartingPlayerCommand
                     {
-                        StartingPlayerId = commandDto.StartPlayerId.Value
+                        StartingPlayerUserId = commandDto.StartingPlayerUserId.Value
                     };
                 case CommandType.PlayCard:
                     if (!commandDto.CardId.HasValue || !commandDto.Slot.HasValue)

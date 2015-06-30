@@ -29,8 +29,7 @@ namespace Gwent.NET.Commands
             };
             Events.Add(forfeitEvent);
 
-            var nextState = new GameEndState();
-            SetNextState(game, nextState);
+            NextState = new GameEndState();
         }
     }
 }

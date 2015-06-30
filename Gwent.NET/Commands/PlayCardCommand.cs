@@ -43,7 +43,6 @@ namespace Gwent.NET.Commands
                 throw new CommandException();
             }
 
-            // TODO: Unit test this
             PlayCard(card, sender, opponent, Slot, TargetCardId);
             // TODO: Calculate the effecive power of each card, of each row and of each player
 
@@ -134,8 +133,6 @@ namespace Gwent.NET.Commands
                 case GwintEffect.SummonClones:
                     SummonCardClones(card, sender, opponent);
                     break;
-                default:
-                    throw new CommandException();
             }
         }
 
@@ -251,6 +248,7 @@ namespace Gwent.NET.Commands
             {
                 ClearSlot(sender, GwintSlot.Weather);
                 ClearSlot(opponent, GwintSlot.Weather);
+                sender.GraveyardCards.Add(card);
             }
             else
             {
@@ -297,14 +295,14 @@ namespace Gwent.NET.Commands
             switch (card.Effect)
             {
                 case GwintEffect.UnsummonDummy:
-                    PlayUnsummonDummy(sender, slot, targetCardId);
+                    PlayUnsummonDummy(sender, card, slot, targetCardId);
                     break;
                 default:
                     throw new CommandException();
             }
         }
 
-        private void PlayUnsummonDummy(Player player, GwintSlot slot, int? targetCardId)
+        private void PlayUnsummonDummy(Player player, Card card, GwintSlot slot, int? targetCardId)
         {
             if (!targetCardId.HasValue)
             {
@@ -312,8 +310,8 @@ namespace Gwent.NET.Commands
             }
 
             PlayerCardSlot cardSlot = GetUnsummonTargetSlot(player, slot, targetCardId.Value);
-            player.CardSlots.Remove(cardSlot);
             player.HandCards.Add(cardSlot.Card);
+            cardSlot.Card = card;
         }
 
         private static PlayerCardSlot GetUnsummonTargetSlot(Player player, GwintSlot slot, int targetCardId)
@@ -339,14 +337,14 @@ namespace Gwent.NET.Commands
             switch (card.Effect)
             {
                 case GwintEffect.Scorch:
-                    PlayScorch(sender, opponent);
+                    PlayScorch(sender, opponent, card);
                     break;
                 default:
                     throw new CommandException();
 
             }
         }
-        private void PlayScorch(Player sender, Player opponent)
+        private void PlayScorch(Player sender, Player opponent, Card card)
         {
             var senderSlots = SelectHighestPowerCardGroup(sender);
             var opponentSlots = SelectHighestPowerCardGroup(opponent);
@@ -383,6 +381,8 @@ namespace Gwent.NET.Commands
             {
                 ScorchCardSlots(opponent, opponentSlots);
             }
+
+            sender.GraveyardCards.Add(card);
         }
 
         private IGrouping<int, PlayerCardSlot> SelectHighestPowerCardGroup(Player player)
@@ -407,9 +407,7 @@ namespace Gwent.NET.Commands
         {
             switch (card.Effect)
             {
-                case GwintEffect.Melee:
-                case GwintEffect.Ranged:
-                case GwintEffect.Siege:
+                case GwintEffect.Horn:
                     if (!ValidateRowModifierCard(card, slot))
                     {
                         throw new CommandException();
@@ -430,17 +428,9 @@ namespace Gwent.NET.Commands
 
         private bool ValidateRowModifierCard(Card card, GwintSlot slot)
         {
-            switch (card.Effect)
-            {
-                case GwintEffect.Melee:
-                    return slot == GwintSlot.MeleeModifier;
-                case GwintEffect.Ranged:
-                    return slot == GwintSlot.RangedModifier;
-                case GwintEffect.Siege:
-                    return slot == GwintSlot.SiegeModifier;
-                default:
-                    return false;
-            }
+            return card.Types.HasFlag(GwintType.Melee) && slot == GwintSlot.MeleeModifier 
+                || card.Types.HasFlag(GwintType.Ranged) && slot == GwintSlot.RangedModifier 
+                || card.Types.HasFlag(GwintType.Siege) && slot == GwintSlot.SiegeModifier;
         }
     }
 }

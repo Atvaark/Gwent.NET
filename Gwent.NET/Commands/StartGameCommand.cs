@@ -30,17 +30,19 @@ namespace Gwent.NET.Commands
                 throw new CommandException();
             }
 
+            bool canPlayersUseBattleKingCard = game.Players.All(p => p.Deck.BattleKingCard.Effect != GwintEffect.CounterKing);
+
             foreach (var player in game.Players)
             {
                 player.DeckCards.AddRange(player.Deck.Cards);
-                player.BattleKingCard = player.Deck.BattleKingCard; // TODO: Trigger battle king card abilities such as "Cancel leader cards"
+                player.CanUseBattleKingCard = canPlayersUseBattleKingCard;
+                player.BattleKingCard = player.Deck.BattleKingCard;
                 player.Faction = player.Deck.Faction;
             }
 
-            State nextState;
             if (game.Players.Any(p => p.Deck.Faction == GwintFaction.Scoiatael))
             {
-                nextState = new PickStartingPlayerState();
+                NextState = new PickStartingPlayerState();
             }
             else
             {
@@ -50,10 +52,8 @@ namespace Gwent.NET.Commands
                 {
                     StartingPlayerId = startingPlayer.User.Id
                 });
-                nextState = new RedrawState();
+                NextState = new RedrawState();
             }
-            
-            SetNextState(game, nextState);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Gwent.NET.Commands
 {
     public class PickStartingPlayerCommand : Command
     {
-        public int StartingPlayerId { get; set; }
+        public int StartingPlayerUserId { get; set; }
 
         public override void Execute(Game game)
         {
@@ -26,34 +26,33 @@ namespace Gwent.NET.Commands
             }
 
             var substate = state.Substates.First(s => s.UserId == SenderUserId);
-            if (substate == null || !substate.CanPickStartingPlayer || substate.StartingPlayerId.HasValue)
+            if (substate == null || !substate.CanPickStartingPlayer || substate.StartingPlayerUserId.HasValue)
             {
                 throw new CommandException();
             }
 
-            if (!game.GetAllUserIds().Contains(StartingPlayerId))
+            if (!game.GetAllUserIds().Contains(StartingPlayerUserId))
             {
                 throw new CommandException();
             }
 
-            substate.StartingPlayerId = StartingPlayerId;
+            substate.StartingPlayerUserId = StartingPlayerUserId;
             sender.IsTurn = false;
 
-            if (state.Substates.Any(s => s.CanPickStartingPlayer && !s.StartingPlayerId.HasValue))
+            if (state.Substates.Any(s => s.CanPickStartingPlayer && !s.StartingPlayerUserId.HasValue))
             {
                 return;
             }
 
             DetermineStartingPlayer(game, state);
-            var nextState = new RedrawState();
-            SetNextState(game, nextState);
+            NextState = new RedrawState();
         }
 
         private void DetermineStartingPlayer(Game game, PickStartingPlayerState state)
         {
-            if (state.Substates.All(s => !s.CanPickStartingPlayer || s.StartingPlayerId == StartingPlayerId))
+            if (state.Substates.All(s => !s.CanPickStartingPlayer || s.StartingPlayerUserId == StartingPlayerUserId))
             {
-                var startingPlayer = game.GetOpponentPlayerByUserId(StartingPlayerId);
+                var startingPlayer = game.GetPlayerByUserId(StartingPlayerUserId);
                 startingPlayer.IsRoundStarter = true;
             }
             else

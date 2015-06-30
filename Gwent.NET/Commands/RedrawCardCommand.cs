@@ -52,22 +52,21 @@ namespace Gwent.NET.Commands
                 return;
             }
 
-            var nextState = new RoundState();
-            SetNextState(game, nextState);
+            NextState = new RoundState();
         }
 
         private void RedrawCard(Player player)
         {
             var card = player.HandCards.First(c => c.Id == CardId);
             player.HandCards.Remove(card);
-            player.DeckCards.Add(card);
-
+            
             var deckCards = player.DeckCards.ToList();
-            deckCards.Shuffle();
             var drawnCard = deckCards.First();
             deckCards.Remove(drawnCard);
             player.HandCards.Add(drawnCard);
 
+            deckCards.Add(card);
+            deckCards.Shuffle();
             player.DeckCards.Clear();
             player.DeckCards.AddRange(deckCards);
         }
