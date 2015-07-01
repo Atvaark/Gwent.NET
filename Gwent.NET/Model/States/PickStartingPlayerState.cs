@@ -17,8 +17,7 @@ namespace Gwent.NET.Model.States
         {
             Substates = new HashSet<PickStartingPlayerSubstate>();
         }
-
-
+        
         public override IEnumerable<Event> Initialize(Game game)
         {
             foreach (var player in game.Players)

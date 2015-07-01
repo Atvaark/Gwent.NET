@@ -38,6 +38,7 @@ namespace Gwent.NET.Commands
                 player.CanUseBattleKingCard = canPlayersUseBattleKingCard;
                 player.BattleKingCard = player.Deck.BattleKingCard;
                 player.Faction = player.Deck.Faction;
+                player.Lives = Constants.InitialLifeCount;
             }
 
             if (game.Players.Any(p => p.Deck.Faction == GwintFaction.Scoiatael))

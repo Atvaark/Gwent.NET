@@ -55,16 +55,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Command\EndRedrawCardCommandTest.cs" />
-    <Compile Include="Command\ForfeitGameCommandTest.cs" />
-    <Compile Include="Command\PickStartingPlayerCommandTest.cs" />
-    <Compile Include="Command\PlayCreatureCardCommandTest.cs" />
-    <Compile Include="Command\PlayGlobalCardCommandTest.cs" />
-    <Compile Include="Command\PlayRowModifierCardCommandTest.cs" />
-    <Compile Include="Command\PlaySpellCardCommandTest.cs" />
-    <Compile Include="Command\PlayWeatherCardCommandTest.cs" />
-    <Compile Include="Command\RedrawCardCommandTest.cs" />
-    <Compile Include="Command\StartGameCommandTest.cs" />
+    <Compile Include="Commands\EndRedrawCardCommandTest.cs" />
+    <Compile Include="Commands\ForfeitGameCommandTest.cs" />
+    <Compile Include="Commands\PickStartingPlayerCommandTest.cs" />
+    <Compile Include="Commands\PlayCreatureCardCommandTest.cs" />
+    <Compile Include="Commands\PlayGlobalCardCommandTest.cs" />
+    <Compile Include="Commands\PlayRowModifierCardCommandTest.cs" />
+    <Compile Include="Commands\PlaySpellCardCommandTest.cs" />
+    <Compile Include="Commands\PlayWeatherCardCommandTest.cs" />
+    <Compile Include="Commands\RedrawCardCommandTest.cs" />
+    <Compile Include="Commands\StartGameCommandTest.cs" />
+    <Compile Include="States\GameEndStateTest.cs" />
+    <Compile Include="States\LobbyStateTest.cs" />
+    <Compile Include="States\PickStartingPlayerStateTest.cs" />
+    <Compile Include="States\RedrawStateTest.cs" />
+    <Compile Include="States\RoundStateTest.cs" />
     <Compile Include="TestGameFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

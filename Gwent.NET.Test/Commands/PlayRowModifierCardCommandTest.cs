@@ -4,7 +4,7 @@ using Gwent.NET.Commands;
 using Gwent.NET.Model;
 using Xunit;
 
-namespace Gwent.NET.Test.Command
+namespace Gwent.NET.Test.Commands
 {
     public class PlayRowModifierCardCommandTest
     {

@@ -124,7 +124,7 @@ namespace Gwent.NET.Webservice.Controllers
         private void ValidateDeck(Deck deck)
         {
             // Enough cards in the deck
-            if (deck.Cards.Count < 22)
+            if (deck.Cards.Count < Constants.MinDeckCardCount)
             {
                 throw new InvalidDeckException("Not enough cards");
             }
@@ -149,7 +149,7 @@ namespace Gwent.NET.Webservice.Controllers
             
             // Not too many special cards
             int specialCardCount = deck.Cards.Count(IsSpecialCard);
-            if (specialCardCount > 10)
+            if (specialCardCount > Constants.MaxDeckSpecialCardCount)
             {
                 throw new InvalidDeckException("Too many special cards in deck");
             }

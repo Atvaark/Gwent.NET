@@ -13,11 +13,6 @@ namespace Gwent.NET.Model.States
         public override IEnumerable<Event> Initialize(Game game)
         {
             game.IsActive = false;
-            foreach (var player in game.Players)
-            {
-                player.IsTurn = false;
-            }
-
             yield break;
         }
     }

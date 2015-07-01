@@ -12,8 +12,6 @@ namespace Gwent.NET.Model.States
 
         public override IEnumerable<Event> Initialize(Game game)
         {
-
-
             yield break;
         }
     }

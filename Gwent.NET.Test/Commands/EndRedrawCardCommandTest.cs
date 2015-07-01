@@ -4,7 +4,7 @@ using Gwent.NET.Model.States;
 using Gwent.NET.Model.States.Substates;
 using Xunit;
 
-namespace Gwent.NET.Test.Command
+namespace Gwent.NET.Test.Commands
 {
     public class EndRedrawCardCommandTest
     {
