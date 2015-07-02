@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using Gwent.NET.Model;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Gwent.NET.DTOs
 {

@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Data.Common;
+using System.Data.Entity;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
 using Gwent.NET.Model.States;
@@ -9,6 +10,11 @@ namespace Gwent.NET.Repositories
     public class GwintContext : DbContext, IGwintContext
     {
         public GwintContext()
+        {
+            Database.SetInitializer<GwintContext>(new GwintContextInitializer());
+        }
+
+        public GwintContext(DbConnection existingConnection) : base(existingConnection, true)
         {
             Database.SetInitializer<GwintContext>(new GwintContextInitializer());
         }
