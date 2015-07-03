@@ -380,7 +380,8 @@ namespace Gwent.NET.Webservice.Hubs
                     string connectionId;
                     if (UserIdToConnectionIdDictionary.TryGetValue(recipient.ToString(), out connectionId))
                     {
-                        Clients.Client(connectionId).recieveServerEvent(gameEvent);
+                        dynamic client = Clients.Client(connectionId);
+                        client.recieveServerEvent(gameEvent);
                     }
                 }
             }

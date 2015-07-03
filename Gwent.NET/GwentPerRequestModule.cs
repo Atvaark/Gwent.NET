@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System.Data.Entity;
+using Autofac;
 using Gwent.NET.Repositories;
 
 namespace Gwent.NET
@@ -9,8 +10,9 @@ namespace Gwent.NET
         {
             builder.RegisterType<GwintContext>()
                 .InstancePerLifetimeScope()
-                //.InstancePerRequest()
                 .AsImplementedInterfaces();
+
+            builder.RegisterType<GwintContextInitializer>().As<IDatabaseInitializer<GwintContext>>();
             base.Load(builder);
         }
     }

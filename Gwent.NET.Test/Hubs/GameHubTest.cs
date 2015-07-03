@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using Autofac;
+using Effort;
 using Gwent.NET.DTOs;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
@@ -25,6 +25,8 @@ namespace Gwent.NET.Test.Hubs
         public void Authenticate()
         {
             var lifetimeScopeMock = new Mock<ILifetimeScope>();
+            var clientsMock = new Mock<IHubCallerConnectionContext<dynamic>>();
+            clientsMock.SetupClients();
 
             var userName = "User1";
             var userId = "1";
@@ -34,6 +36,7 @@ namespace Gwent.NET.Test.Hubs
             GameHub hub = new GameHub(lifetimeScopeMock.Object)
             {
                 Context = hubCallerContextMock.Object,
+                Clients = clientsMock.Object
             };
 
             hub.Authenticate();
@@ -42,7 +45,7 @@ namespace Gwent.NET.Test.Hubs
         [Fact]
         public void BrowseGames()
         {
-            DbConnection connection = Effort.DbConnectionFactory.CreateTransient();
+            DbConnection connection = DbConnectionFactory.CreateTransient();
             var game = new Game
             {
                 Id = 1,
@@ -63,8 +66,9 @@ namespace Gwent.NET.Test.Hubs
             scopeMock.SetupResolve<ILifetimeScope, IGwintContext>(new GwintContext(connection));
             var rootScopeMock = new Mock<ILifetimeScope>();
             rootScopeMock.Setup(s => s.BeginLifetimeScope()).Returns(scopeMock.Object);
-
-
+            var clientsMock = new Mock<IHubCallerConnectionContext<dynamic>>();
+            clientsMock.SetupClients();
+            
             var userName = "User1";
             var userId = "1";
             var connectionID = "13245";
@@ -73,6 +77,7 @@ namespace Gwent.NET.Test.Hubs
             GameHub hub = new GameHub(rootScopeMock.Object)
             {
                 Context = hubCallerContextMock.Object,
+                Clients = clientsMock.Object
             };
 
             var result = hub.BrowseGames();
@@ -87,7 +92,7 @@ namespace Gwent.NET.Test.Hubs
         [Fact]
         public void GetActiveGame()
         {
-            DbConnection connection = Effort.DbConnectionFactory.CreateTransient();
+            DbConnection connection = DbConnectionFactory.CreateTransient();
             var game = new Game
             {
                 Id = 1,
@@ -121,6 +126,8 @@ namespace Gwent.NET.Test.Hubs
             scopeMock.SetupResolve<ILifetimeScope, IGwintContext>(new GwintContext(connection));
             var rootScopeMock = new Mock<ILifetimeScope>();
             rootScopeMock.Setup(s => s.BeginLifetimeScope()).Returns(scopeMock.Object);
+            var clientsMock = new Mock<IHubCallerConnectionContext<dynamic>>();
+            clientsMock.SetupClients();
 
             var userName = "User1";
             var userId = "1";
@@ -129,6 +136,7 @@ namespace Gwent.NET.Test.Hubs
             GameHub hub = new GameHub(rootScopeMock.Object)
             {
                 Context = hubCallerContextMock.Object,
+                Clients = clientsMock.Object
             };
 
             var result = hub.GetActiveGame();
@@ -145,7 +153,7 @@ namespace Gwent.NET.Test.Hubs
         [Fact]
         public void GetActiveGameWithInactiveGame()
         {
-            DbConnection connection = Effort.DbConnectionFactory.CreateTransient();
+            DbConnection connection = DbConnectionFactory.CreateTransient();
             var game = new Game
             {
                 Id = 1,
@@ -178,6 +186,8 @@ namespace Gwent.NET.Test.Hubs
             scopeMock.SetupResolve<ILifetimeScope, IGwintContext>(new GwintContext(connection));
             var rootScopeMock = new Mock<ILifetimeScope>();
             rootScopeMock.Setup(s => s.BeginLifetimeScope()).Returns(scopeMock.Object);
+            var clientsMock = new Mock<IHubCallerConnectionContext<dynamic>>();
+            clientsMock.SetupClients();
 
             var userName = "User1";
             var userId = "1";
@@ -186,6 +196,7 @@ namespace Gwent.NET.Test.Hubs
             GameHub hub = new GameHub(rootScopeMock.Object)
             {
                 Context = hubCallerContextMock.Object,
+                Clients = clientsMock.Object
             };
 
             var result = hub.GetActiveGame();
@@ -196,12 +207,14 @@ namespace Gwent.NET.Test.Hubs
         [Fact]
         public void GetActiveGameWithWithoutGames()
         {
-            DbConnection connection = Effort.DbConnectionFactory.CreateTransient();
+            DbConnection connection = DbConnectionFactory.CreateTransient();
 
             var scopeMock = new Mock<ILifetimeScope>();
             scopeMock.SetupResolve<ILifetimeScope, IGwintContext>(new GwintContext(connection));
             var rootScopeMock = new Mock<ILifetimeScope>();
             rootScopeMock.Setup(s => s.BeginLifetimeScope()).Returns(scopeMock.Object);
+            var clientsMock = new Mock<IHubCallerConnectionContext<dynamic>>();
+            clientsMock.SetupClients();
 
             var userName = "User1";
             var userId = "1";
@@ -210,6 +223,7 @@ namespace Gwent.NET.Test.Hubs
             GameHub hub = new GameHub(rootScopeMock.Object)
             {
                 Context = hubCallerContextMock.Object,
+                Clients = clientsMock.Object
             };
 
             var result = hub.GetActiveGame();
@@ -221,7 +235,7 @@ namespace Gwent.NET.Test.Hubs
         [Fact]
         public void CreateGame()
         {
-            DbConnection connection = Effort.DbConnectionFactory.CreateTransient();
+            DbConnection connection = DbConnectionFactory.CreateTransient();
             var user = new User
             {
                 Id = 1
@@ -237,6 +251,8 @@ namespace Gwent.NET.Test.Hubs
             scopeMock.SetupResolve<ILifetimeScope, IGwintContext>(new GwintContext(connection));
             var rootScopeMock = new Mock<ILifetimeScope>();
             rootScopeMock.Setup(s => s.BeginLifetimeScope()).Returns(scopeMock.Object);
+            var clientsMock = new Mock<IHubCallerConnectionContext<dynamic>>();
+            clientsMock.SetupClients();
 
             var userName = "User1";
             var userId = "1";
@@ -245,6 +261,7 @@ namespace Gwent.NET.Test.Hubs
             GameHub hub = new GameHub(rootScopeMock.Object)
             {
                 Context = hubCallerContextMock.Object,
+                Clients = clientsMock.Object
             };
 
             var result = hub.CreateGame();
@@ -255,7 +272,7 @@ namespace Gwent.NET.Test.Hubs
         [Fact]
         public void JoinGame()
         {
-            DbConnection connection = Effort.DbConnectionFactory.CreateTransient();
+            DbConnection connection = DbConnectionFactory.CreateTransient();
             using (var gwintContext = new GwintContext(connection))
             {
                 gwintContext.Users.Add(new User
@@ -285,6 +302,8 @@ namespace Gwent.NET.Test.Hubs
             scopeMock.SetupResolve<ILifetimeScope, IGwintContext>(new GwintContext(connection));
             var rootScopeMock = new Mock<ILifetimeScope>();
             rootScopeMock.Setup(s => s.BeginLifetimeScope()).Returns(scopeMock.Object);
+            var clientsMock = new Mock<IHubCallerConnectionContext<dynamic>>();
+            clientsMock.SetupClients();
 
             int gameId = 1;
             var userName = "User1";
@@ -294,6 +313,7 @@ namespace Gwent.NET.Test.Hubs
             GameHub hub = new GameHub(rootScopeMock.Object)
             {
                 Context = hubCallerContextMock.Object,
+                Clients = clientsMock.Object
             };
 
             var result = hub.JoinGame(gameId);
@@ -304,10 +324,9 @@ namespace Gwent.NET.Test.Hubs
         [Fact]
         public void RecieveClientCommand()
         {
-            DbConnection connection = Effort.DbConnectionFactory.CreateTransient();
+            DbConnection connection = DbConnectionFactory.CreateTransient();
             int nextCardId = 1;
 
-            
             var createNewCards = new Func<int, ICollection<Card>>((count) =>
             {
                 var cards = new List<Card>();
@@ -362,15 +381,18 @@ namespace Gwent.NET.Test.Hubs
                                 BattleKingCard = createNewCards(1).Single(),
                                 Cards = createNewCards(Constants.MinDeckCardCount)
                             }
-                        },
+                        }
                     }
                 });
+                
                 gwintContext.SaveChanges();
             }
             var scopeMock = new Mock<ILifetimeScope>();
             scopeMock.SetupResolve<ILifetimeScope, IGwintContext>(new GwintContext(connection));
             var rootScopeMock = new Mock<ILifetimeScope>();
             rootScopeMock.Setup(s => s.BeginLifetimeScope()).Returns(scopeMock.Object);
+            var clientsMock = new Mock<IHubCallerConnectionContext<dynamic>>();
+            clientsMock.SetupClients();
 
             var userName = "User1";
             var userId = "1";
@@ -379,14 +401,14 @@ namespace Gwent.NET.Test.Hubs
             GameHub hub = new GameHub(rootScopeMock.Object)
             {
                 Context = hubCallerContextMock.Object,
+                Clients = clientsMock.Object
             };
             var commandDto = new CommandDto();
             commandDto.Type = CommandType.StartGame;
 
             var result = hub.RecieveClientCommand(commandDto);
-            
+
             Assert.Null(result.Error);
-            Assert.NotNull(result.Data);
         }
 
         private static Mock<HubCallerContext> CreateHubCallerContextMock(string userName, string userId, string connectionID)

@@ -10,13 +10,23 @@ namespace Gwent.NET.Repositories
     public class GwintContext : DbContext, IGwintContext
     {
         public GwintContext()
+            : this(new CreateDatabaseIfNotExists<GwintContext>())
         {
-            Database.SetInitializer<GwintContext>(new GwintContextInitializer());
         }
 
-        public GwintContext(DbConnection existingConnection) : base(existingConnection, true)
+        public GwintContext(IDatabaseInitializer<GwintContext> initializer)
         {
-            Database.SetInitializer<GwintContext>(new GwintContextInitializer());
+            Database.SetInitializer(initializer);
+        }
+
+        public GwintContext(DbConnection existingConnection)
+            : this(new CreateDatabaseIfNotExists<GwintContext>(), existingConnection)
+        {
+        }
+
+        public GwintContext(IDatabaseInitializer<GwintContext> initializer, DbConnection existingConnection) : base(existingConnection, true)
+        {
+            Database.SetInitializer(initializer);
         }
 
         public IDbSet<Card> Cards { get; set; }

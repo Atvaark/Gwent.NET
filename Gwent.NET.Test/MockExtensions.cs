@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Dynamic;
 using Autofac;
 using Autofac.Core;
+using Gwent.NET.Events;
+using Microsoft.AspNet.SignalR.Hubs;
 using Moq;
 
 namespace Gwent.NET.Test
@@ -19,6 +21,13 @@ namespace Gwent.NET.Test
                 .Returns(true);
             context.Setup(s => s.ResolveComponent(componentRegistration, It.IsAny<IEnumerable<Parameter>>()))
                    .Returns(result);
+        }
+
+        public static void SetupClients(this Mock<IHubCallerConnectionContext<dynamic>> mock)
+        {
+            dynamic client = new ExpandoObject();
+            client.recieveServerEvent = new Action<Event>((e) => { });
+            mock.Setup(c => c.Client(It.IsAny<string>())).Returns((ExpandoObject)client);
         }
     }
 }
