@@ -3,23 +3,24 @@
         width: 1920px;
         height: 1080px;
         position: relative;
+        background-image: url(/app/assets/img/board.png);
     }
 
     .gw-leader-holder {
-        background: red;
+        /*background: red;*/
         width: 176px;
         height: 150px;
     }
 
     .gw-leader-holder-card {
-        background: yellow;
+        /*background: yellow;*/
         width: 114px;
         height: 150px;
         position: absolute;
     }
 
     .gw-leader-holder-turn-indicator {
-        background: yellow;
+        /*background: yellow;*/
         width: 56px;
         height: 56px;
         position: absolute;
@@ -28,95 +29,136 @@
     }
 
     .gw-player {
-        background: red;
+        /*background: red;*/
         width: 396px;
         height: 136px;
     }
 
     .gw-player-portrait {
-        background: orange;
+        /*background: orange;*/
         width: 136px;
         height: 136px;
     }
 
     .gw-player-faction-icon {
-        background: orangered;
+        /*background: orangered;*/
         width: 60px;
         height: 60px;
     }
 
     .gw-player-name {
-        background: orangered;
+        /*background: orangered;*/
         width: 260px;
         height: 30px;
     }
 
     .gw-player-faction-name {
-        background: orange;
+        /*background: orange;*/
         width: 260px;
         height: 30px;
     }
 
     .gw-player-card-count {
-        background: orangered;
+        /*background: orangered;*/
         width: 76px;
         height: 76px;
     }
 
+    .gw-player-card-count-image {
+        /*background: orangered;*/
+        width: 30px;
+        height: 45px;
+        top: 10px;
+        left: 3px;
+        position: absolute;
+        background-image: url(/app/assets/img/board_cards.png);
+        background-size: 100%;
+    }
+
+    .gw-player-card-count-text {
+        /*background: orangered;*/
+        width: 43px;
+        height: 76px;
+        left: 33px;
+        position: absolute;
+    }
+
     .gw-player-life-indicator {
-        background: orange;
+        /*background: orange;*/
         width: 90px;
         height: 76px;
     }
 
+    .gw-player-life-indicator-gem {
+        margin-top: 7px;
+        width: 42px;
+        height: 42px;
+        float: left;
+        background-image: url(/app/assets/img/player_life_gem_large.png);
+        background-size: 100%;
+    }
+
+    .gw-player-life-indicator-gem-inactive {
+        -webkit-filter: grayscale(100%);
+        -moz-filter: grayscale(100%);
+        -o-filter: grayscale(100%);
+        /*-ms-filter: grayscale(100%);
+        filter: grayscale(100%);*/
+    }
+
     .gw-player-winning-round {
-        background: orangered;
-        width: 94px;
-        height: 94px;
+        /*background: orangered;*/
+        width: 105px;
+        height: 105px;
+        background-image: url(/app/assets/img/player_winner_indicator.png);
+        background-size: 100%;
     }
 
     .gw-player-score {
-        background: orange;
+        /*background: orange;*/
         width: 65px;
         height: 65px;
     }
 
     .gw-player-passed {
-        background: orange;
+        /*background: orange;*/
         width: 94px;
         height: 24px;
     }
 
     .gw-weather {
-        background: red;
+        /*background: red;*/
         width: 293px;
         height: 150px;
     }
 
     .gw-row {
-        background: red;
+        /*background: red;*/
         width: 1015px;
         height: 132px;
     }
 
     .gw-row-score {
-        background: yellow;
+        /*background: yellow;*/
         width: 78px;
         height: 132px;
         position: absolute;
+        background-image: url(/app/assets/img/row_power_indicator.png);
     }
 
     .gw-row-score-text {
-        background: orange;
+        /*background: orange;*/
         width: 54px;
         height: 54px;
         position: absolute;
-        left: 12px;
-        top: 39px;
+        left: 10px;
+        top: 40px;
+        background-image: url(/app/assets/img/player_power_indicator.png);
+        background-size: 100%;
     }
 
     .gw-row-modifier {
-        background: yellow;
+        /*background: yellow;*/
         width: 137px;
         height: 124px;
         position: absolute;
@@ -125,7 +167,7 @@
     }
 
     .gw-row-cards {
-        background: yellow;
+        /*background: yellow;*/
         width: 800px;
         height: 128px;
         position: absolute;
@@ -134,25 +176,25 @@
     }
 
     .gw-hand {
-        background: red;
+        /*background: red;*/
         width: 947px;
         height: 138px;
     }
 
     .gw-graveyard {
-        background: red;
+        /*background: red;*/
         width: 113px;
         height: 148px;
     }
 
     .gw-deck {
-        background: red;
+        /*background: red;*/
         width: 100px;
         height: 160px;
     }
 
     .gw-card-preview {
-        background: red;
+        /*background: red;*/
         width: 310px;
         height: 584px;
     }
@@ -163,6 +205,10 @@
         left: 130px;
     }
 
+    #gw-top-leader-holder-turn-indicator {
+        background-image: url(/app/assets/img/player_turn_indicator_opponent.png);
+    }
+
     #gw-top-player {
         position: absolute;
         top: 275px;
@@ -171,10 +217,14 @@
 
     #gw-top-player-portrait {
         position: absolute;
+        background-image: url(/app/assets/img/player_avatar_anonymous.png);
+        background-size: 100%;
     }
 
     #gw-top-player-faction-icon {
         position: absolute;
+        background-image: url(/app/assets/img/player_faction_northern_realms.png);
+        background-size: 100%;
     }
 
     #gw-top-player-name {
@@ -202,14 +252,16 @@
 
     #gw-top-player-winning-round {
         position: absolute;
-        top: 10px;
-        left: 302px;
+        top: 6px;
+        left: 296px;
     }
 
     #gw-top-player-score {
         position: absolute;
         top: 23px;
         left: 316px;
+        background-image: url(/app/assets/img/player_power_indicator.png);
+        background-size: 100%;
     }
 
     #gw-top-player-passed {
@@ -226,11 +278,15 @@
 
     #gw-bottom-player-portrait {
         position: absolute;
+        background-image: url(/app/assets/img/player_avatar_geralt.png);
+        background-size: 100%;
     }
 
     #gw-bottom-player-faction-icon {
         position: absolute;
         top: 76px;
+        background-image: url(/app/assets/img/player_faction_northern_realms.png);
+        background-size: 100%;
     }
 
     #gw-bottom-player-name {
@@ -257,14 +313,16 @@
 
     #gw-bottom-player-winning-round {
         position: absolute;
-        top: 22px;
-        left: 302px;
+        top: 18px;
+        left: 296px;
     }
 
     #gw-bottom-player-score {
         position: absolute;
         top: 35px;
         left: 316px;
+        background-image: url(/app/assets/img/player_power_indicator.png);
+        background-size: 100%;
     }
 
     #gw-bottom-player-passed {
@@ -282,6 +340,10 @@
         position: absolute;
         top: 824px;
         left: 132px;
+    }
+
+    #gw-bottom-leader-holder-turn-indicator {
+        background-image: url(/app/assets/img/player_turn_indicator_self.png);
     }
 
     #gw-top-row-siege {
@@ -342,12 +404,16 @@
         position: absolute;
         top: 55px;
         left: 1724px;
+        background-image: url(/app/assets/img/board_deck_northern_realms.png);
+        background-repeat: no-repeat;
     }
 
     #gw-bottom-deck {
         position: absolute;
         top: 814px;
         left: 1724px;
+        background-image: url(/app/assets/img/board_deck_northern_realms.png);
+        background-repeat: no-repeat;
     }
 
     #gw-card-preview {
@@ -359,18 +425,26 @@
 <div class="gw-board">
     <div id="gw-top-leader-holder" class="gw-leader-holder">
         <div class="gw-leader-holder-card">{{game.players['opponent'].battleKingCard}}</div>
-        <div class="gw-leader-holder-turn-indicator">{{game.players['opponent'].isTurn}}</div>
+        <div id="gw-top-leader-holder-turn-indicator" class="gw-leader-holder-turn-indicator" ng-if="game.players['opponent'].isTurn"></div>
     </div>
     <div id="gw-top-player" class="gw-player">
         <div id="gw-top-player-portrait" class="gw-player-portrait"></div>
         <div id="gw-top-player-faction-icon" class="gw-player-faction-icon"></div>
         <div id="gw-top-player-name" class="gw-player-name">{{game.players['opponent'].name}}</div>
         <div id="gw-top-player-faction-name" class="gw-player-faction-name">{{game.players['opponent'].faction}}</div>
-        <div id="gw-top-player-card-count" class="gw-player-card-count">{{game.players['opponent'].handCardCount}}</div>
-        <div id="gw-top-player-life-indicator" class="gw-player-life-indicator">{{game.players['opponent'].lives}}</div>
-        <div id="gw-top-player-winning-round" class="gw-player-winning-round">{{game.players['opponent'].isWinning}}</div>
+        <div id="gw-top-player-card-count" class="gw-player-card-count">
+            <div class="gw-player-card-count-image"></div>
+            <div class="gw-player-card-count-text">{{game.players['opponent'].handCardCount}}</div>
+        </div>
+        <div id="gw-top-player-life-indicator" class="gw-player-life-indicator">
+            <div class="gw-player-life-indicator-gem" ng-class="{'gw-player-life-indicator-gem-inactive' : game.players['opponent'].lives <= 0}"></div>
+            <div class="gw-player-life-indicator-gem" ng-class="{'gw-player-life-indicator-gem-inactive' : game.players['opponent'].lives <= 1}"></div>
+        </div>
+        <div id="gw-top-player-winning-round" class="gw-player-winning-round">
+            {{game.players['opponent'].isWinning}}
+        </div>
         <div id="gw-top-player-score" class="gw-player-score">{{game.players['opponent'].score}}</div>
-        <div id="gw-top-player-passed" class="gw-player-passed">{{game.players['opponent'].isPassing}}</div>
+        <div id="gw-top-player-passed" class="gw-player-passed" ng-if="game.players['opponent'].isPassing">Passing</div>
     </div>
     <div id="gw-weather" class="gw-weather"></div>
     <div id="gw-bottom-player" class="gw-player">
@@ -378,15 +452,22 @@
         <div id="gw-bottom-player-faction-icon" class="gw-player-faction-icon"></div>
         <div id="gw-bottom-player-name" class="gw-player-name">{{game.players['self'].name}}</div>
         <div id="gw-bottom-player-faction-name" class="gw-player-faction-name">{{game.players['self'].faction}}</div>
-        <div id="gw-bottom-player-card-count" class="gw-player-card-count">{{game.players['self'].handCardCount}}</div>
-        <div id="gw-bottom-player-life-indicator" class="gw-player-life-indicator">{{game.players['self'].lives}}</div>
+        <div id="gw-bottom-player-card-count" class="gw-player-card-count">
+            <div class="gw-player-card-count-image"></div>
+            <div class="gw-player-card-count-text">{{game.players['self'].handCardCount}}</div>
+        </div>
+        <div id="gw-bottom-player-life-indicator" class="gw-player-life-indicator">
+            <div class="gw-player-life-indicator-gem" ng-class="{'gw-player-life-indicator-gem-inactive' : game.players['self'].lives <= 0}"></div>
+            <div class="gw-player-life-indicator-gem" ng-class="{'gw-player-life-indicator-gem-inactive' : game.players['self'].lives <= 1}"></div>
+        </div>
         <div id="gw-bottom-player-winning-round" class="gw-player-winning-round">{{game.players['self'].isWinning}}</div>
         <div id="gw-bottom-player-score" class="gw-player-score">{{game.players['self'].score}}</div>
-        <div id="gw-bottom-player-passed" class="gw-player-passed">{{game.players['self'].isPassing}}</div>
+        <div id="gw-bottom-player-passed" class="gw-player-passed" ng-if="game.players['self'].isPassing">Passing</div>
     </div>
     <div id="gw-bottom-leader-holder" class="gw-leader-holder">
         <div class="gw-leader-holder-card">{{game.players['self'].battleKingCard}}</div>
-        <div class="gw-leader-holder-turn-indicator">{{game.players['self'].isTurn}}</div>
+        <div id="gw-bottom-leader-holder-turn-indicator" class="gw-leader-holder-turn-indicator" ng-if="game.players['self'].isTurn">
+        </div>
     </div>
     <div id="gw-top-row-siege" class="gw-row">
         <div class="gw-row-score">

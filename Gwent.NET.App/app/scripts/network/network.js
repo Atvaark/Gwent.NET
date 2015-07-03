@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.network', [])
-        .factory('backendUrlService', function($location) {
+        .factory('backendUrlService', function ($location) {
             var backendUrlService = {};
             var host = $location.host();
             var port = '13471';

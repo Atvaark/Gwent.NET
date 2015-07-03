@@ -5,27 +5,43 @@
         .factory('cardService', function ($q, backendService) {
             var cardService = {
                 cardsLoaded: false,
-                cards: []
+                cards: [] // TODO: Maybe save the cards as an associative array for easier access.
             };
-            cardService.methods = {
-                getCards: function () {
-                    if (cardService.cardsLoaded) {
-                        return $q.when(cardService.cards);
-                    }
-
-                    var deferred = $q.defer();
-                    backendService.methods.getCards()
-                        .then(function (cards) {
-                            cardService.cards = cards;
-                            cardService.cardsLoaded = true;
-                            deferred.resolve(cards);
-                        }, function (msg) {
-                            cardService.cards = [];
-                            deferred.reject(msg);
-                        });
-                    return deferred.promise;
+            cardService.getCards = function () {
+                if (cardService.cardsLoaded) {
+                    return $q.when(cardService.cards);
                 }
-            }
+
+                var deferred = $q.defer();
+                backendService.methods.getCards()
+                    .then(function (cards) {
+                        cardService.cards = cards;
+                        cardService.cardsLoaded = true;
+                        deferred.resolve(cards);
+                    }, function (msg) {
+                        cardService.cards = [];
+                        deferred.reject(msg);
+                    });
+                return deferred.promise;
+            };
+
+            cardService.getCardById = function (cardId) {
+                var deferred = $q.defer();
+                cardService.getCards().then(function(cards) {
+                    for (var i = 0; i < cards.length; i++) {
+                        var card = cards[i];
+                        if (card.id === Number(cardId)) {
+                            deferred.resolve(cards[i]);
+                            return;
+                        }
+                    }
+                    deferred.reject('Card with id ' + cardId + ' not found');
+                }, function(msg) {
+                    deferred.reject(msg);
+                });
+                return deferred.promise;
+            };
+
             return cardService;
         })
         .filter('battleKing', function () {
@@ -307,19 +323,25 @@
                 Melee: {
                     id: 1,
                     canPlayCard: function (card) {
-                        return gwintTypeService.hasAllTypes(card.type, ['Melee', 'Creature']);
+                        return gwintTypeService.hasAllTypes(card.type, ['Melee', 'Creature']) ||
+                               gwintTypeService.hasType(card.type, 'Spell') ||
+                               gwintTypeService.hasType(card.type, 'GlobalEffect');
                     }
                 },
                 Ranged: {
                     id: 2,
                     canPlayCard: function (card) {
-                        return gwintTypeService.hasAllTypes(card.type, ['Ranged', 'Creature']);
+                        return gwintTypeService.hasAllTypes(card.type, ['Ranged', 'Creature']) ||
+                               gwintTypeService.hasType(card.type, 'Spell') ||
+                               gwintTypeService.hasType(card.type, 'GlobalEffect');
                     }
                 },
                 Siege: {
                     id: 3,
                     canPlayCard: function (card) {
-                        return gwintTypeService.hasAllTypes(card.type, ['Siege', 'Creature']);
+                        return gwintTypeService.hasAllTypes(card.type, ['Siege', 'Creature']) ||
+                               gwintTypeService.hasType(card.type, 'Spell') ||
+                               gwintTypeService.hasType(card.type, 'GlobalEffect');
                     }
                 },
                 MeleeModifier: {
@@ -363,6 +385,23 @@
                 }
 
                 return false;
+            };
+
+
+            gwintSlotService.getValidSlots = function (card) {
+                var tempSlots = [];
+
+                for (var slotName in gwintSlotService.slots) {
+                    if (!gwintSlotService.slots.hasOwnProperty(slotName)) {
+                        continue;
+                    }
+                    var slot = gwintSlotService.slots[slotName];
+                    if (slot.canPlayCard(card)) {
+                        tempSlots.push(slotName);
+                    }
+                }
+
+                return tempSlots;
             };
 
             return gwintSlotService;

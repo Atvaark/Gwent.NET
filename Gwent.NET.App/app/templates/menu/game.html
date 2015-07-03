@@ -24,10 +24,13 @@
         <button type="button" ng-click="methods.sendEndRedrawCardCommand()">End redrawing</button>
     </div>
     <div ng-show="data.game.state == 'Round'">
-        <select name="playCard" ng-model="data.input.playCard">
+        <select name="playCard" ng-model="data.input.playCard" ng-change="methods.getValidSlots(data.input.playCard)">
             <option ng-repeat="handCard in data.game.players['self'].handCards" value="{{handCard}}">{{handCard}}</option>
         </select>
-        <input type="text" ng-model="data.input.playCardSlot"/>
+        <select name="playCardSlot" ng-model="data.input.playCardSlot">
+            <option ng-repeat="slot in data.input.validSlots" value="{{slot}}">{{slot}}</option>
+        </select>
+        <!-- TODO: Add a target CardId and target slot picker-->
         <button type="button" ng-click="methods.sendPlayCardCommand(data.input.playCard, data.input.playCardSlot)">Play card</button>
         <button type="button" ng-click="methods.sendPassCommand()">Pass</button>
         <button type="button" ng-click="methods.sendUseBattleKingCardCommand()">Use battle king card</button>

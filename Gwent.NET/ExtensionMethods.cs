@@ -33,7 +33,7 @@ namespace Gwent.NET
         {
             return new CardDto
             {
-                Index = card.Id,
+                Id = card.Id,
                 Title = card.Title,
                 Description = card.Description,
                 Power = card.Power,

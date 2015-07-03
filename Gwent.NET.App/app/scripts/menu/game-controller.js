@@ -2,11 +2,16 @@
     'use strict';
 
     angular.module('app.menu')
-        .controller('GameController', function ($scope, $state, $stateParams, $log, $q, gameService, gameHubService) {
+        .controller('GameController', function ($scope, $state, $stateParams, $log, $q, gameService, gameHubService, cardService, gwintSlotService) {
             var data = $scope.data =
             {
                 game: null,
-                games: []
+                games: [],
+                input: {
+                    validSlots: [
+                        'None'
+                    ]
+                }
             };
             var methods = $scope.methods = {};
 
@@ -172,7 +177,7 @@
                     type: "PlayCard",
                     cardId: cardId,
                     //resurrectCardId: 0,
-                    gwintSlot: slot
+                    slot: slot
                 }).then(function () {
                     $log.info('played card');
                 }, function (error) {
@@ -187,6 +192,14 @@
                     $log.info('used battle king card');
                 }, function (error) {
                     $log.error('unable to use battle king card: ' + error);
+                });
+            };
+
+            methods.getValidSlots = function (cardId) {
+                cardService.getCardById(cardId).then(function (card) {
+                    data.input.validSlots = gwintSlotService.getValidSlots(card);
+                }, function () {
+                    $log.error('unable to get valid slots. could not get the card.');
                 });
             };
 

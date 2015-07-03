@@ -5,7 +5,7 @@ namespace Gwent.NET.DTOs
 {
     public class CardDto
     {
-        public int Index { get; set; }
+        public int Id { get; set; }
 
         public string Title { get; set; }
 
