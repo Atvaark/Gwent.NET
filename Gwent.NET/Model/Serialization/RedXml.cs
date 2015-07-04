@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace Gwent.NET.Model
+namespace Gwent.NET.Model.Serialization
 {
     [XmlRoot("redxml")]
     public class RedXml

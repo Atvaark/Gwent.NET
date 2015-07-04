@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
+using Gwent.NET.Model.Serialization;
 using Gwent.NET.Model.States;
 using Gwent.NET.Model.States.Substates;
 

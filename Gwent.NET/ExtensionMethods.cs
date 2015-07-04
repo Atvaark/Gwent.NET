@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using Gwent.NET.DTOs;
 using Gwent.NET.Model;
+using Gwent.NET.Model.Enums;
 
 namespace Gwent.NET
 {

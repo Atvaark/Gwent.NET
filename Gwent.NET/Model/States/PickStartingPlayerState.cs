@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Gwent.NET.Events;
+using Gwent.NET.Model.Enums;
 using Gwent.NET.Model.States.Substates;
 
 namespace Gwent.NET.Model.States

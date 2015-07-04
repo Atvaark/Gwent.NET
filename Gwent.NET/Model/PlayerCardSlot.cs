@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Gwent.NET.Model.Enums;
 
 namespace Gwent.NET.Model
 {

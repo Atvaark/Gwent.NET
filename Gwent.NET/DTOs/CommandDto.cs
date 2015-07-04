@@ -1,4 +1,5 @@
 ﻿using Gwent.NET.Model;
+using Gwent.NET.Model.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 

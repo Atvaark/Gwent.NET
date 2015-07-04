@@ -2,6 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
+using Gwent.NET.Model.Enums;
+using Gwent.NET.Model.Serialization;
 using Newtonsoft.Json;
 
 namespace Gwent.NET.Model

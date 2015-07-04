@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Gwent.NET.Events;
 using Gwent.NET.Model;
+using Gwent.NET.Model.Enums;
 using Gwent.NET.Model.States;
 using Xunit;
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace Gwent.NET.Model
+namespace Gwent.NET.Model.Serialization
 {
     public class CustomGwintCardDefinitions
     {

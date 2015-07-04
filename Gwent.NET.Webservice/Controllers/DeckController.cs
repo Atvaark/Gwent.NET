@@ -4,6 +4,7 @@ using Gwent.NET.DTOs;
 using Gwent.NET.Exceptions;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
+using Gwent.NET.Model.Enums;
 
 namespace Gwent.NET.Webservice.Controllers
 {

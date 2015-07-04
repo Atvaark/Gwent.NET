@@ -2,6 +2,7 @@
 using System.Linq;
 using Gwent.NET.Commands;
 using Gwent.NET.Model;
+using Gwent.NET.Model.Enums;
 using Xunit;
 
 namespace Gwent.NET.Test.Commands

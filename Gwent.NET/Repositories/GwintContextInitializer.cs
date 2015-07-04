@@ -6,6 +6,7 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using Gwent.NET.Model;
+using Gwent.NET.Model.Serialization;
 using Gwent.NET.Properties;
 
 namespace Gwent.NET.Repositories

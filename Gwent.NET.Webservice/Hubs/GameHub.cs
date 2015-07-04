@@ -11,6 +11,7 @@ using Gwent.NET.Events;
 using Gwent.NET.Exceptions;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
+using Gwent.NET.Model.Enums;
 using Gwent.NET.Model.States;
 using Gwent.NET.Webservice.Auth;
 using Microsoft.AspNet.Identity;

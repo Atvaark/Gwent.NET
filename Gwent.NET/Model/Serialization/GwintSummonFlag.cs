@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
 
-namespace Gwent.NET.Model
+namespace Gwent.NET.Model.Serialization
 {
     public class GwintSummonFlag
     {

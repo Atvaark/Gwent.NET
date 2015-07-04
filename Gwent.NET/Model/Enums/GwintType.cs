@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-namespace Gwent.NET.Model
+namespace Gwent.NET.Model.Enums
 {
     [Flags]
     public enum GwintType
