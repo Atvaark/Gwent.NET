@@ -4,9 +4,9 @@ namespace Gwent.NET.Events
 {
     public class HandChangedEvent : Event
     {
-        public List<int> HandCards { get; set; }
+        public List<long> HandCards { get; set; }
 
-        public HandChangedEvent(int eventRecipient)
+        public HandChangedEvent(long eventRecipient)
             : base(eventRecipient)
         {
 

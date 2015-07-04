@@ -33,7 +33,7 @@ namespace Gwent.NET.Commands
             }
 
             // TODO: Implement battle king card abilities
-            switch (sender.BattleKingCard.Effect)
+            switch (sender.BattleKingCard.Card.Effect)
             {
                 case GwintEffect.MeleeScorch:
                     // TODO: Remove enemy non-hero unit with highest power if row power is >= 10

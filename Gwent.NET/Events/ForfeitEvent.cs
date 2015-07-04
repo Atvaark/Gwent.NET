@@ -4,9 +4,10 @@ namespace Gwent.NET.Events
 {
     public class ForfeitEvent : Event
     {
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
-        public ForfeitEvent(IEnumerable<int> eventRecipients) : base(eventRecipients)
+        public ForfeitEvent(IEnumerable<long> eventRecipients)
+            : base(eventRecipients)
         {
         }
     }

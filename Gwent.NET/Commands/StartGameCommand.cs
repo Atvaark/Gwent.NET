@@ -31,13 +31,13 @@ namespace Gwent.NET.Commands
                 throw new CommandException();
             }
 
-            bool canPlayersUseBattleKingCard = game.Players.All(p => p.Deck.BattleKingCard.Effect != GwintEffect.CounterKing);
+            bool canPlayersUseBattleKingCard = game.Players.All(p => p.Deck.BattleKingCard.Card.Effect != GwintEffect.CounterKing);
 
             foreach (var player in game.Players)
             {
-                player.DeckCards.AddRange(player.Deck.Cards);
+                player.DeckCards.AddRange(player.Deck.Cards.Select(c => c.ToPlayerCard()));
                 player.CanUseBattleKingCard = canPlayersUseBattleKingCard;
-                player.BattleKingCard = player.Deck.BattleKingCard;
+                player.BattleKingCard = player.Deck.BattleKingCard.ToPlayerCard();
                 player.Faction = player.Deck.Faction;
                 player.Lives = Constants.InitialLifeCount;
             }

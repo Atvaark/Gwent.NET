@@ -27,7 +27,10 @@ namespace Gwent.NET.Test.Commands
                         IsOwner = true,
                         Deck = new Deck
                         {
-                            BattleKingCard = new Card()
+                            BattleKingCard = new DeckCard
+                            {
+                                Card = new Card()
+                            }
                         }
                     },
                     new Player
@@ -38,7 +41,10 @@ namespace Gwent.NET.Test.Commands
                         },
                         Deck = new Deck
                         {
-                            BattleKingCard = new Card()
+                            BattleKingCard = new DeckCard
+                            {
+                                Card = new Card()
+                            }
                         }
                     }
                 }
@@ -72,9 +78,12 @@ namespace Gwent.NET.Test.Commands
                         IsOwner = true,
                         Deck = new Deck
                         {
-                            BattleKingCard = new Card
+                            BattleKingCard = new DeckCard
                             {
-                                Effect = GwintEffect.CounterKing
+                                Card = new Card
+                                {
+                                    Effect = GwintEffect.CounterKing
+                                }
                             }
                         }
                     },
@@ -86,7 +95,7 @@ namespace Gwent.NET.Test.Commands
                         },
                         Deck = new Deck
                         {
-                            BattleKingCard = new Card()
+                            BattleKingCard = new DeckCard()
                         }
                     }
                 }
@@ -118,9 +127,12 @@ namespace Gwent.NET.Test.Commands
                         IsOwner = true,
                         Deck = new Deck
                         {
-                            BattleKingCard = new Card
+                            BattleKingCard = new DeckCard
                             {
-                                Effect = GwintEffect.CounterKing
+                                Card = new Card
+                                {
+                                    Effect = GwintEffect.CounterKing
+                                }
                             }
                         }
                     },
@@ -132,9 +144,12 @@ namespace Gwent.NET.Test.Commands
                         },
                         Deck = new Deck
                         {
-                            BattleKingCard = new Card
+                            BattleKingCard = new DeckCard
                             {
-                                Effect = GwintEffect.CounterKing
+                                Card = new Card
+                                {
+                                    Effect = GwintEffect.CounterKing
+                                }
                             }
                         }
                     }
@@ -169,7 +184,10 @@ namespace Gwent.NET.Test.Commands
                         Deck = new Deck
                         {
                             Faction = GwintFaction.Scoiatael,
-                            BattleKingCard = new Card()
+                            BattleKingCard = new DeckCard
+                            {
+                                Card = new Card()
+                            }
                         }
                     },
                     new Player
@@ -180,7 +198,10 @@ namespace Gwent.NET.Test.Commands
                         },
                         Deck = new Deck
                         {
-                            BattleKingCard = new Card()
+                            BattleKingCard = new DeckCard
+                            {
+                                Card = new Card()
+                            }
                         }
                     }
                 }

@@ -9,7 +9,7 @@ namespace Gwent.NET.DTOs
             Players = new Dictionary<string, PlayerDto>();
         }
 
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string State { get; set; }
         public Dictionary<string, PlayerDto> Players { get; set; }
     }

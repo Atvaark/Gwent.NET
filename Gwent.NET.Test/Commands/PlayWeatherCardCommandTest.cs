@@ -18,12 +18,12 @@ namespace Gwent.NET.Test.Commands
                 Types = GwintType.Weather,
                 Effect = GwintEffect.Melee
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                card
+                card.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>();
-            var game = TestGameFactory.CreateGame(player1HandCards, player1CardSlots);
+            var game = TestGameProvider.CreateGame(player1HandCards, player1CardSlots);
             var command = new PlayCardCommand
             {
                 SenderUserId = 1,
@@ -47,12 +47,12 @@ namespace Gwent.NET.Test.Commands
                 Types = GwintType.Weather,
                 Effect = GwintEffect.Ranged
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                card
+                card.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>();
-            var game = TestGameFactory.CreateGame(player1HandCards, player1CardSlots);
+            var game = TestGameProvider.CreateGame(player1HandCards, player1CardSlots);
             var command = new PlayCardCommand
             {
                 SenderUserId = 1,
@@ -76,12 +76,12 @@ namespace Gwent.NET.Test.Commands
                 Types = GwintType.Weather,
                 Effect = GwintEffect.Siege
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                card
+                card.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>();
-            var game = TestGameFactory.CreateGame(player1HandCards, player1CardSlots);
+            var game = TestGameProvider.CreateGame(player1HandCards, player1CardSlots);
             var command = new PlayCardCommand
             {
                 SenderUserId = 1,
@@ -123,9 +123,9 @@ namespace Gwent.NET.Test.Commands
                 Types = GwintType.Weather,
                 Effect = GwintEffect.Siege
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                clearSkyCard
+                clearSkyCard.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>
             {
@@ -145,8 +145,8 @@ namespace Gwent.NET.Test.Commands
                     Card = weatherCard3
                 },
             };
-            var graveyardCards = new List<Card>();
-            var game = TestGameFactory.CreateGame(player1HandCards, player1CardSlots, graveyardCards);
+            var graveyardCards = new List<PlayerCard>();
+            var game = TestGameProvider.CreateGame(player1HandCards, player1CardSlots, graveyardCards);
             var command = new PlayCardCommand
             {
                 SenderUserId = 1,
@@ -163,10 +163,10 @@ namespace Gwent.NET.Test.Commands
                 weatherCard1,
                 weatherCard2,
                 weatherCard3,
-                clearSkyCard
+                clearSkyCard,
             };
 
-            Assert.Equal(expectedGraveyardCards, graveyardCards, EqualityComparer<Card>.Default);
+            Assert.Equal(expectedGraveyardCards, graveyardCards.Select(g => g.Card), EqualityComparer<Card>.Default);
         }
         
         [Fact]
@@ -184,9 +184,9 @@ namespace Gwent.NET.Test.Commands
                 Types = GwintType.Weather,
                 Effect = GwintEffect.Melee
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                card1
+                card1.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>
             {
@@ -196,8 +196,8 @@ namespace Gwent.NET.Test.Commands
                     Card = card2
                 }
             };
-            var graveyardCards = new List<Card>();
-            var game = TestGameFactory.CreateGame(player1HandCards, player1CardSlots, graveyardCards);
+            var graveyardCards = new List<PlayerCard>();
+            var game = TestGameProvider.CreateGame(player1HandCards, player1CardSlots, graveyardCards);
             var command = new PlayCardCommand
             {
                 SenderUserId = 1,
@@ -212,7 +212,7 @@ namespace Gwent.NET.Test.Commands
             Assert.Equal(card1, cardSlot.Card);
 
             var graveyardCard = graveyardCards.Single();
-            Assert.Equal(card2, graveyardCard);
+            Assert.Equal(card2, graveyardCard.Card);
         }
         
         [Fact]
@@ -230,9 +230,9 @@ namespace Gwent.NET.Test.Commands
                 Types = GwintType.Weather,
                 Effect = GwintEffect.Ranged
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                card1
+                card1.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>
             {
@@ -242,8 +242,8 @@ namespace Gwent.NET.Test.Commands
                     Card = card2
                 }
             };
-            var graveyardCards = new List<Card>();
-            var game = TestGameFactory.CreateGame(player1HandCards, player1CardSlots, graveyardCards);
+            var graveyardCards = new List<PlayerCard>();
+            var game = TestGameProvider.CreateGame(player1HandCards, player1CardSlots, graveyardCards);
             var command = new PlayCardCommand
             {
                 SenderUserId = 1,
@@ -258,7 +258,7 @@ namespace Gwent.NET.Test.Commands
             Assert.Equal(card1, cardSlot.Card);
             
             var graveyardCard = graveyardCards.Single();
-            Assert.Equal(card2, graveyardCard);
+            Assert.Equal(card2, graveyardCard.Card);
         }
         
         [Fact]
@@ -276,9 +276,9 @@ namespace Gwent.NET.Test.Commands
                 Types = GwintType.Weather,
                 Effect = GwintEffect.Siege
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                card1
+                card1.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>
             {
@@ -288,8 +288,8 @@ namespace Gwent.NET.Test.Commands
                     Card = card2
                 }
             };
-            var graveyardCards = new List<Card>();
-            var game = TestGameFactory.CreateGame(player1HandCards, player1CardSlots, graveyardCards);
+            var graveyardCards = new List<PlayerCard>();
+            var game = TestGameProvider.CreateGame(player1HandCards, player1CardSlots, graveyardCards);
             var command = new PlayCardCommand
             {
                 SenderUserId = 1,
@@ -304,7 +304,7 @@ namespace Gwent.NET.Test.Commands
             Assert.Equal(card1, cardSlot.Card);
             
             var graveyardCard = graveyardCards.Single();
-            Assert.Equal(card2, graveyardCard);
+            Assert.Equal(card2, graveyardCard.Card);
         }
 
 

@@ -24,9 +24,9 @@ namespace Gwent.NET.Test.Commands
                 Id = 2,
                 Types = GwintType.Creature | GwintType.Melee
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                scorchCard
+                scorchCard.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>
             {
@@ -36,8 +36,8 @@ namespace Gwent.NET.Test.Commands
                     Card = creatureCard
                 }
             };
-            var player1GraveyardCards = new List<Card>();
-            var game = TestGameFactory.CreateGame(
+            var player1GraveyardCards = new List<PlayerCard>();
+            var game = TestGameProvider.CreateGame(
                 player1HandCards,
                 player1CardSlots,
                 player1GraveyardCards);
@@ -57,7 +57,7 @@ namespace Gwent.NET.Test.Commands
                 creatureCard,
                 scorchCard
             };
-            Assert.Equal(expectedGraveyardCards, player1GraveyardCards);
+            Assert.Equal(expectedGraveyardCards, player1GraveyardCards.Select(g => g.Card));
         }
 
         [Fact]
@@ -79,9 +79,9 @@ namespace Gwent.NET.Test.Commands
                 Id = 3,
                 Types = GwintType.Creature | GwintType.Melee
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                scorchCard
+                scorchCard.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>
             {
@@ -98,8 +98,8 @@ namespace Gwent.NET.Test.Commands
                     EffectivePower = 1
                 }
             };
-            var player1GraveyardCards = new List<Card>();
-            var game = TestGameFactory.CreateGame(
+            var player1GraveyardCards = new List<PlayerCard>();
+            var game = TestGameProvider.CreateGame(
                 player1HandCards,
                 player1CardSlots,
                 player1GraveyardCards);
@@ -119,7 +119,7 @@ namespace Gwent.NET.Test.Commands
                 creatureCard2,
                 scorchCard
             };
-            Assert.Equal(expectedGraveyardCards, player1GraveyardCards);
+            Assert.Equal(expectedGraveyardCards, player1GraveyardCards.Select(g => g.Card));
         }
 
         [Fact]
@@ -141,9 +141,9 @@ namespace Gwent.NET.Test.Commands
                 Id = 3,
                 Types = GwintType.Creature | GwintType.Melee
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                scorchCard
+                scorchCard.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>
             {
@@ -160,8 +160,8 @@ namespace Gwent.NET.Test.Commands
                     EffectivePower = 2
                 }
             };
-            var player1GraveyardCards = new List<Card>();
-            var game = TestGameFactory.CreateGame(
+            var player1GraveyardCards = new List<PlayerCard>();
+            var game = TestGameProvider.CreateGame(
                 player1HandCards,
                 player1CardSlots,
                 player1GraveyardCards);
@@ -183,7 +183,7 @@ namespace Gwent.NET.Test.Commands
                 creatureCard2,
                 scorchCard
             };
-            Assert.Equal(expectedGraveyardCards, player1GraveyardCards);
+            Assert.Equal(expectedGraveyardCards, player1GraveyardCards.Select(g => g.Card));
         }
 
     }

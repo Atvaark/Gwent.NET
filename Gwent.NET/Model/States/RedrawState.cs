@@ -52,11 +52,11 @@ namespace Gwent.NET.Model.States
 
             return new HandChangedEvent(player.User.Id)
             {
-                HandCards = handCards.Select(c => c.Id).ToList()
+                HandCards = handCards.Select(c => c.Card.Id).ToList()
             };
         }
 
-        private static List<Card> GetShuffledDeckCards(Player player)
+        private static List<PlayerCard> GetShuffledDeckCards(Player player)
         {
             var shuffledCards = player.DeckCards.ToList();
             shuffledCards.Shuffle();
@@ -66,7 +66,7 @@ namespace Gwent.NET.Model.States
         private static int GetInitialHandCardCount(Player player)
         {
             var handCardCount = Constants.InitialHandCardCount;
-            if (player.CanUseBattleKingCard && player.BattleKingCard.Effect.HasFlag(GwintEffect.EleventhCard))
+            if (player.CanUseBattleKingCard && player.BattleKingCard.Card.Effect.HasFlag(GwintEffect.EleventhCard))
             {
                 handCardCount = Constants.InitialIncreasedHandCardCount;
             }

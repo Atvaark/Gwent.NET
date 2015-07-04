@@ -45,45 +45,46 @@ namespace Gwent.NET.Repositories
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Deck>()
-                .HasMany(d => d.Cards)
-                .WithMany(c => c.Decks)
-                .Map(dc =>
-                {
-                    dc.ToTable("DeckCards");
-                    dc.MapLeftKey("DeckId");
-                    dc.MapRightKey("CardId");
-                });
+            // TODO: Check if mapping is needed for DeckCard and PlayerCard
+            //modelBuilder.Entity<Deck>()
+            //    .HasMany(d => d.Cards)
+            //    .WithMany(c => c.Decks)
+            //    .Map(dc =>
+            //    {
+            //        dc.ToTable("DeckCards");
+            //        dc.MapLeftKey("DeckId");
+            //        dc.MapRightKey("CardId");
+            //    });
 
-            modelBuilder.Entity<Player>()
-                .HasMany(p => p.HandCards)
-                .WithMany(c => c.HandPlayer)
-                .Map(pc =>
-                {
-                    pc.ToTable("PlayerHand");
-                    pc.MapLeftKey("PlayerId");
-                    pc.MapRightKey("CardId");
-                });
+            //modelBuilder.Entity<Player>()
+            //    .HasMany(p => p.HandCards)
+            //    .WithMany(c => c.HandPlayer)
+            //    .Map(pc =>
+            //    {
+            //        pc.ToTable("PlayerHand");
+            //        pc.MapLeftKey("PlayerId");
+            //        pc.MapRightKey("CardId");
+            //    });
 
-            modelBuilder.Entity<Player>()
-                .HasMany(p => p.DeckCards)
-                .WithMany(c => c.DeckPlayer)
-                .Map(pc =>
-                {
-                    pc.ToTable("PlayerDeck");
-                    pc.MapLeftKey("PlayerId");
-                    pc.MapRightKey("CardId");
-                });
+            //modelBuilder.Entity<Player>()
+            //    .HasMany(p => p.DeckCards)
+            //    .WithMany(c => c.DeckPlayer)
+            //    .Map(pc =>
+            //    {
+            //        pc.ToTable("PlayerDeck");
+            //        pc.MapLeftKey("PlayerId");
+            //        pc.MapRightKey("CardId");
+            //    });
 
-            modelBuilder.Entity<Player>()
-                .HasMany(p => p.GraveyardCards)
-                .WithMany(c => c.GraveyardPlayer)
-                .Map(pc =>
-                {
-                    pc.ToTable("PlayerGraveyard");
-                    pc.MapLeftKey("PlayerId");
-                    pc.MapRightKey("CardId");
-                });
+            //modelBuilder.Entity<Player>()
+            //    .HasMany(p => p.GraveyardCards)
+            //    .WithMany(c => c.GraveyardPlayer)
+            //    .Map(pc =>
+            //    {
+            //        pc.ToTable("PlayerGraveyard");
+            //        pc.MapLeftKey("PlayerId");
+            //        pc.MapRightKey("CardId");
+            //    });
 
             modelBuilder.Entity<GwintSummonFlag>()
                 .ToTable("CardsSummonCards")

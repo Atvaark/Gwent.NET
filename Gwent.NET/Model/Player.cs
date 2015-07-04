@@ -9,14 +9,14 @@ namespace Gwent.NET.Model
     {
         public Player()
         {
-            HandCards = new HashSet<Card>();
-            DeckCards = new HashSet<Card>();
-            GraveyardCards = new HashSet<Card>();
+            HandCards = new HashSet<PlayerCard>();
+            DeckCards = new HashSet<PlayerCard>();
+            GraveyardCards = new HashSet<PlayerCard>();
             CardSlots = new HashSet<PlayerCardSlot>();
         }
 
         [Key]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public virtual User User { get; set; }
 
@@ -38,19 +38,20 @@ namespace Gwent.NET.Model
 
         public GwintFaction Faction { get; set; }
 
-        public virtual Card BattleKingCard { get; set; }
+        public virtual PlayerCard BattleKingCard { get; set; }
 
-        public virtual ICollection<Card> HandCards { get; set; }
+        public virtual ICollection<PlayerCard> DeckCards { get; set; }
 
-        public virtual ICollection<Card> DeckCards { get; set; }
+        public virtual ICollection<PlayerCard> HandCards { get; set; }
 
-        public virtual ICollection<Card> GraveyardCards { get; set; }
-
-        [Timestamp]
-        public byte[] RowVersion { get; set; }
-
+        public virtual ICollection<PlayerCard> GraveyardCards { get; set; }
+        
         [InverseProperty("Player")]
         public virtual ICollection<PlayerCardSlot> CardSlots  { get; set; }
 
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
+        
     }
 }

@@ -52,9 +52,9 @@ namespace Gwent.NET
             return new DeckDto
             {
                 Id = deck.Id,
-                Cards = deck.Cards.Select(c => c.Id).ToList(),
+                Cards = deck.Cards.Select(c => c.Card.Id).ToList(),
                 Faction = deck.Faction,
-                BattleKingCard = deck.BattleKingCard.Id,
+                BattleKingCard = deck.BattleKingCard.Card.Id,
                 IsPrimaryDeck = deck.IsPrimaryDeck
             };
         }
@@ -69,7 +69,7 @@ namespace Gwent.NET
             };
         }
 
-        public static GameDto ToPersonalizedDto(this Game game, int userId)
+        public static GameDto ToPersonalizedDto(this Game game, long userId)
         {
             Dictionary<string, PlayerDto> players = new Dictionary<string, PlayerDto>();
             foreach (var player in game.Players)
@@ -85,7 +85,7 @@ namespace Gwent.NET
                     players[Constants.PlayerKeyOpponent] = opponentDto;
                 }
             }
-            
+
             return new GameDto
             {
                 Id = game.Id,
@@ -107,14 +107,14 @@ namespace Gwent.NET
                 Lives = player.Lives,
 
                 Faction = player.Faction,
-                BattleKingCard = player.BattleKingCard == null ? new int?() : player.BattleKingCard.Id,
+                BattleKingCard = player.BattleKingCard == null ? new long?() : player.BattleKingCard.Card.Id,
                 CanUseBattleKingCard = player.CanUseBattleKingCard,
 
                 HandCardCount = player.HandCards.Count,
                 DeckCardCount = player.DeckCards.Count,
 
-                HandCards = player.HandCards.Select(c => c.Id).ToList(),
-                GraveyardCards = player.GraveyardCards.Select(c => c.Id).ToList(),
+                HandCards = player.HandCards.Select(c => c.Card.Id).ToList(),
+                GraveyardCards = player.GraveyardCards.Select(c => c.Card.Id).ToList(),
                 MeleeCards = player.CardSlots.Where(s => s.Slot == GwintSlot.Melee).Select(s => s.Card.Id).ToList(),
                 RangeCards = player.CardSlots.Where(s => s.Slot == GwintSlot.Ranged).Select(s => s.Card.Id).ToList(),
                 SiegeCards = player.CardSlots.Where(s => s.Slot == GwintSlot.Siege).Select(s => s.Card.Id).ToList(),
@@ -156,6 +156,28 @@ namespace Gwent.NET
             }
         }
 
+        public static PlayerCard ToPlayerCard(this DeckCard deckCard)
+        {
+            return new PlayerCard { Card = deckCard.Card };
+        }
 
+        //public static PlayerCard ToPlayerCard(this DeckCard deckCard, long playerId)
+        //{
+        //    return new PlayerCard { Card = deckCard.Card, PlayerId = playerId};
+        //}
+
+        public static PlayerCard ToPlayerCard(this PlayerCardSlot playerCardSlot)
+        {
+            return new PlayerCard { Card = playerCardSlot.Card };
+        }
+
+        public static PlayerCard ToPlayerCard(this Card card)
+        {
+            return new PlayerCard { Card = card };
+        }
+        public static DeckCard ToDeckCard(this Card card)
+        {
+            return new DeckCard { Card = card };
+        }
     }
 }

@@ -1,5 +1,4 @@
-﻿using Gwent.NET.Model;
-using Gwent.NET.Model.Enums;
+﻿using Gwent.NET.Model.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -11,20 +10,20 @@ namespace Gwent.NET.DTOs
         public CommandType Type { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public int? CardId { get; set; }
+        public long? CardId { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public int? ResurrectCardId { get; set; }
+        public long? ResurrectCardId { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [JsonConverter(typeof(StringEnumConverter))]
         public GwintSlot? Slot { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public int? StartingPlayerUserId { get; set; }
+        public long? StartingPlayerUserId { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public int? GameId { get; set; }
+        public long? GameId { get; set; }
         
     }
 }

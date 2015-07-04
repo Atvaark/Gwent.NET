@@ -19,12 +19,12 @@ namespace Gwent.NET.Test.Commands
                 Id = 1,
                 Types = GwintType.Creature | GwintType.Melee
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                card
+                card.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>();
-            var game = TestGameFactory.CreateGame(player1HandCards, player1CardSlots);
+            var game = TestGameProvider.CreateGame(player1HandCards, player1CardSlots);
             var command = new PlayCardCommand
             {
                 SenderUserId = 1,
@@ -48,11 +48,11 @@ namespace Gwent.NET.Test.Commands
                 Types = GwintType.Creature | GwintType.Ranged
             };
             var player1CardSlots = new List<PlayerCardSlot>();
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                card
+                card.ToPlayerCard()
             };
-            var game = TestGameFactory.CreateGame(player1HandCards, player1CardSlots);
+            var game = TestGameProvider.CreateGame(player1HandCards, player1CardSlots);
             var command = new PlayCardCommand
             {
                 SenderUserId = 1,
@@ -75,12 +75,12 @@ namespace Gwent.NET.Test.Commands
                 Id = 1,
                 Types = GwintType.Creature | GwintType.Siege
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                card
+                card.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>();
-            var game = TestGameFactory.CreateGame(player1HandCards, player1CardSlots);
+            var game = TestGameProvider.CreateGame(player1HandCards, player1CardSlots);
             var command = new PlayCardCommand
             {
                 SenderUserId = 1,
@@ -116,14 +116,14 @@ namespace Gwent.NET.Test.Commands
                     }
                 }
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                summonClonesCard,
-                cloneCard
+                summonClonesCard.ToPlayerCard(),
+                cloneCard.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>();
-            var player1GraveyardCards = new List<Card>();
-            var game = TestGameFactory.CreateGame(
+            var player1GraveyardCards = new List<PlayerCard>();
+            var game = TestGameProvider.CreateGame(
                 player1HandCards,
                 player1CardSlots,
                 player1GraveyardCards);
@@ -155,16 +155,16 @@ namespace Gwent.NET.Test.Commands
                 Id = 2,
                 Types = GwintType.Creature | GwintType.Ranged
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                nurseCreature
+                nurseCreature.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>();
-            var player1GraveyardCards = new List<Card>
+            var player1GraveyardCards = new List<PlayerCard>
             {
-                rangedCreature
+                rangedCreature.ToPlayerCard()
             };
-            var game = TestGameFactory.CreateGame(
+            var game = TestGameProvider.CreateGame(
                 player1HandCards,
                 player1CardSlots,
                 player1GraveyardCards);
@@ -192,15 +192,15 @@ namespace Gwent.NET.Test.Commands
                 Types = GwintType.Creature | GwintType.Melee | GwintType.Spy,
                 Effect = GwintEffect.Draw2
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                spyCreature
+                spyCreature.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>();
-            var player1GraveyardCards = new List<Card>();
+            var player1GraveyardCards = new List<PlayerCard>();
             var player2CardSlots = new List<PlayerCardSlot>();
-            var player2GraveyardCards = new List<Card>();
-            var game = TestGameFactory.CreateGame(
+            var player2GraveyardCards = new List<PlayerCard>();
+            var game = TestGameProvider.CreateGame(
                 player1HandCards,
                 player1CardSlots,
                 player1GraveyardCards,
@@ -237,12 +237,12 @@ namespace Gwent.NET.Test.Commands
                 Id = 2,
                 Types = GwintType.Creature | GwintType.Melee
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                meleeScorchCreature
+                meleeScorchCreature.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>();
-            var player1GraveyardCards = new List<Card>();
+            var player1GraveyardCards = new List<PlayerCard>();
             var player2CardSlots = new List<PlayerCardSlot>
             {
                 new PlayerCardSlot
@@ -252,8 +252,8 @@ namespace Gwent.NET.Test.Commands
                     EffectivePower = Constants.ScorchThresholdMelee
                 }
             };
-            var player2GraveyardCards = new List<Card>();
-            var game = TestGameFactory.CreateGame(
+            var player2GraveyardCards = new List<PlayerCard>();
+            var game = TestGameProvider.CreateGame(
                 player1HandCards,
                 player1CardSlots,
                 player1GraveyardCards,
@@ -275,7 +275,7 @@ namespace Gwent.NET.Test.Commands
 
             Assert.Empty(player2CardSlots);
             var player2GraveyardCard = player2GraveyardCards.Single();
-            Assert.Equal(meleeCreature, player2GraveyardCard);
+            Assert.Equal(meleeCreature, player2GraveyardCard.Card);
         }
 
         [Fact]
@@ -292,12 +292,12 @@ namespace Gwent.NET.Test.Commands
                 Id = 2,
                 Types = GwintType.Creature | GwintType.Melee
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                meleeScorchCreature
+                meleeScorchCreature.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>();
-            var player1GraveyardCards = new List<Card>();
+            var player1GraveyardCards = new List<PlayerCard>();
             var player2CardSlots = new List<PlayerCardSlot>
             {
                 new PlayerCardSlot
@@ -307,8 +307,8 @@ namespace Gwent.NET.Test.Commands
                     EffectivePower = Constants.ScorchThresholdMelee - 1
                 }
             };
-            var player2GraveyardCards = new List<Card>();
-            var game = TestGameFactory.CreateGame(
+            var player2GraveyardCards = new List<PlayerCard>();
+            var game = TestGameProvider.CreateGame(
                 player1HandCards,
                 player1CardSlots,
                 player1GraveyardCards,

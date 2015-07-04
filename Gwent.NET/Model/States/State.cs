@@ -7,7 +7,7 @@ namespace Gwent.NET.Model.States
     public abstract class State
     {
         [Key]
-        public int Id { get; set; }
+        public long Id { get; set; }
         
         public abstract string Name { get; }
         

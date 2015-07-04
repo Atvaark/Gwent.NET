@@ -9,7 +9,7 @@ namespace Gwent.NET.Commands
 {
     public class PickStartingPlayerCommand : Command
     {
-        public int StartingPlayerUserId { get; set; }
+        public long StartingPlayerUserId { get; set; }
 
         public override void Execute(Game game)
         {

@@ -20,7 +20,7 @@ namespace Gwent.NET.Model
         [XmlAttribute("index")]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [XmlAttribute("title")]
         public string Title { get; set; }
@@ -64,35 +64,11 @@ namespace Gwent.NET.Model
         public bool IsBattleKing { get; set; }
 
         [XmlIgnore]
+        [InverseProperty("Card")]
+        public virtual ICollection<DeckCard> DeckCards { get; set; }
+
+        [XmlIgnore]
         [Timestamp]
         public byte[] RowVersion { get; set; }
-
-        [XmlIgnore]
-        [InverseProperty("BattleKingCard")]
-        public virtual ICollection<Deck> BattleKingCardDecks { get; set; }
-        [XmlIgnore]
-
-        [InverseProperty("BattleKingCard")]
-        public virtual ICollection<Player> BattleKingCardPlayers { get; set; }
-        
-        [XmlIgnore]
-        [InverseProperty("Cards")]
-        public virtual ICollection<Deck> Decks { get; set; }
-
-        [XmlIgnore]
-        [InverseProperty("DeckCards")]
-        public virtual ICollection<Player> DeckPlayer { get; set; }
-
-        [XmlIgnore]
-        [InverseProperty("HandCards")]
-        public virtual ICollection<Player> HandPlayer { get; set; }
-        
-        [XmlIgnore]
-        [InverseProperty("GraveyardCards")]
-        public virtual ICollection<Player> GraveyardPlayer { get; set; }
-        
-        [XmlIgnore]
-        [InverseProperty("Card")]
-        public virtual ICollection<PlayerCardSlot> PlayerSlots { get; set; }
     }
 }

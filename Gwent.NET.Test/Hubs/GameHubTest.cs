@@ -242,10 +242,10 @@ namespace Gwent.NET.Test.Hubs
             };
             using (var gwintContext = new GwintContext(connection))
             {
+                gwintContext.Cards.AddRange(TestCardProvider.GetDefaultCards());
                 gwintContext.Users.Add(user);
                 gwintContext.SaveChanges();
             }
-
 
             var scopeMock = new Mock<ILifetimeScope>();
             scopeMock.SetupResolve<ILifetimeScope, IGwintContext>(new GwintContext(connection));
@@ -275,6 +275,7 @@ namespace Gwent.NET.Test.Hubs
             DbConnection connection = DbConnectionFactory.CreateTransient();
             using (var gwintContext = new GwintContext(connection))
             {
+                gwintContext.Cards.AddRange(TestCardProvider.GetDefaultCards());
                 gwintContext.Users.Add(new User
                 {
                     Id = 1
@@ -321,20 +322,25 @@ namespace Gwent.NET.Test.Hubs
             Assert.Null(result.Error);
             Assert.NotNull(result.Data);
         }
+
         [Fact]
         public void RecieveClientCommand()
         {
             DbConnection connection = DbConnectionFactory.CreateTransient();
-            int nextCardId = 1;
+            long nextCardId = 1;
 
-            var createNewCards = new Func<int, ICollection<Card>>((count) =>
+            var createNewCards = new Func<int, int, ICollection<DeckCard>>((deckId, count) =>
             {
-                var cards = new List<Card>();
+                var cards = new List<DeckCard>();
                 for (int i = 0; i < count; i++)
                 {
-                    cards.Add(new Card
+                    cards.Add(new DeckCard
                     {
-                        Id = nextCardId++
+                        //DeckId = deckId,
+                        Card = new Card
+                        {
+                            Id = nextCardId++,                            
+                        }
                     });
                 }
                 return cards;
@@ -350,8 +356,19 @@ namespace Gwent.NET.Test.Hubs
                 {
                     Id = 2
                 };
+                //gwintContext.Cards.AddRange(TestCardProvider.GetDefaultCards());
                 gwintContext.Users.Add(user1);
                 gwintContext.Users.Add(user2);
+                var player1BattleKingCard = createNewCards(1, 1).Single().Card;
+                var player2BattleKingCard = createNewCards(2, 1).Single().Card;
+                var player1DeckCards = createNewCards(1, Constants.MinDeckCardCount);
+                var player2DeckCards = createNewCards(2, Constants.MinDeckCardCount);
+
+                gwintContext.Cards.Add(player1BattleKingCard);
+                gwintContext.Cards.Add(player2BattleKingCard);
+                gwintContext.Cards.AddRange(player1DeckCards.Select(c => c.Card));
+                gwintContext.Cards.AddRange(player2DeckCards.Select(c => c.Card));
+
                 gwintContext.Games.Add(new Game
                 {
                     Id = 1,
@@ -367,8 +384,8 @@ namespace Gwent.NET.Test.Hubs
                             Deck = new Deck
                             {
                                 Id = 1,
-                                BattleKingCard = createNewCards(1).Single(),
-                                Cards = createNewCards(Constants.MinDeckCardCount)
+                                BattleKingCard = player1BattleKingCard.ToDeckCard(),
+                                Cards = player1DeckCards
                             }
                         },
                         new Player
@@ -378,8 +395,8 @@ namespace Gwent.NET.Test.Hubs
                             Deck =  new Deck
                             {
                                 Id = 2,
-                                BattleKingCard = createNewCards(1).Single(),
-                                Cards = createNewCards(Constants.MinDeckCardCount)
+                                BattleKingCard = player2BattleKingCard.ToDeckCard(),
+                                Cards = player2DeckCards
                             }
                         }
                     }

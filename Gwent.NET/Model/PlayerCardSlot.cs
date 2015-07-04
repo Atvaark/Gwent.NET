@@ -6,11 +6,12 @@ namespace Gwent.NET.Model
 {
     public class PlayerCardSlot
     {
-        [Key, Column( Order = 0)]
-        public int PlayerId { get; set; }
+        [Key]
+        public long Id { get; set; }
 
-        [Key, Column(Order = 1)]
-        public int CardId { get; set; }
+        public long PlayerId { get; set; }
+
+        public long CardId { get; set; }
 
         public GwintSlot Slot { get; set; }
 
@@ -19,10 +20,11 @@ namespace Gwent.NET.Model
         [Timestamp]
         public byte[] RowVersion { get; set; }
 
+        [ForeignKey("PlayerId")]
         [InverseProperty("CardSlots")]
         public virtual Player Player { get; set; }
 
-        [InverseProperty("PlayerSlots")]
+        [ForeignKey("CardId")]
         public virtual Card Card { get; set; }
 
     }

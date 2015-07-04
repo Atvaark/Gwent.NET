@@ -13,7 +13,7 @@ namespace Gwent.NET.Commands
             Events = new List<Event>();
         }
 
-        public int SenderUserId { get; set; }
+        public long SenderUserId { get; set; }
         public ICollection<Event> Events { get; set; }
         public State NextState { get; set; }
 

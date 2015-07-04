@@ -6,7 +6,7 @@ namespace Gwent.NET.Events
     {
         public GameDto Game { get; set; }
 
-        public PlayerJoinedEvent(int eventRecipient)
+        public PlayerJoinedEvent(long eventRecipient)
             : base(eventRecipient)
         {
 

@@ -6,7 +6,7 @@ namespace Gwent.NET.Events
 {
     public class Event
     {
-        private readonly List<int> _recipients;
+        private readonly List<long> _recipients;
 
         public string Name
         {
@@ -14,17 +14,17 @@ namespace Gwent.NET.Events
         }
 
         [JsonIgnore]
-        public IEnumerable<int> Recipients
+        public IEnumerable<long> Recipients
         {
             get { return _recipients; }
         }
 
-        public Event(int eventRecipient)
+        public Event(long eventRecipient)
         {
-            _recipients = new List<int> { eventRecipient };
+            _recipients = new List<long> { eventRecipient };
         }
 
-        public Event(IEnumerable<int> eventRecipients)
+        public Event(IEnumerable<long> eventRecipients)
         {
             _recipients = eventRecipients.ToList();
         }

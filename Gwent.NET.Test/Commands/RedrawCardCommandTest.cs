@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Gwent.NET.Commands;
 using Gwent.NET.Model;
 using Gwent.NET.Model.States;
@@ -20,20 +21,26 @@ namespace Gwent.NET.Test.Commands
                 },
                 Deck = new Deck
                 {
-                    BattleKingCard = new Card()
+                    BattleKingCard = new DeckCard(),
                 },
                 HandCards =
                 {
-                    new Card
+                    new PlayerCard()
                     {
-                        Id = 1
+                        Card = new Card
+                        {
+                            Id = 1
+                        }
                     }
                 },
                 DeckCards =
                 {
-                    new Card
+                    new PlayerCard
                     {
-                        Id = 2
+                        Card = new Card
+                        {
+                            Id = 2
+                        }
                     }
                 }
             };
@@ -66,7 +73,7 @@ namespace Gwent.NET.Test.Commands
                         },
                         Deck = new Deck
                         {
-                            BattleKingCard = new Card()
+                            BattleKingCard = new DeckCard()
                         }
                     }
                 }
@@ -84,11 +91,11 @@ namespace Gwent.NET.Test.Commands
 
             var handCard = player1.HandCards.SingleOrDefault();
             Assert.NotNull(handCard);
-            Assert.Equal(2, handCard.Id);
+            Assert.Equal(2, handCard.Card.Id);
 
             var deckCard = player1.DeckCards.SingleOrDefault();
             Assert.NotNull(deckCard);
-            Assert.Equal(1, deckCard.Id);
+            Assert.Equal(1, deckCard.Card.Id);
         }
 
         [Fact]
@@ -123,20 +130,26 @@ namespace Gwent.NET.Test.Commands
                         },
                         Deck = new Deck
                         {
-                            BattleKingCard = new Card()
+                            BattleKingCard = new DeckCard()
                         },
                         HandCards =
                         {
-                            new Card
+                            new PlayerCard()
                             {
-                                Id = 1
+                                Card = new Card
+                                {
+                                    Id = 1
+                                }
                             }
                         },
                         DeckCards =
                         {
-                            new Card
+                            new PlayerCard()
                             {
-                                Id = 2
+                                Card = new Card
+                                {
+                                    Id = 2
+                                }
                             }
                         }
                     },
@@ -148,7 +161,7 @@ namespace Gwent.NET.Test.Commands
                         },
                         Deck = new Deck
                         {
-                            BattleKingCard = new Card()
+                            BattleKingCard = new DeckCard()
                         }
                     }
                 }
@@ -198,20 +211,30 @@ namespace Gwent.NET.Test.Commands
                         },
                         Deck = new Deck
                         {
-                            BattleKingCard = new Card()
+                            BattleKingCard = new DeckCard(),
+                            Cards = new List<DeckCard>
+                            {
+                                new DeckCard
+                                {
+                                    Card = new Card()
+                                }
+                            }
                         },
                         HandCards =
                         {
-                            new Card
+                            new PlayerCard()
                             {
-                                Id = 1
+                                Card = new Card
+                                {
+                                    Id = 1
+                                }
                             }
                         },
                         DeckCards =
                         {
-                            new Card
+                            new PlayerCard()
                             {
-                                Id = 2
+                                Card = new Card()
                             }
                         }
                     },
@@ -223,7 +246,7 @@ namespace Gwent.NET.Test.Commands
                         },
                         Deck = new Deck
                         {
-                            BattleKingCard = new Card()
+                            BattleKingCard = new DeckCard()
                         }
                     }
                 }

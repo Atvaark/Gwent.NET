@@ -18,12 +18,12 @@ namespace Gwent.NET.Test.Commands
                 Types = GwintType.RowModifier | GwintType.Melee | GwintType.Ranged | GwintType.Siege,
                 Effect = GwintEffect.Horn
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                hornCard
+                hornCard.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>();
-            var game = TestGameFactory.CreateGame(player1HandCards, player1CardSlots);
+            var game = TestGameProvider.CreateGame(player1HandCards, player1CardSlots);
             var command = new PlayCardCommand
             {
                 SenderUserId = 1,
@@ -48,12 +48,12 @@ namespace Gwent.NET.Test.Commands
                 Types = GwintType.RowModifier | GwintType.Melee | GwintType.Ranged | GwintType.Siege,
                 Effect = GwintEffect.Horn
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                hornCard
+                hornCard.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>();
-            var game = TestGameFactory.CreateGame(player1HandCards, player1CardSlots);
+            var game = TestGameProvider.CreateGame(player1HandCards, player1CardSlots);
             var command = new PlayCardCommand
             {
                 SenderUserId = 1,
@@ -78,12 +78,12 @@ namespace Gwent.NET.Test.Commands
                 Types = GwintType.RowModifier | GwintType.Melee | GwintType.Ranged | GwintType.Siege,
                 Effect = GwintEffect.Horn
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                hornCard
+                hornCard.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>();
-            var game = TestGameFactory.CreateGame(player1HandCards, player1CardSlots);
+            var game = TestGameProvider.CreateGame(player1HandCards, player1CardSlots);
             var command = new PlayCardCommand
             {
                 SenderUserId = 1,
@@ -113,9 +113,9 @@ namespace Gwent.NET.Test.Commands
                 Types = GwintType.RowModifier | GwintType.Melee | GwintType.Ranged | GwintType.Siege,
                 Effect = GwintEffect.Horn
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                hornCard
+                hornCard.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>
             {
@@ -125,8 +125,8 @@ namespace Gwent.NET.Test.Commands
                     Card = existingHornCard
                 }
             };
-            var player1GraveyardCards = new List<Card>();
-            var game = TestGameFactory.CreateGame(player1HandCards, player1CardSlots, player1GraveyardCards);
+            var player1GraveyardCards = new List<PlayerCard>();
+            var game = TestGameProvider.CreateGame(player1HandCards, player1CardSlots, player1GraveyardCards);
             var command = new PlayCardCommand
             {
                 SenderUserId = 1,
@@ -141,7 +141,7 @@ namespace Gwent.NET.Test.Commands
             Assert.Equal(hornCard, cardSlot.Card);
 
             var graveyardCard = player1GraveyardCards.Single();
-            Assert.Equal(existingHornCard, graveyardCard);
+            Assert.Equal(existingHornCard, graveyardCard.Card);
         }
 
 
@@ -160,9 +160,9 @@ namespace Gwent.NET.Test.Commands
                 Types = GwintType.RowModifier | GwintType.Melee | GwintType.Ranged | GwintType.Siege,
                 Effect = GwintEffect.Horn
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                hornCard
+                hornCard.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>
             {
@@ -172,8 +172,8 @@ namespace Gwent.NET.Test.Commands
                     Card = existingHornCard
                 }
             };
-            var player1GraveyardCards = new List<Card>();
-            var game = TestGameFactory.CreateGame(player1HandCards, player1CardSlots, player1GraveyardCards);
+            var player1GraveyardCards = new List<PlayerCard>();
+            var game = TestGameProvider.CreateGame(player1HandCards, player1CardSlots, player1GraveyardCards);
             var command = new PlayCardCommand
             {
                 SenderUserId = 1,
@@ -188,7 +188,7 @@ namespace Gwent.NET.Test.Commands
             Assert.Equal(hornCard, cardSlot.Card);
             
             var graveyardCard = player1GraveyardCards.Single();
-            Assert.Equal(existingHornCard, graveyardCard);
+            Assert.Equal(existingHornCard, graveyardCard.Card);
         }
 
 
@@ -207,9 +207,9 @@ namespace Gwent.NET.Test.Commands
                 Types = GwintType.RowModifier | GwintType.Melee | GwintType.Ranged | GwintType.Siege,
                 Effect = GwintEffect.Horn
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                hornCard
+                hornCard.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>
             {
@@ -219,8 +219,8 @@ namespace Gwent.NET.Test.Commands
                     Card = existingHornCard
                 }
             };
-            var player1GraveyardCards = new List<Card>();
-            var game = TestGameFactory.CreateGame(player1HandCards, player1CardSlots, player1GraveyardCards);
+            var player1GraveyardCards = new List<PlayerCard>();
+            var game = TestGameProvider.CreateGame(player1HandCards, player1CardSlots, player1GraveyardCards);
             var command = new PlayCardCommand
             {
                 SenderUserId = 1,
@@ -235,7 +235,7 @@ namespace Gwent.NET.Test.Commands
             Assert.Equal(hornCard, cardSlot.Card);
 
             var graveyardCard = player1GraveyardCards.Single();
-            Assert.Equal(existingHornCard, graveyardCard);
+            Assert.Equal(existingHornCard, graveyardCard.Card);
         }
 
 

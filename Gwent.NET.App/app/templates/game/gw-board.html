@@ -199,6 +199,13 @@
         height: 584px;
     }
 
+    .gw-card-field {
+        display: inline-block;
+        width: 90px;
+        height: 120px;
+        margin-right: -5px
+    }
+
     #gw-top-leader-holder {
         position: absolute;
         top: 72px;
@@ -512,7 +519,7 @@
         <div class="gw-row-cards"></div>
     </div>
     <div id="gw-bottom-hand" class="gw-hand">
-        <gw-card-field ng-repeat="card in game.players['self'].handCards" ng-model="card" ng-click="methods.selectCard(card)" style="display: inline-block; width: 90px; height: 120px; margin-right: -5px"></gw-card-field>
+        <gw-card-field ng-repeat="card in game.players['self'].handCards track by $index" ng-model="card" ng-click="methods.selectCard(card)" style="display: inline-block; width: 90px; height: 120px; margin-right: -5px"></gw-card-field>
     </div>
     <div id="gw-top-graveyard" class="gw-graveyard">{{game.players['opponent'].graveyardCards.length}}</div>
     <div id="gw-bottom-graveyard" class="gw-graveyard">{{game.players['self'].graveyardCards.length}}</div>

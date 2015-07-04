@@ -94,6 +94,8 @@
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="GwentPerRequestModule.cs" />
     <Compile Include="Model\Card.cs" />
+    <Compile Include="Model\DeckCard.cs" />
+    <Compile Include="Model\PlayerCard.cs" />
     <Compile Include="Model\Serialization\CustomGwintCardDefinitions.cs" />
     <Compile Include="Model\Enums\GwintFaction.cs" />
     <Compile Include="Model\Enums\GwintEffect.cs" />

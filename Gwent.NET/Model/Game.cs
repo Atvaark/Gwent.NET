@@ -13,7 +13,7 @@ namespace Gwent.NET.Model
         }
 
         [Key]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public bool IsActive { get; set; }
 
@@ -23,18 +23,18 @@ namespace Gwent.NET.Model
 
         [Timestamp]
         public byte[] RowVersion { get; set; }
-        
-        public Player GetPlayerByUserId(int userId)
+
+        public Player GetPlayerByUserId(long userId)
         {
             return Players.FirstOrDefault(p => p.User.Id == userId);
         }
 
-        public Player GetOpponentPlayerByUserId(int userId)
+        public Player GetOpponentPlayerByUserId(long userId)
         {
             return Players.FirstOrDefault(p => p.User.Id != userId);
         }
 
-        public IEnumerable<int> GetAllUserIds()
+        public IEnumerable<long> GetAllUserIds()
         {
             return Players.Select(p => p.User.Id);
         }

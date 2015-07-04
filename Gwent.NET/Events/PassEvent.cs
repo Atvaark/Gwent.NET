@@ -4,7 +4,7 @@ namespace Gwent.NET.Events
 {
     public class PassEvent : Event
     {
-        public PassEvent(IEnumerable<int> eventRecipients)
+        public PassEvent(IEnumerable<long> eventRecipients)
             : base(eventRecipients)
         {
         }

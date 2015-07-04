@@ -213,7 +213,12 @@
                     } else if (args.name === 'HandChangedEvent') {
                         data.game.players["self"].handCards = args.handCards;
                         $log.info('game-controller: ' + args.name + ' handled');
-                    }
+                    }  else if (args.name === 'TurnEvent') {
+                        data.game = args.game;
+                        $log.info('game-controller: ' + args.name + ' handled');
+                    } else if (args.name === 'PassEvent') {
+                        $log.info('game-controller: ' + args.name + ' handled');
+                    } 
                 });
             };
 

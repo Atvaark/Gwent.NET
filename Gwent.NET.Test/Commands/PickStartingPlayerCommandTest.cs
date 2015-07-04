@@ -22,7 +22,7 @@ namespace Gwent.NET.Test.Commands
                 IsOwner = true,
                 Deck = new Deck
                 {
-                    BattleKingCard = new Card()
+                    BattleKingCard = new DeckCard()
                 }
             };
             var game = new Game
@@ -53,7 +53,7 @@ namespace Gwent.NET.Test.Commands
                         },
                         Deck = new Deck
                         {
-                            BattleKingCard = new Card()
+                            BattleKingCard = new DeckCard()
                         }
                     }
                 }
@@ -82,7 +82,7 @@ namespace Gwent.NET.Test.Commands
                 IsOwner = true,
                 Deck = new Deck
                 {
-                    BattleKingCard = new Card()
+                    BattleKingCard = new DeckCard()
                 }
             };
             var game = new Game
@@ -114,7 +114,7 @@ namespace Gwent.NET.Test.Commands
                         },
                         Deck = new Deck
                         {
-                            BattleKingCard = new Card()
+                            BattleKingCard = new DeckCard()
                         }
                     }
                 }
@@ -142,7 +142,7 @@ namespace Gwent.NET.Test.Commands
                 IsOwner = true,
                 Deck = new Deck
                 {
-                    BattleKingCard = new Card()
+                    BattleKingCard = new DeckCard()
                 }
             };
             var player2 = new Player
@@ -153,7 +153,7 @@ namespace Gwent.NET.Test.Commands
                 },
                 Deck = new Deck
                 {
-                    BattleKingCard = new Card()
+                    BattleKingCard = new DeckCard()
                 }
             };
             var game = new Game
@@ -226,7 +226,7 @@ namespace Gwent.NET.Test.Commands
                         IsOwner = true,
                         Deck = new Deck
                         {
-                            BattleKingCard = new Card()
+                            BattleKingCard = new DeckCard()
                         }
                     },
                     new Player
@@ -237,7 +237,7 @@ namespace Gwent.NET.Test.Commands
                         },
                         Deck = new Deck
                         {
-                            BattleKingCard = new Card()
+                            BattleKingCard = new DeckCard()
                         }
                     }
                 }

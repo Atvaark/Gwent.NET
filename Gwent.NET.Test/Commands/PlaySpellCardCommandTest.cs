@@ -23,9 +23,9 @@ namespace Gwent.NET.Test.Commands
                 Id = 2,
                 Types = GwintType.Creature | GwintType.Melee
             };
-            var player1HandCards = new List<Card>
+            var player1HandCards = new List<PlayerCard>
             {
-                unsummonDummyCard
+                unsummonDummyCard.ToPlayerCard()
             };
             var player1CardSlots = new List<PlayerCardSlot>
             {
@@ -35,7 +35,7 @@ namespace Gwent.NET.Test.Commands
                     Card = targetCard
                 }
             };
-            var game = TestGameFactory.CreateGame(player1HandCards, player1CardSlots);
+            var game = TestGameProvider.CreateGame(player1HandCards, player1CardSlots);
             var command = new PlayCardCommand
             {
                 SenderUserId = 1,
@@ -51,7 +51,7 @@ namespace Gwent.NET.Test.Commands
             Assert.Equal(unsummonDummyCard, cardSlot.Card);
 
             var handCard = player1HandCards.Single();
-            Assert.Equal(targetCard, handCard);
+            Assert.Equal(targetCard, handCard.Card);
         }
     }
 }

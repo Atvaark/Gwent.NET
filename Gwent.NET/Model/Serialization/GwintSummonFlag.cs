@@ -8,11 +8,11 @@ namespace Gwent.NET.Model.Serialization
     {
         [XmlIgnore]
         [Key, Column(Order = 0)]
-        public int SummonerCardId { get; set; }
+        public long SummonerCardId { get; set; }
 
         [XmlAttribute("id")]
         [Key, Column(Order = 1)]
-        public int SummonCardId { get; set; }
+        public long SummonCardId { get; set; }
 
         [XmlIgnore]
         [ForeignKey("SummonCardId")]

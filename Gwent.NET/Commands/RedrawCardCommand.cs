@@ -9,7 +9,7 @@ namespace Gwent.NET.Commands
 {
     public class RedrawCardCommand : Command
     {
-        public int CardId { get; set; }
+        public long CardId { get; set; }
 
         public override void Execute(Game game)
         {
@@ -33,7 +33,7 @@ namespace Gwent.NET.Commands
                 throw new CommandException();
             }
 
-            if (sender.HandCards.All(c => c.Id != CardId))
+            if (sender.HandCards.All(c => c.Card.Id != CardId))
             {
                 throw new CommandException();
             }
@@ -44,7 +44,7 @@ namespace Gwent.NET.Commands
 
             Events.Add(new HandChangedEvent(sender.User.Id)
             {
-                HandCards = sender.HandCards.Select(c => c.Id).ToList()
+                HandCards = sender.HandCards.Select(c => c.Card.Id).ToList()
             });
             
             if (substate.RedrawCardCount != 0 || opponentSubstate.RedrawCardCount != 0)
@@ -57,7 +57,7 @@ namespace Gwent.NET.Commands
 
         private void RedrawCard(Player player)
         {
-            var card = player.HandCards.First(c => c.Id == CardId);
+            var card = player.HandCards.First(c => c.Card.Id == CardId);
             player.HandCards.Remove(card);
             
             var deckCards = player.DeckCards.ToList();

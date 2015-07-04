@@ -115,7 +115,8 @@
     <Compile Include="States\PickStartingPlayerStateTest.cs" />
     <Compile Include="States\RedrawStateTest.cs" />
     <Compile Include="States\RoundStateTest.cs" />
-    <Compile Include="TestGameFactory.cs" />
+    <Compile Include="TestCardProvider.cs" />
+    <Compile Include="TestGameProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

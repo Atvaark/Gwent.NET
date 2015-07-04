@@ -115,9 +115,9 @@ namespace Gwent.NET.Webservice.Controllers
         {
             Deck newDeck = new Deck
             {
-                BattleKingCard = Context.Cards.Find(deck.BattleKingCard),
+                BattleKingCard = Context.Cards.Find(deck.BattleKingCard).ToDeckCard(),
                 Faction = deck.Faction,
-                Cards = deck.Cards.Select(id => Context.Cards.Find(id)).ToList() // BUG: Thanks to the composite primary key only one of each card type can be saved.
+                Cards = deck.Cards.Select(id => Context.Cards.Find(id).ToDeckCard()).ToList()
             };
             return newDeck;
         }
@@ -131,19 +131,19 @@ namespace Gwent.NET.Webservice.Controllers
             }
 
             // None of the deck cards is a battle king
-            if (deck.Cards.Any(c => c.IsBattleKing))
+            if (deck.Cards.Any(c => c.Card.IsBattleKing))
             {
                 throw new InvalidDeckException("Invalid card in deck");
             }
             
             // The battle king card is actually a battle king
-            if (!deck.BattleKingCard.IsBattleKing)
+            if (!deck.BattleKingCard.Card.IsBattleKing)
             {
                 throw new InvalidDeckException("Invalid battle king card");
             }
             
             // The faction of the battle king card is not neutral
-            if (deck.BattleKingCard.FactionIndex == GwintFaction.Neutral)
+            if (deck.BattleKingCard.Card.FactionIndex == GwintFaction.Neutral)
             {
                 throw new InvalidDeckException("Invalid battle king card");
             }
@@ -157,8 +157,8 @@ namespace Gwent.NET.Webservice.Controllers
 
             // No duplicate hero cards
             int maxHeroCardCount = deck.Cards
-                .Where(c => c.Types.HasFlag(GwintType.Hero))
-                .GroupBy(c => c.Id)
+                .Where(c => c.Card.Types.HasFlag(GwintType.Hero))
+                .GroupBy(c => c.Card.Id)
                 .Select(g => g.Count())
                 .DefaultIfEmpty(0)
                 .Max();
@@ -168,18 +168,18 @@ namespace Gwent.NET.Webservice.Controllers
             }
 
             // All cards are either neutral or belong to the battle king faction
-            var battleKingFaction = deck.BattleKingCard.FactionIndex;
+            var battleKingFaction = deck.BattleKingCard.Card.FactionIndex;
             bool allCardsNeutralOrBattleKingFaction = deck.Cards
-                .All(c => c.FactionIndex == battleKingFaction || c.FactionIndex == GwintFaction.Neutral);
+                .All(c => c.Card.FactionIndex == battleKingFaction || c.Card.FactionIndex == GwintFaction.Neutral);
             if (!allCardsNeutralOrBattleKingFaction)
             {
                 throw new InvalidDeckException("Card with invalid faction in deck");
             }
         }
 
-        private bool IsSpecialCard(Card card)
+        private bool IsSpecialCard(DeckCard deckCard)
         {
-            return !card.Types.HasFlag(GwintType.Creature);
+            return !deckCard.Card.Types.HasFlag(GwintType.Creature);
         }
     }
 }

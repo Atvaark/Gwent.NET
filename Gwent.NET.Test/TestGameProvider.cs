@@ -4,29 +4,29 @@ using Gwent.NET.Model.States;
 
 namespace Gwent.NET.Test
 {
-    public static class TestGameFactory
+    public static class TestGameProvider
     {
         public static Game CreateGame()
         {
             return CreateGame(
-                new List<Card>(),
+                new List<PlayerCard>(),
                 new List<PlayerCardSlot>());
         }
 
         public static Game CreateGame(
-            List<Card> player1HandCards,
+            List<PlayerCard> player1HandCards,
             List<PlayerCardSlot> player1CardSlots)
         {
             return CreateGame(
                 player1HandCards,
                 player1CardSlots,
-                new List<Card>());
+                new List<PlayerCard>());
         }
 
         public static Game CreateGame(
-            List<Card> player1HandCards,
+            List<PlayerCard> player1HandCards,
             List<PlayerCardSlot> player1CardSlots,
-            List<Card> player1GraveyardCards)
+            List<PlayerCard> player1GraveyardCards)
         {
             return CreateGame(
                 player1HandCards,
@@ -37,9 +37,9 @@ namespace Gwent.NET.Test
 
 
         public static Game CreateGame(
-            List<Card> player1HandCards,
+            List<PlayerCard> player1HandCards,
             List<PlayerCardSlot> player1CardSlots,
-            List<Card> player1GraveyardCards,
+            List<PlayerCard> player1GraveyardCards,
             List<PlayerCardSlot> player2CardSlots
             )
         {
@@ -48,15 +48,15 @@ namespace Gwent.NET.Test
                 player1CardSlots,
                 player1GraveyardCards,
                 player2CardSlots,
-                new List<Card>());
+                new List<PlayerCard>());
         }
 
         public static Game CreateGame(
-            List<Card> player1HandCards,
+            List<PlayerCard> player1HandCards,
             List<PlayerCardSlot> player1CardSlots,
-            List<Card> player1GraveyardCards,
+            List<PlayerCard> player1GraveyardCards,
             List<PlayerCardSlot> player2CardSlots,
-            List<Card> player2GraveyardCards
+            List<PlayerCard> player2GraveyardCards
             )
         {
             var game = new Game

@@ -26,9 +26,9 @@ namespace Gwent.NET.Webservice.Hubs
         // TODO: Use a bi-directional dictionary instead or a repository
         private static readonly ConcurrentDictionary<string, string> UserIdToConnectionIdDictionary = new ConcurrentDictionary<string, string>();
 
-        private int UserId
+        private long UserId
         {
-            get { return int.Parse(Context.User.Identity.GetUserId()); }
+            get { return long.Parse(Context.User.Identity.GetUserId()); }
         }
 
         public GameHub(ILifetimeScope lifetimeScope)
@@ -130,7 +130,7 @@ namespace Gwent.NET.Webservice.Hubs
         {
             using (var context = _lifetimeScope.Resolve<IGwintContext>())
             {
-                int userId = UserId;
+                long userId = UserId;
                 var user = context.Users.FirstOrDefault(u => u.Id == userId);
                 if (user == null)
                 {
@@ -180,42 +180,45 @@ namespace Gwent.NET.Webservice.Hubs
 
         private Deck GenerateDemoDeck(IGwintContext context)
         {
+            var battleKingCard = context.Cards.Find(3002L);
+            var cards = new List<Card>()
+            {
+                context.Cards.Find(0L),
+                context.Cards.Find(0L),
+                context.Cards.Find(1L),
+                context.Cards.Find(2L),
+                context.Cards.Find(3L),
+                context.Cards.Find(4L),
+                context.Cards.Find(5L),
+                context.Cards.Find(6L),
+                context.Cards.Find(7L),
+                context.Cards.Find(8L),
+                context.Cards.Find(9L),
+                context.Cards.Find(10L),
+                context.Cards.Find(11L),
+                context.Cards.Find(12L),
+                context.Cards.Find(306L),
+                context.Cards.Find(306L),
+                context.Cards.Find(306L),
+                context.Cards.Find(306L),
+                context.Cards.Find(306L),
+                context.Cards.Find(306L),
+                context.Cards.Find(306L),
+                context.Cards.Find(306L),
+                context.Cards.Find(306L)
+            };
+
             var demoDeck = new Deck
             {
                 Faction = GwintFaction.Scoiatael,
-                BattleKingCard = context.Cards.Find(3002),
-                Cards =
-                {
-                    context.Cards.Find(0),
-                    context.Cards.Find(0),
-                    context.Cards.Find(1),
-                    context.Cards.Find(2),
-                    context.Cards.Find(3),
-                    context.Cards.Find(4),
-                    context.Cards.Find(5),
-                    context.Cards.Find(6),
-                    context.Cards.Find(7),
-                    context.Cards.Find(8),
-                    context.Cards.Find(9),
-                    context.Cards.Find(10),
-                    context.Cards.Find(11),
-                    context.Cards.Find(12),
-                    context.Cards.Find(306),
-                    context.Cards.Find(306),
-                    context.Cards.Find(306),
-                    context.Cards.Find(306),
-                    context.Cards.Find(306),
-                    context.Cards.Find(306),
-                    context.Cards.Find(306),
-                    context.Cards.Find(306),
-                    context.Cards.Find(306),
-                },
+                BattleKingCard = battleKingCard.ToDeckCard(),
+                Cards = cards.Select(c => c.ToDeckCard()).ToList(),
                 IsPrimaryDeck = true
             };
             return demoDeck;
         }
 
-        public GameHubResult<GameDto> JoinGame(int gameId)
+        public GameHubResult<GameDto> JoinGame(long gameId)
         {
             var retryJoinGameCount = Constants.RetryJoinGameCount;
             while (retryJoinGameCount > 0)
@@ -236,7 +239,7 @@ namespace Gwent.NET.Webservice.Hubs
             };
         }
 
-        private GameHubResult<GameDto> ExecuteJoinGame(int gameId)
+        private GameHubResult<GameDto> ExecuteJoinGame(long gameId)
         {
             using (var context = _lifetimeScope.Resolve<IGwintContext>())
             {
@@ -307,7 +310,7 @@ namespace Gwent.NET.Webservice.Hubs
             try
             {
                 Command command = CreateCommand(commandDto);
-                int senderUserId = UserId;
+                long senderUserId = UserId;
                 command.SenderUserId = senderUserId;
 
                 int retryCount = Constants.RetryExecuteCommandCount;
@@ -367,7 +370,7 @@ namespace Gwent.NET.Webservice.Hubs
             }
         }
 
-        private Game GetActiveGameByUserId(IGwintContext context, int userId)
+        private Game GetActiveGameByUserId(IGwintContext context, long userId)
         {
             return context.Games.FirstOrDefault(g => g.IsActive && g.Players.Any(p => p.User.Id == userId));
         }

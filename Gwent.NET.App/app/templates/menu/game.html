@@ -8,24 +8,26 @@
     <button type="button" ng-show="data.game.state == 'GameEnd'" ng-click="methods.leaveGame()">Leave game</button>
 </div>
 <div ng-show="data.game != null">
-    <button type="button" ng-show="data.game.state == 'Lobby'" ng-click="methods.sendStartCommand()">Start</button>
     <button type="button" ng-click="methods.sendForfeitGameCommand()">Forfeit</button>
+    <div ng-show="data.game.state == 'Lobby' && data.game.players['self'].isTurn">
+        <button type="button" ng-click="methods.sendStartCommand()">Start</button>
+    </div>
     <div ng-show="data.game.state == 'PickStartingPlayer'">
         <select name="startingPlayer" ng-model="data.input.startingPlayer">
             <option ng-repeat="player in data.game.players" value="{{player.id}}">{{player.name}}</option>
         </select>
         <button type="button" ng-click="methods.sendPickStartingPlayerCommand(data.input.startingPlayer)">Pick player</button>
     </div>
-    <div ng-show="data.game.state == 'Redraw'">
+    <div ng-show="data.game.state == 'Redraw' && data.game.players['self'].isTurn">
         <select name="redrawCard" ng-model="data.input.redrawCard">
-            <option ng-repeat="handCard in data.game.players['self'].handCards" value="{{handCard}}">{{handCard}}</option>
+            <option ng-repeat="handCard in data.game.players['self'].handCards track by $index" value="{{handCard}}">{{handCard}}</option>
         </select>
         <button type="button" ng-click="methods.sendRedrawCardCommand(data.input.redrawCard)">Redraw</button>
         <button type="button" ng-click="methods.sendEndRedrawCardCommand()">End redrawing</button>
     </div>
-    <div ng-show="data.game.state == 'Round'">
+    <div ng-show="data.game.state == 'Round' && data.game.players['self'].isTurn">
         <select name="playCard" ng-model="data.input.playCard" ng-change="methods.getValidSlots(data.input.playCard)">
-            <option ng-repeat="handCard in data.game.players['self'].handCards" value="{{handCard}}">{{handCard}}</option>
+            <option ng-repeat="handCard in data.game.players['self'].handCards track by $index" value="{{handCard}}">{{handCard}}</option>
         </select>
         <select name="playCardSlot" ng-model="data.input.playCardSlot">
             <option ng-repeat="slot in data.input.validSlots" value="{{slot}}">{{slot}}</option>

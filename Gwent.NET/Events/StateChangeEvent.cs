@@ -6,7 +6,7 @@ namespace Gwent.NET.Events
     {
         public GameDto Game { get; set; }
 
-        public StateChangeEvent(int eventRecipient) : base(eventRecipient)
+        public StateChangeEvent(long eventRecipient) : base(eventRecipient)
         {
 
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Gwent.NET.Events;
 using Gwent.NET.Exceptions;
 using Gwent.NET.Model;
 using Gwent.NET.Model.Enums;
@@ -10,9 +11,12 @@ namespace Gwent.NET.Commands
 {
     public class PlayCardCommand : Command
     {
-        public int CardId { get; set; }
-        public int? TargetCardId { get; set; }
+        public long CardId { get; set; }
+
+        public long? TargetCardId { get; set; }
+
         public GwintSlot Slot { get; set; }
+
         public override void Execute(Game game)
         {
             RoundState state = game.State as RoundState;
@@ -33,7 +37,7 @@ namespace Gwent.NET.Commands
                 throw new CommandException();
             }
 
-            Card card = sender.HandCards.FirstOrDefault(c => c.Id == CardId);
+            PlayerCard card = sender.HandCards.FirstOrDefault(c => c.Card.Id == CardId);
             if (card == null)
             {
                 throw new CommandException();
@@ -45,16 +49,23 @@ namespace Gwent.NET.Commands
             }
 
             PlayCard(card, sender, opponent, Slot, TargetCardId);
-            // TODO: Calculate the effecive power of each card, of each row and of each player
-
-
+            // TODO: Calculate the effective power of each card, of each row and of each player
+            
             sender.IsTurn = false;
             opponent.IsTurn = true;
+
+            var turnEvents = game.Players.Select(player => new TurnEvent(player.User.Id)
+            {
+                Game = game.ToPersonalizedDto(player.User.Id)
+            });
+
+            Events.AddRange(turnEvents);
         }
 
 
-        private bool ValidateSlot(Card card, GwintSlot slot)
+        private bool ValidateSlot(PlayerCard playerCard, GwintSlot slot)
         {
+            Card card = playerCard.Card;
             var types = card.Types;
             if (types.HasFlag(GwintType.GlobalEffect))
             {
@@ -83,39 +94,43 @@ namespace Gwent.NET.Commands
         }
 
 
-        private void PlayCard(Card card, Player sender, Player opponent, GwintSlot slot, int? targetCardId)
+        private void PlayCard(PlayerCard playerCard, Player sender, Player opponent, GwintSlot slot, long? targetCardId)
         {
+            Card card = playerCard.Card;
+
             if (card.Types.HasFlag(GwintType.Creature))
             {
-                PlayCreatureCard(card, sender, opponent, slot, targetCardId);
+                PlayCreatureCard(playerCard, sender, opponent, slot, targetCardId);
             }
             else if (card.Types.HasFlag(GwintType.Weather))
             {
-                PlayWeatherCard(card, sender, opponent, slot);
+                PlayWeatherCard(playerCard, sender, opponent, slot);
             }
             else if (card.Types.HasFlag(GwintType.Spell))
             {
-                PlaySpellCard(card, sender, opponent, slot, targetCardId);
+                PlaySpellCard(playerCard, sender, opponent, slot, targetCardId);
             }
             else if (card.Types.HasFlag(GwintType.RowModifier))
             {
-                PlayRowModifierCard(card, sender, opponent, slot);
+                PlayRowModifierCard(playerCard, sender, opponent, slot);
             }
             else if (card.Types.HasFlag(GwintType.GlobalEffect))
             {
-                PlayGlobalEffectCard(card, sender, opponent);
+                PlayGlobalEffectCard(playerCard, sender, opponent);
             }
             else
             {
                 throw new CommandException();
             }
 
-            sender.HandCards.Remove(card);
+            sender.HandCards.Remove(playerCard);
         }
 
-        private void PlayCreatureCard(Card card, Player sender, Player opponent, GwintSlot slot, int? targetCardId)
+        private void PlayCreatureCard(PlayerCard playerCard, Player sender, Player opponent, GwintSlot slot, long? targetCardId)
         {
-            SpawnCreature(card, sender, opponent, slot);
+            Card card = playerCard.Card;
+
+            SpawnCreature(playerCard, sender, opponent, slot);
 
             switch (card.Effect)
             {
@@ -132,25 +147,25 @@ namespace Gwent.NET.Commands
                     DrawCards(sender, 2);
                     break;
                 case GwintEffect.SummonClones:
-                    SummonCardClones(card, sender, opponent);
+                    SummonCardClones(playerCard, sender, opponent);
                     break;
             }
         }
 
-        private void NurseCard(Player sender, Player opponent, int? targetCardId)
+        private void NurseCard(Player sender, Player opponent, long? targetCardId)
         {
             if (!targetCardId.HasValue)
             {
                 throw new CommandException();
             }
 
-            var nursedCard = sender.GraveyardCards.FirstOrDefault(c => c.Id == targetCardId.Value && c.Types.HasFlag(GwintType.Creature));
+            var nursedCard = sender.GraveyardCards.FirstOrDefault(c => c.Card.Id == targetCardId.Value && c.Card.Types.HasFlag(GwintType.Creature));
             if (nursedCard == null)
             {
                 throw new CommandException();
             }
 
-            GwintSlot slot = GetDefaultCreatureSlot(nursedCard);
+            GwintSlot slot = GetDefaultCreatureSlot(nursedCard.Card);
 
             // TODO: Check if nursed nurses can nurse. If they can then use a list of target card ids instead of a single targetCardId.
             PlayCreatureCard(nursedCard, sender, opponent, slot, null);
@@ -190,14 +205,16 @@ namespace Gwent.NET.Commands
                     foreach (var scorchTarget in scorchTargets)
                     {
                         player.CardSlots.Remove(scorchTarget);
-                        player.GraveyardCards.Add(scorchTarget.Card);
+                        player.GraveyardCards.Add(scorchTarget.ToPlayerCard());
                     }
                 }
             }
         }
 
-        private void SpawnCreature(Card card, Player sender, Player opponent, GwintSlot slot)
+        private void SpawnCreature(PlayerCard playerCard, Player sender, Player opponent, GwintSlot slot)
         {
+            Card card = playerCard.Card;
+
             Player creaturePlayer = card.Types.HasFlag(GwintType.Spy) ? opponent : sender;
             switch (slot)
             {
@@ -227,26 +244,29 @@ namespace Gwent.NET.Commands
             }
         }
 
-        private void SummonCardClones(Card card, Player sender, Player opponent)
+        private void SummonCardClones(PlayerCard playerCard, Player sender, Player opponent)
         {
+            Card card = playerCard.Card;
             var summonCardIds = card.SummonFlags.Select(s => s.SummonCard.Id).ToList();
             SummonCloneCardsInSet(summonCardIds, sender, opponent, sender.DeckCards);
             SummonCloneCardsInSet(summonCardIds, sender, opponent, sender.HandCards);
         }
 
-        private void SummonCloneCardsInSet(List<int> summonCardIds, Player sender, Player opponent, ICollection<Card> cards)
+        private void SummonCloneCardsInSet(List<long> summonCardIds, Player sender, Player opponent, ICollection<PlayerCard> cards)
         {
-            var summonHandCards = cards.Where(h => summonCardIds.Contains(h.Id)).ToList();
+            var summonHandCards = cards.Where(h => summonCardIds.Contains(h.Card.Id)).ToList();
             foreach (var summonHandCard in summonHandCards)
             {
                 cards.Remove(summonHandCard);
-                GwintSlot slot = GetDefaultCreatureSlot(summonHandCard);
+                GwintSlot slot = GetDefaultCreatureSlot(summonHandCard.Card);
                 SpawnCreature(summonHandCard, sender, opponent, slot);
             }
         }
 
-        private void PlayWeatherCard(Card card, Player sender, Player opponent, GwintSlot slot)
+        private void PlayWeatherCard(PlayerCard playerCard, Player sender, Player opponent, GwintSlot slot)
         {
+            Card card = playerCard.Card;
+
             if (slot != GwintSlot.Weather)
             {
                 throw new CommandException();
@@ -255,16 +275,18 @@ namespace Gwent.NET.Commands
             {
                 ClearSlot(sender, GwintSlot.Weather);
                 ClearSlot(opponent, GwintSlot.Weather);
-                sender.GraveyardCards.Add(card);
+                sender.GraveyardCards.Add(playerCard);
             }
             else
             {
-                SpawnWeatherCard(card, sender, opponent);
+                SpawnWeatherCard(playerCard, sender, opponent);
             }
         }
 
-        private void SpawnWeatherCard(Card card, Player sender, Player opponent)
+        private void SpawnWeatherCard(PlayerCard playerCard, Player sender, Player opponent)
         {
+            Card card = playerCard.Card;
+
             ClearSlotEffect(sender, GwintSlot.Weather, card.Effect);
             ClearSlotEffect(opponent, GwintSlot.Weather, card.Effect);
 
@@ -283,7 +305,7 @@ namespace Gwent.NET.Commands
             if (existingWeatherCard != null)
             {
                 player.CardSlots.Remove(existingWeatherCard);
-                player.GraveyardCards.Add(existingWeatherCard.Card);
+                player.GraveyardCards.Add(existingWeatherCard.ToPlayerCard());
             }
         }
 
@@ -293,35 +315,39 @@ namespace Gwent.NET.Commands
             foreach (var cardSlot in cardSlots)
             {
                 player.CardSlots.Remove(cardSlot);
-                player.GraveyardCards.Add(cardSlot.Card);
+                player.GraveyardCards.Add(cardSlot.ToPlayerCard());
             }
         }
 
-        private void PlaySpellCard(Card card, Player sender, Player opponent, GwintSlot slot, int? targetCardId)
+        private void PlaySpellCard(PlayerCard playerCard, Player sender, Player opponent, GwintSlot slot, long? targetCardId)
         {
+            Card card = playerCard.Card;
+
             switch (card.Effect)
             {
                 case GwintEffect.UnsummonDummy:
-                    PlayUnsummonDummy(sender, card, slot, targetCardId);
+                    PlayUnsummonDummy(sender, playerCard, slot, targetCardId);
                     break;
                 default:
                     throw new CommandException();
             }
         }
 
-        private void PlayUnsummonDummy(Player player, Card card, GwintSlot slot, int? targetCardId)
+        private void PlayUnsummonDummy(Player player, PlayerCard playerCard, GwintSlot slot, long? targetCardId)
         {
+            Card card = playerCard.Card;
+
             if (!targetCardId.HasValue)
             {
                 throw new CommandException();
             }
 
             PlayerCardSlot cardSlot = GetUnsummonTargetSlot(player, slot, targetCardId.Value);
-            player.HandCards.Add(cardSlot.Card);
+            player.HandCards.Add(cardSlot.ToPlayerCard());
             cardSlot.Card = card;
         }
 
-        private static PlayerCardSlot GetUnsummonTargetSlot(Player player, GwintSlot slot, int targetCardId)
+        private static PlayerCardSlot GetUnsummonTargetSlot(Player player, GwintSlot slot, long targetCardId)
         {
             switch (slot)
             {
@@ -339,19 +365,21 @@ namespace Gwent.NET.Commands
             }
         }
 
-        private void PlayGlobalEffectCard(Card card, Player sender, Player opponent)
+        private void PlayGlobalEffectCard(PlayerCard playerCard, Player sender, Player opponent)
         {
+            Card card = playerCard.Card;
+
             switch (card.Effect)
             {
                 case GwintEffect.Scorch:
-                    PlayScorch(sender, opponent, card);
+                    PlayScorch(sender, opponent, playerCard);
                     break;
                 default:
                     throw new CommandException();
 
             }
         }
-        private void PlayScorch(Player sender, Player opponent, Card card)
+        private void PlayScorch(Player sender, Player opponent, PlayerCard playerCard)
         {
             var senderSlots = SelectHighestPowerCardGroup(sender);
             var opponentSlots = SelectHighestPowerCardGroup(opponent);
@@ -389,7 +417,7 @@ namespace Gwent.NET.Commands
                 ScorchCardSlots(opponent, opponentSlots);
             }
 
-            sender.GraveyardCards.Add(card);
+            sender.GraveyardCards.Add(playerCard);
         }
 
         private IGrouping<int, PlayerCardSlot> SelectHighestPowerCardGroup(Player player)
@@ -406,12 +434,14 @@ namespace Gwent.NET.Commands
             foreach (var cardSlot in cardSlots)
             {
                 player.CardSlots.Remove(cardSlot);
-                player.GraveyardCards.Add(cardSlot.Card);
+                player.GraveyardCards.Add(cardSlot.ToPlayerCard());
             }
         }
 
-        private void PlayRowModifierCard(Card card, Player sender, Player opponent, GwintSlot slot)
+        private void PlayRowModifierCard(PlayerCard playerCard, Player sender, Player opponent, GwintSlot slot)
         {
+            Card card = playerCard.Card;
+
             switch (card.Effect)
             {
                 case GwintEffect.Horn:

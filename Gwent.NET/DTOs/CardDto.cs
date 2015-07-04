@@ -6,7 +6,7 @@ namespace Gwent.NET.DTOs
 {
     public class CardDto
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public string Title { get; set; }
 
@@ -22,7 +22,7 @@ namespace Gwent.NET.DTOs
 
         public GwintEffect Effect { get; set; }
 
-        public List<int> SummonFlags { get; set; }
+        public List<long> SummonFlags { get; set; }
 
         public bool IsBattleKing { get; set; }
     }
