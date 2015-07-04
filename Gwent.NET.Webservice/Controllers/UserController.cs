@@ -1,8 +1,8 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Gwent.NET.DTOs;
+using Gwent.NET.Extensions;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
 using Gwent.NET.Webservice.Auth;

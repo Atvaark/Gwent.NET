@@ -7,6 +7,7 @@ using System.Security.Principal;
 using Autofac;
 using Effort;
 using Gwent.NET.DTOs;
+using Gwent.NET.Extensions;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
 using Gwent.NET.Model.States;
@@ -18,13 +19,36 @@ using Xunit;
 
 namespace Gwent.NET.Test.Hubs
 {
-    public class GameHubTest
+    public class GameHubFixture
     {
+        public void Setup()
+        {
+            // TODO: Test if this prevents the first test from running really long
+            DbConnection connection = DbConnectionFactory.CreateTransient();
+            using (var context = new GwintContext(connection))
+            {
+                context.Cards.Add(new Card());
+                context.SaveChanges();
+            }
+        }
+    }
+
+    public class GameHubTest : IClassFixture<GameHubFixture>
+    {
+        public GameHubTest(GameHubFixture fixture)
+        {
+            fixture.Setup();
+        }
 
         [Fact]
-        public void Authenticate()
+        public void OnConnect()
         {
-            var lifetimeScopeMock = new Mock<ILifetimeScope>();
+            var scopeMock = new Mock<ILifetimeScope>();
+            var userConnectionMapMock = new Mock<IUserConnectionMap>();
+            userConnectionMapMock.SetupMapping();
+            scopeMock.SetupResolve<ILifetimeScope, IUserConnectionMap>(userConnectionMapMock.Object);
+            var rootScopeMock = new Mock<ILifetimeScope>();
+            rootScopeMock.Setup(s => s.BeginLifetimeScope()).Returns(scopeMock.Object);
             var clientsMock = new Mock<IHubCallerConnectionContext<dynamic>>();
             clientsMock.SetupClients();
 
@@ -33,7 +57,87 @@ namespace Gwent.NET.Test.Hubs
             var connectionID = "13245";
             var hubCallerContextMock = CreateHubCallerContextMock(userName, userId, connectionID);
 
-            GameHub hub = new GameHub(lifetimeScopeMock.Object)
+            GameHub hub = new GameHub(rootScopeMock.Object)
+            {
+                Context = hubCallerContextMock.Object,
+                Clients = clientsMock.Object
+            };
+
+            hub.OnConnected();
+        }
+
+
+        [Fact]
+        public void OnDisconnectGracefully()
+        {
+            var scopeMock = new Mock<ILifetimeScope>();
+            var userConnectionMapMock = new Mock<IUserConnectionMap>();
+            userConnectionMapMock.SetupMapping();
+            scopeMock.SetupResolve<ILifetimeScope, IUserConnectionMap>(userConnectionMapMock.Object);
+            var rootScopeMock = new Mock<ILifetimeScope>();
+            rootScopeMock.Setup(s => s.BeginLifetimeScope()).Returns(scopeMock.Object);
+            var clientsMock = new Mock<IHubCallerConnectionContext<dynamic>>();
+            clientsMock.SetupClients();
+
+            var userName = "User1";
+            var userId = "1";
+            var connectionID = "13245";
+            var hubCallerContextMock = CreateHubCallerContextMock(userName, userId, connectionID);
+
+            GameHub hub = new GameHub(rootScopeMock.Object)
+            {
+                Context = hubCallerContextMock.Object,
+                Clients = clientsMock.Object
+            };
+
+            hub.OnDisconnected(true);
+        }
+
+        [Fact]
+        public void OnDisconnectUngracefully()
+        {
+            var scopeMock = new Mock<ILifetimeScope>();
+            var userConnectionMapMock = new Mock<IUserConnectionMap>();
+            userConnectionMapMock.SetupMapping();
+            scopeMock.SetupResolve<ILifetimeScope, IUserConnectionMap>(userConnectionMapMock.Object);
+            var rootScopeMock = new Mock<ILifetimeScope>();
+            rootScopeMock.Setup(s => s.BeginLifetimeScope()).Returns(scopeMock.Object);
+            var clientsMock = new Mock<IHubCallerConnectionContext<dynamic>>();
+            clientsMock.SetupClients();
+
+            var userName = "User1";
+            var userId = "1";
+            var connectionID = "13245";
+            var hubCallerContextMock = CreateHubCallerContextMock(userName, userId, connectionID);
+
+            GameHub hub = new GameHub(rootScopeMock.Object)
+            {
+                Context = hubCallerContextMock.Object,
+                Clients = clientsMock.Object
+            };
+
+            hub.OnDisconnected(false);
+        }
+        
+        [Fact]
+        public void Authenticate()
+        {
+            var scopeMock = new Mock<ILifetimeScope>();
+            var userConnectionMapMock = new Mock<IUserConnectionMap>();
+            userConnectionMapMock.SetupMapping();
+            scopeMock.SetupResolve<ILifetimeScope, IUserConnectionMap>(userConnectionMapMock.Object);
+            var rootScopeMock = new Mock<ILifetimeScope>();
+            rootScopeMock.Setup(s => s.BeginLifetimeScope()).Returns(scopeMock.Object);
+            var clientsMock = new Mock<IHubCallerConnectionContext<dynamic>>();
+            clientsMock.SetupClients();
+
+
+            var userName = "User1";
+            var userId = "1";
+            var connectionID = "13245";
+            var hubCallerContextMock = CreateHubCallerContextMock(userName, userId, connectionID);
+
+            GameHub hub = new GameHub(rootScopeMock.Object)
             {
                 Context = hubCallerContextMock.Object,
                 Clients = clientsMock.Object
@@ -64,6 +168,9 @@ namespace Gwent.NET.Test.Hubs
 
             var scopeMock = new Mock<ILifetimeScope>();
             scopeMock.SetupResolve<ILifetimeScope, IGwintContext>(new GwintContext(connection));
+            var userConnectionMapMock = new Mock<IUserConnectionMap>();
+            userConnectionMapMock.SetupMapping();
+            scopeMock.SetupResolve<ILifetimeScope, IUserConnectionMap>(userConnectionMapMock.Object);
             var rootScopeMock = new Mock<ILifetimeScope>();
             rootScopeMock.Setup(s => s.BeginLifetimeScope()).Returns(scopeMock.Object);
             var clientsMock = new Mock<IHubCallerConnectionContext<dynamic>>();
@@ -124,6 +231,9 @@ namespace Gwent.NET.Test.Hubs
 
             var scopeMock = new Mock<ILifetimeScope>();
             scopeMock.SetupResolve<ILifetimeScope, IGwintContext>(new GwintContext(connection));
+            var userConnectionMapMock = new Mock<IUserConnectionMap>();
+            userConnectionMapMock.SetupMapping();
+            scopeMock.SetupResolve<ILifetimeScope, IUserConnectionMap>(userConnectionMapMock.Object);
             var rootScopeMock = new Mock<ILifetimeScope>();
             rootScopeMock.Setup(s => s.BeginLifetimeScope()).Returns(scopeMock.Object);
             var clientsMock = new Mock<IHubCallerConnectionContext<dynamic>>();
@@ -184,6 +294,9 @@ namespace Gwent.NET.Test.Hubs
 
             var scopeMock = new Mock<ILifetimeScope>();
             scopeMock.SetupResolve<ILifetimeScope, IGwintContext>(new GwintContext(connection));
+            var userConnectionMapMock = new Mock<IUserConnectionMap>();
+            userConnectionMapMock.SetupMapping();
+            scopeMock.SetupResolve<ILifetimeScope, IUserConnectionMap>(userConnectionMapMock.Object);
             var rootScopeMock = new Mock<ILifetimeScope>();
             rootScopeMock.Setup(s => s.BeginLifetimeScope()).Returns(scopeMock.Object);
             var clientsMock = new Mock<IHubCallerConnectionContext<dynamic>>();
@@ -211,6 +324,9 @@ namespace Gwent.NET.Test.Hubs
 
             var scopeMock = new Mock<ILifetimeScope>();
             scopeMock.SetupResolve<ILifetimeScope, IGwintContext>(new GwintContext(connection));
+            var userConnectionMapMock = new Mock<IUserConnectionMap>();
+            userConnectionMapMock.SetupMapping();
+            scopeMock.SetupResolve<ILifetimeScope, IUserConnectionMap>(userConnectionMapMock.Object);
             var rootScopeMock = new Mock<ILifetimeScope>();
             rootScopeMock.Setup(s => s.BeginLifetimeScope()).Returns(scopeMock.Object);
             var clientsMock = new Mock<IHubCallerConnectionContext<dynamic>>();
@@ -249,6 +365,9 @@ namespace Gwent.NET.Test.Hubs
 
             var scopeMock = new Mock<ILifetimeScope>();
             scopeMock.SetupResolve<ILifetimeScope, IGwintContext>(new GwintContext(connection));
+            var userConnectionMapMock = new Mock<IUserConnectionMap>();
+            userConnectionMapMock.SetupMapping();
+            scopeMock.SetupResolve<ILifetimeScope, IUserConnectionMap>(userConnectionMapMock.Object);
             var rootScopeMock = new Mock<ILifetimeScope>();
             rootScopeMock.Setup(s => s.BeginLifetimeScope()).Returns(scopeMock.Object);
             var clientsMock = new Mock<IHubCallerConnectionContext<dynamic>>();
@@ -301,6 +420,9 @@ namespace Gwent.NET.Test.Hubs
             }
             var scopeMock = new Mock<ILifetimeScope>();
             scopeMock.SetupResolve<ILifetimeScope, IGwintContext>(new GwintContext(connection));
+            var userConnectionMapMock = new Mock<IUserConnectionMap>();
+            userConnectionMapMock.SetupMapping();
+            scopeMock.SetupResolve<ILifetimeScope, IUserConnectionMap>(userConnectionMapMock.Object);
             var rootScopeMock = new Mock<ILifetimeScope>();
             rootScopeMock.Setup(s => s.BeginLifetimeScope()).Returns(scopeMock.Object);
             var clientsMock = new Mock<IHubCallerConnectionContext<dynamic>>();
@@ -406,6 +528,9 @@ namespace Gwent.NET.Test.Hubs
             }
             var scopeMock = new Mock<ILifetimeScope>();
             scopeMock.SetupResolve<ILifetimeScope, IGwintContext>(new GwintContext(connection));
+            var userConnectionMapMock = new Mock<IUserConnectionMap>();
+            userConnectionMapMock.SetupMapping();
+            scopeMock.SetupResolve<ILifetimeScope, IUserConnectionMap>(userConnectionMapMock.Object);
             var rootScopeMock = new Mock<ILifetimeScope>();
             rootScopeMock.Setup(s => s.BeginLifetimeScope()).Returns(scopeMock.Object);
             var clientsMock = new Mock<IHubCallerConnectionContext<dynamic>>();

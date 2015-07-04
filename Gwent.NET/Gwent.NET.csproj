@@ -61,6 +61,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Command.cs" />
+    <Compile Include="Extensions\ModelExtensions.cs" />
+    <Compile Include="Extensions\ReaderWriterLockSlimExtensions.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Events\PassEvent.cs" />
     <Compile Include="DTOs\CommandType.cs" />
@@ -93,8 +95,9 @@
     <Compile Include="Exceptions\CommandParseException.cs" />
     <Compile Include="Exceptions\GwintException.cs" />
     <Compile Include="Exceptions\InvalidDeckException.cs" />
-    <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="Extensions\ExtensionMethods.cs" />
     <Compile Include="GwentPerRequestModule.cs" />
+    <Compile Include="Interfaces\IUserConnectionMap.cs" />
     <Compile Include="Model\Card.cs" />
     <Compile Include="Model\DeckCard.cs" />
     <Compile Include="Model\PlayerCard.cs" />
@@ -118,6 +121,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Repositories\UserConnectionMap.cs" />
     <Compile Include="Repositories\GwintContext.cs" />
     <Compile Include="Repositories\GwintContextInitializer.cs" />
     <Compile Include="Interfaces\IGwintContext.cs" />

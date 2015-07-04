@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Http;
-using Gwent.NET.DTOs;
+using Gwent.NET.Extensions;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
 

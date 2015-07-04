@@ -1,14 +1,12 @@
-﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using Gwent.NET.DTOs;
 using Gwent.NET.Model;
 using Gwent.NET.Model.Enums;
 
-namespace Gwent.NET
+namespace Gwent.NET.Extensions
 {
-    public static class ExtensionMethods
+    public static class ModelExtensions
     {
         public static GwintType GetGwintTypes(this Card card)
         {
@@ -19,7 +17,7 @@ namespace Gwent.NET
         {
             return card.EffectFlags.Aggregate(GwintEffect.None, (current, effectFlag) => effectFlag.Name);
         }
-
+        
         public static UserDto ToDto(this User user)
         {
             return new UserDto
@@ -125,46 +123,10 @@ namespace Gwent.NET
             };
         }
 
-        public static void Shuffle<T>(this IList<T> list)
-        {
-            Random random = new Random();
-            for (var i = 0; i < list.Count; i++)
-            {
-                list.Swap(i, random.Next(i, list.Count));
-            }
-        }
-
-        private static void Swap<T>(this IList<T> list, int i, int j)
-        {
-            var temp = list[i];
-            list[i] = list[j];
-            list[j] = temp;
-        }
-
-        public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> items)
-        {
-            foreach (var item in items)
-            {
-                collection.Add(item);
-            }
-        }
-        public static void AddRange<TEntity>(this IDbSet<TEntity> set, IEnumerable<TEntity> items) where TEntity : class
-        {
-            foreach (var item in items)
-            {
-                set.Add(item);
-            }
-        }
-
         public static PlayerCard ToPlayerCard(this DeckCard deckCard)
         {
             return new PlayerCard { Card = deckCard.Card };
         }
-
-        //public static PlayerCard ToPlayerCard(this DeckCard deckCard, long playerId)
-        //{
-        //    return new PlayerCard { Card = deckCard.Card, PlayerId = playerId};
-        //}
 
         public static PlayerCard ToPlayerCard(this PlayerCardSlot playerCardSlot)
         {
@@ -175,6 +137,7 @@ namespace Gwent.NET
         {
             return new PlayerCard { Card = card };
         }
+
         public static DeckCard ToDeckCard(this Card card)
         {
             return new DeckCard { Card = card };

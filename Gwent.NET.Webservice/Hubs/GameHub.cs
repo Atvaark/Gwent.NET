@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data.Entity.Core;
 using System.Linq;
@@ -9,6 +8,7 @@ using Gwent.NET.Commands;
 using Gwent.NET.DTOs;
 using Gwent.NET.Events;
 using Gwent.NET.Exceptions;
+using Gwent.NET.Extensions;
 using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
 using Gwent.NET.Model.Enums;
@@ -23,8 +23,6 @@ namespace Gwent.NET.Webservice.Hubs
     public class GameHub : Hub
     {
         private readonly ILifetimeScope _lifetimeScope;
-        // TODO: Use a bi-directional dictionary instead or a repository
-        private static readonly ConcurrentDictionary<string, string> UserIdToConnectionIdDictionary = new ConcurrentDictionary<string, string>();
 
         private long UserId
         {
@@ -47,27 +45,20 @@ namespace Gwent.NET.Webservice.Hubs
 
         public override Task OnConnected()
         {
+            var userConnectionMapping = _lifetimeScope.Resolve<IUserConnectionMap>();
+            userConnectionMapping.Connect(Context.ConnectionId);
+
             return base.OnConnected();
         }
-
-        private void MapConnectionIdToUserId()
-        {
-            string userId = Context.User.Identity.GetUserId();
-            var connectionId = Context.ConnectionId;
-            UserIdToConnectionIdDictionary.AddOrUpdate(userId, connectionId, (key, oldValue) => connectionId);
-        }
-
+        
         public override Task OnDisconnected(bool stopCalled)
         {
-            var keys = UserIdToConnectionIdDictionary.Where(kv => kv.Value == Context.ConnectionId).Select(kv => kv.Key);
-            foreach (var key in keys)
-            {
-                string connectionId;
-                UserIdToConnectionIdDictionary.TryRemove(key, out connectionId);
-            }
+            var userConnectionMapping = _lifetimeScope.Resolve<IUserConnectionMap>();
+            userConnectionMapping.Disconnect(Context.ConnectionId);
 
             return base.OnDisconnected(stopCalled);
         }
+
 
         public override Task OnReconnected()
         {
@@ -76,7 +67,8 @@ namespace Gwent.NET.Webservice.Hubs
 
         public void Authenticate()
         {
-            MapConnectionIdToUserId();
+            var userConnectionMapping = _lifetimeScope.Resolve<IUserConnectionMap>();
+            userConnectionMapping.Authenticate(Context.ConnectionId, Context.User.Identity.GetUserId());
         }
 
         public GameHubResult<ICollection<GameBrowseDto>> BrowseGames()
@@ -381,8 +373,8 @@ namespace Gwent.NET.Webservice.Hubs
             {
                 foreach (var recipient in gameEvent.Recipients)
                 {
-                    string connectionId;
-                    if (UserIdToConnectionIdDictionary.TryGetValue(recipient.ToString(), out connectionId))
+                    var userConnectionMapping = _lifetimeScope.Resolve<IUserConnectionMap>();
+                    foreach (var connectionId in userConnectionMapping.GetConnections(recipient.ToString()))
                     {
                         dynamic client = Clients.Client(connectionId);
                         client.recieveServerEvent(gameEvent);

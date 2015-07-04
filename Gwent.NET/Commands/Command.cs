@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Gwent.NET.Events;
+using Gwent.NET.Extensions;
 using Gwent.NET.Model;
 using Gwent.NET.Model.States;
 
