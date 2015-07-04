@@ -1,0 +1,6 @@
+version: 0.1.0.{build}
+shallow_clone: true
+before_build:
+- .nuget\nuget.exe restore -verbosity quiet
+build:
+  verbosity: minimal
