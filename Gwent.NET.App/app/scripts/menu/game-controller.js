@@ -102,9 +102,7 @@
             methods.resumeGame = function () {
                 gameHubService.connect()
                     .then(function () {
-                        gameHubService.authenticate().then(function () {
-                            $state.go('menu.game.lobby');
-                        });
+                        $state.go('menu.game.lobby');
                     });
             };
 
@@ -224,13 +222,10 @@
 
             // Initializing game page
             gameHubService.connect().then(function () {
-                gameHubService.authenticate().then(function () {
-                    methods.getActiveGame().then(function (game) {
-                        $log.info('resuming game');
-                        methods.resumeGame();;
-                    });
-                }, function () {
-                    $log.error('could not authenticate');
+                $log.info('connecting');
+                methods.getActiveGame().then(function (game) {
+                    $log.info('resuming game');
+                    methods.resumeGame();;
                 });
             }, function () {
                 $log.error('could not connect');

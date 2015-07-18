@@ -13,7 +13,9 @@ namespace Gwent.NET
                 .AsImplementedInterfaces();
 
             builder.RegisterType<GwintContextInitializer>().As<IDatabaseInitializer<GwintContext>>();
-            builder.RegisterType<UserConnectionMap>().AsImplementedInterfaces();
+            builder.RegisterType<UserConnectionMap>()
+                .SingleInstance()
+                .AsImplementedInterfaces();
 
             base.Load(builder);
         }

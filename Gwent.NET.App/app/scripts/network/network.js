@@ -294,26 +294,7 @@
                 $log.info('server event recieved: ' + eventString);
                 $rootScope.$broadcast('serverEventRecieved', event);
             };
-
-            gameHubService.authenticate = function () {
-                if (!gameHubProxy) {
-                    return $q.reject('not connected to the game hub.');
-                }
-
-                var deferred = $q.defer();
-
-                $log.info('authenticating client');
-                gameHubProxy.invoke('Authenticate')
-                    .done(function () {
-                        deferred.resolve();
-                    })
-                    .fail(function () {
-                        deferred.reject();
-                    });
-
-                return deferred.promise;
-            }
-
+            
             gameHubService.sendCommand = function (command) {
                 if (!gameHubProxy) {
                     return $q.reject('not connected to the game hub.');
