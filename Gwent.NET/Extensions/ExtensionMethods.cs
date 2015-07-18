@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using Gwent.NET.Model;
-using Gwent.NET.Model.Enums;
 
 namespace Gwent.NET.Extensions
 {

@@ -96,7 +96,7 @@
     <Compile Include="Exceptions\GwintException.cs" />
     <Compile Include="Exceptions\InvalidDeckException.cs" />
     <Compile Include="Extensions\ExtensionMethods.cs" />
-    <Compile Include="GwentPerRequestModule.cs" />
+    <Compile Include="GwentModule.cs" />
     <Compile Include="Interfaces\IUserConnectionMap.cs" />
     <Compile Include="Model\Card.cs" />
     <Compile Include="Model\DeckCard.cs" />

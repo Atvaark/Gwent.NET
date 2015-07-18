@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Gwent.NET.Model.Enums;
 
 namespace Gwent.NET.DTOs

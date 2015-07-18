@@ -4,7 +4,7 @@ using Gwent.NET.Repositories;
 
 namespace Gwent.NET
 {
-    public class GwentPerRequestModule : Module
+    public class GwentModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
@@ -13,6 +13,8 @@ namespace Gwent.NET
                 .AsImplementedInterfaces();
 
             builder.RegisterType<GwintContextInitializer>().As<IDatabaseInitializer<GwintContext>>();
+            builder.RegisterType<UserConnectionMap>().AsImplementedInterfaces();
+
             base.Load(builder);
         }
     }

@@ -232,14 +232,18 @@
             var connection = null;
             var gameHubProxy = null;
 
-            gameHubService.setAuthorizationQueryString = function () {
+            var getAuthorizationQueryString = function() {
+                var user = userService.getUser();
+                if (user) {
+                    return { Bearer: userService.getUser().accessToken };
+                } else {
+                    return {};
+                }
+            };
+
+            var setAuthorizationQueryString = function () {
                 if (connection) {
-                    var user = userService.getUser();
-                    if (user) {
-                        connection.qs = { Bearer: userService.getUser().accessToken };
-                    } else {
-                        connection.qs = {};
-                    }
+                    connection.qs = getAuthorizationQueryString();
                 }
             };
 
@@ -254,8 +258,10 @@
                 }
                 var deferred = $q.defer();
                 $log.info('connecting');
-                connection = $.hubConnection(signalRUrl, { useDefaultPath: false });
-                gameHubService.setAuthorizationQueryString();
+                connection = $.hubConnection(signalRUrl, {
+                    useDefaultPath: false,
+                    qs: getAuthorizationQueryString()
+                });
                 gameHubProxy = connection.createHubProxy('gameHub');
                 gameHubProxy.on('recieveServerEvent', gameHubService.recieveServerEvent);
                 $log.info('starting connection');
@@ -421,7 +427,7 @@
             }
 
             $rootScope.$on('userChanged', function () {
-                gameHubService.setAuthorizationQueryString();
+                setAuthorizationQueryString();
             });
 
             return gameHubService;

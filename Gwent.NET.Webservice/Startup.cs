@@ -11,7 +11,7 @@ namespace Gwent.NET.Webservice
         public void Configuration(IAppBuilder app)
         {
             var container = ConfigureAutofac(app);
-            ConfigureAuth(app);
+            ConfigureAuth(app, container);
             ConfigureSignalR(app, container);
             //ConfigureWebApi(app);
         }

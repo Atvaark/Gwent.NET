@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Gwent.NET.Events;
 using Gwent.NET.Exceptions;
 using Gwent.NET.Extensions;

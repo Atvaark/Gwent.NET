@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web.Security;
+﻿using System.Web.Security;
 using Microsoft.Owin.Security.DataProtection;
 using Microsoft.Owin.Security.OAuth;
 
@@ -16,7 +15,7 @@ namespace Gwent.NET.Webservice.Auth
 
         public byte[] Protect(byte[] userData)
         {
-            throw new NotImplementedException();
+            return MachineKey.Protect(userData, _purpose);
         }
 
         public byte[] Unprotect(byte[] protectedData)

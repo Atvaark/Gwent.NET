@@ -13,13 +13,12 @@ using Gwent.NET.Interfaces;
 using Gwent.NET.Model;
 using Gwent.NET.Model.Enums;
 using Gwent.NET.Model.States;
-using Gwent.NET.Webservice.Auth;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 
 namespace Gwent.NET.Webservice.Hubs
 {
-    [QueryStringBearerAuthorize]
+    [Authorize]
     public class GameHub : Hub
     {
         private readonly ILifetimeScope _lifetimeScope;
@@ -46,7 +45,7 @@ namespace Gwent.NET.Webservice.Hubs
         public override Task OnConnected()
         {
             var userConnectionMapping = _lifetimeScope.Resolve<IUserConnectionMap>();
-            userConnectionMapping.Connect(Context.ConnectionId);
+            userConnectionMapping.Connect(Context.ConnectionId, Context.User.Identity.GetUserId());
 
             return base.OnConnected();
         }
@@ -58,19 +57,12 @@ namespace Gwent.NET.Webservice.Hubs
 
             return base.OnDisconnected(stopCalled);
         }
-
-
+        
         public override Task OnReconnected()
         {
             return base.OnReconnected();
         }
-
-        public void Authenticate()
-        {
-            var userConnectionMapping = _lifetimeScope.Resolve<IUserConnectionMap>();
-            userConnectionMapping.Authenticate(Context.ConnectionId, Context.User.Identity.GetUserId());
-        }
-
+        
         public GameHubResult<ICollection<GameBrowseDto>> BrowseGames()
         {
             using (var context = _lifetimeScope.Resolve<IGwintContext>())

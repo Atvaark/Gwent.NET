@@ -15,7 +15,7 @@ namespace Gwent.NET.Test.States
         public void InitializeRedrawState()
         {
             long nextCardId = 1;
-            var createNewCards = new Func<int, ICollection<PlayerCard>>((count) =>
+            var createNewCards = new Func<int, ICollection<PlayerCard>>(count =>
             {
                 var cards = new List<PlayerCard>();
                 for (int i = 0; i < count; i++)
@@ -63,7 +63,7 @@ namespace Gwent.NET.Test.States
         public void InitializeRedrawStateWithEleventhCardEffect()
         {
             long nextCardId = 1;
-            var createNewCards = new Func<int, ICollection<PlayerCard>>((count) =>
+            var createNewCards = new Func<int, ICollection<PlayerCard>>(count =>
             {
                 var cards = new List<PlayerCard>();
                 for (int i = 0; i < count; i++)

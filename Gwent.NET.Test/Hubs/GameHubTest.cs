@@ -143,7 +143,7 @@ namespace Gwent.NET.Test.Hubs
                 Clients = clientsMock.Object
             };
 
-            hub.Authenticate();
+            hub.OnConnected();
         }
 
         [Fact]
@@ -553,7 +553,7 @@ namespace Gwent.NET.Test.Hubs
             Assert.Null(result.Error);
         }
 
-        private static Mock<HubCallerContext> CreateHubCallerContextMock(string userName, string userId, string connectionID)
+        private static Mock<HubCallerContext> CreateHubCallerContextMock(string userName, string userId, string connectionId)
         {
             var claimsIdentityMock = new Mock<ClaimsIdentity>();
             claimsIdentityMock.SetupGet(i => i.Name).Returns(userName);
@@ -568,7 +568,7 @@ namespace Gwent.NET.Test.Hubs
             principalMock.SetupGet(p => p.Identity).Returns(claimsIdentityMock.Object);
             var hubCallerContextMock = new Mock<HubCallerContext>();
             hubCallerContextMock.SetupGet(h => h.User).Returns(principalMock.Object);
-            hubCallerContextMock.SetupGet(h => h.ConnectionId).Returns(connectionID);
+            hubCallerContextMock.SetupGet(h => h.ConnectionId).Returns(connectionId);
             return hubCallerContextMock;
         }
     }

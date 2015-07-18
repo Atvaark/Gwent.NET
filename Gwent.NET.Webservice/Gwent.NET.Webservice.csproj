@@ -156,7 +156,8 @@
     <Compile Include="Auth\ApplicationUserManager.cs" />
     <Compile Include="App_Start\StartupAuth.cs" />
     <Compile Include="Auth\MachineKeyProtector.cs" />
-    <Compile Include="Auth\QueryStringBearerAuthorizeAttribute.cs" />
+    <Compile Include="Auth\OwinAuthExtensions.cs" />
+    <Compile Include="Auth\QueryStringBearerAuthenticationMiddleware.cs" />
     <Compile Include="Auth\UserStore.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AuthenticatedApiController.cs" />
@@ -172,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\Release.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

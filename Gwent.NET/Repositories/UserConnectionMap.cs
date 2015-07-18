@@ -11,7 +11,6 @@ namespace Gwent.NET.Repositories
         private readonly ReaderWriterLockSlim _readerWriterLock;
         private readonly Dictionary<string, HashSet<string>> _userToConnectionsMap;
         private readonly Dictionary<string, string> _connectionToUserMap;
-        private const string DefaultUserId = null;
 
         public UserConnectionMap()
         {
@@ -20,20 +19,18 @@ namespace Gwent.NET.Repositories
             _connectionToUserMap = new Dictionary<string, string>();
         }
 
-        public void Connect(string connectionId)
+        public void Connect(string connectionId, string userId)
         {
             using (_readerWriterLock.EnterWrite())
             {
-                string userId;
-                if (_connectionToUserMap.TryGetValue(connectionId, out userId) && userId != DefaultUserId)
+                HashSet<string> connectionIds;
+                if (!_userToConnectionsMap.TryGetValue(userId, out connectionIds))
                 {
-                    HashSet<string> connectionIds = _userToConnectionsMap[userId];
-                    connectionIds.Remove(connectionId);
+                    connectionIds = new HashSet<string>();
+                    _userToConnectionsMap[userId] = connectionIds;
                 }
-                else
-                {
-                    _connectionToUserMap[connectionId] = DefaultUserId;
-                } 
+                connectionIds.Add(connectionId);
+                _connectionToUserMap[connectionId] = userId;
             }
         }
         
@@ -48,21 +45,6 @@ namespace Gwent.NET.Repositories
                     connectionIds.Remove(connectionId);
                 }
                 _connectionToUserMap.Remove(connectionId);
-            }
-        }
-
-        public void Authenticate(string connectionId, string userId)
-        {
-            using (_readerWriterLock.EnterWrite())
-            {
-                HashSet<string> connectionIds;
-                if (!_userToConnectionsMap.TryGetValue(userId, out connectionIds))
-                {
-                    connectionIds = new HashSet<string>();
-                    _userToConnectionsMap[userId] = connectionIds;
-                } 
-                connectionIds.Add(connectionId);
-                _connectionToUserMap[connectionId] = userId;
             }
         }
         

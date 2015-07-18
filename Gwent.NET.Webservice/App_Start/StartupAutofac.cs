@@ -6,6 +6,7 @@ using Autofac.Integration.SignalR;
 using Autofac.Integration.WebApi;
 using Gwent.NET.Webservice.Auth;
 using Microsoft.AspNet.SignalR.Infrastructure;
+using Microsoft.Owin.Security.DataProtection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Owin;
@@ -17,7 +18,7 @@ namespace Gwent.NET.Webservice
         public static IContainer ConfigureAutofac(IAppBuilder app)
         {
             var builder = new ContainerBuilder();
-            builder.RegisterModule<GwentPerRequestModule>();
+            builder.RegisterModule<GwentModule>();
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             builder.RegisterHubs(Assembly.GetExecutingAssembly());
             builder.RegisterType<ApplicationUserManager>();
@@ -27,6 +28,7 @@ namespace Gwent.NET.Webservice
                 settings.ContractResolver = new SignalRContractResolver();
                 return JsonSerializer.Create(settings);
             }).As<JsonSerializer>();
+            builder.RegisterType<MachineKeyProtector>().As<IDataProtector>();
 
             var container = builder.Build();
             GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);

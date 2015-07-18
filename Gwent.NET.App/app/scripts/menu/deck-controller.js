@@ -73,6 +73,7 @@
 
             methods.findDeckCard = function (cardIndex) {
                 var foundCard = null;
+                // TODO: Use a simple for loop
                 angular.forEach(data.create.cards, function (deckCard) {
                     if (deckCard.index === cardIndex) {
                         foundCard = deckCard;

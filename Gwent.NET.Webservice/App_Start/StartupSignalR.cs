@@ -1,21 +1,18 @@
-﻿using System;
-using System.Reflection;
-using Autofac;
+﻿using Autofac;
 using Autofac.Integration.SignalR;
 using Microsoft.AspNet.SignalR;
-using Microsoft.AspNet.SignalR.Infrastructure;
 using Microsoft.Owin.Cors;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using Owin;
 
 namespace Gwent.NET.Webservice
 {
     public partial class Startup
     {
+        private static string SignalRPath = "/signalr";
+
         public static void ConfigureSignalR(IAppBuilder app, IContainer container)
         {
-            app.Map("/signalr", map =>
+            app.Map(SignalRPath, map =>
             {
                 map.UseCors(CorsOptions.AllowAll);
                 var hubConfiguration = new HubConfiguration
