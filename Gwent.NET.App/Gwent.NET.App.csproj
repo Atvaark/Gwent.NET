@@ -304,6 +304,7 @@
     <Content Include="app\assets\img\player_winner_indicator.png" />
     <Content Include="app\assets\img\row_power_indicator.png" />
     <Content Include="app\scripts\menu\game-controller.js" />
+    <Content Include="app\templates\game\gw-battle-king-card.html" />
     <Content Include="app\templates\game\gw-card-field.html" />
     <Content Include="app\templates\game\gw-card.html" />
     <Content Include="app\templates\game\gw-board.html" />

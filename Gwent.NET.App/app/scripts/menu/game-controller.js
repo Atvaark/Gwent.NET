@@ -174,7 +174,7 @@
                 gameHubService.sendCommand({
                     type: "PlayCard",
                     cardId: cardId,
-                    //resurrectCardId: 0,
+                    targetCardId: 0,
                     slot: slot
                 }).then(function () {
                     $log.info('played card');
@@ -206,7 +206,7 @@
                     $log.info('game-controller: handling event: ' + args.name);
                     if (args.name === 'StateChangeEvent' ||
                         args.name === 'PlayerJoinedEvent' ||
-                        args.NAME === 'TurnEvent') {
+                        args.name === 'TurnEvent') {
                         data.game = args.game;
                         $log.info('game-controller: ' + args.name + ' handled');
                     } else if (args.name === 'HandChangedEvent') {

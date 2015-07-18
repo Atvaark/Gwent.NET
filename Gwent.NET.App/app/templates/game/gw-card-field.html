@@ -3,12 +3,12 @@
         transform-origin: top left;
         transform: scale(0.3, 0.3);
         position: absolute;
-        background-position-y: -8px;
         width: 300px;
         height: 400px;
-        background: rgba(0,0,0,0.2);
+        background-position-y: -8px;
+        background-size: 100%;
     }
-    
+
     .gw-card-field-power {
         position: absolute;
         width: 110px;
@@ -32,9 +32,9 @@
         left: 215px;
     }
 </style>
-<div class="gw-card-field" style="background-image: url({{image}});">
-    <span style="font-size: 64px">#{{card}}</span>
-    <div class="gw-card-field-power">{{power}}</div>
-    <div class="gw-card-field-ability">{{ability}}</div>
-    <div class="gw-card-field-type">{{type}}</div>
+<div class="gw-card-field" ng-style="{'background-image':'url(/app/assets/img/card/' + (card.picture || 'cardcover') + '.png)'}">
+    <span style="font-size: 64px">#{{card.id}}</span>
+    <div class="gw-card-field-power">{{card.power}}</div>
+    <div class="gw-card-field-ability">{{card.ability}}</div>
+    <div class="gw-card-field-type">{{card.type}}</div>
 </div>

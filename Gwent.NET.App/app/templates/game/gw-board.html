@@ -17,8 +17,10 @@
         width: 114px;
         height: 150px;
         position: absolute;
+        margin-top: 15px;
+        margin-left: 15px;
     }
-
+    
     .gw-leader-holder-turn-indicator {
         /*background: yellow;*/
         width: 56px;
@@ -130,12 +132,14 @@
         /*background: red;*/
         width: 293px;
         height: 150px;
+        text-align: center;
     }
 
     .gw-row {
         /*background: red;*/
         width: 1015px;
         height: 132px;
+        text-align: center;
     }
 
     .gw-row-score {
@@ -179,6 +183,7 @@
         /*background: red;*/
         width: 947px;
         height: 138px;
+        text-align: center;
     }
 
     .gw-graveyard {
@@ -203,7 +208,7 @@
         display: inline-block;
         width: 90px;
         height: 120px;
-        margin-right: -5px
+        margin-right: -5px;
     }
 
     #gw-top-leader-holder {
@@ -431,7 +436,8 @@
 </style>
 <div class="gw-board">
     <div id="gw-top-leader-holder" class="gw-leader-holder">
-        <div class="gw-leader-holder-card">{{game.players['opponent'].battleKingCard}}</div>
+        <!-- TODO: Fix battleKingCard not binding properly.-->
+        <gw-battle-king-card class="gw-leader-holder-card" ng-model="game.players['opponent'].battleKingCard"></gw-battle-king-card>
         <div id="gw-top-leader-holder-turn-indicator" class="gw-leader-holder-turn-indicator" ng-if="game.players['opponent'].isTurn"></div>
     </div>
     <div id="gw-top-player" class="gw-player">
@@ -453,7 +459,10 @@
         <div id="gw-top-player-score" class="gw-player-score">{{game.players['opponent'].score}}</div>
         <div id="gw-top-player-passed" class="gw-player-passed" ng-if="game.players['opponent'].isPassing">Passing</div>
     </div>
-    <div id="gw-weather" class="gw-weather"></div>
+    <div id="gw-weather" class="gw-weather">
+        <gw-card-field ng-repeat="card in game.players['self'].weatherCards track by $index" ng-model="card" style="display: inline-block; width: 90px; height: 120px;"></gw-card-field>
+        <gw-card-field ng-repeat="card in game.players['opponent'].weatherCards track by $index" ng-model="card" style="display: inline-block; width: 90px; height: 120px;"></gw-card-field>
+    </div>
     <div id="gw-bottom-player" class="gw-player">
         <div id="gw-bottom-player-portrait" class="gw-player-portrait"></div>
         <div id="gw-bottom-player-faction-icon" class="gw-player-faction-icon"></div>
@@ -472,7 +481,7 @@
         <div id="gw-bottom-player-passed" class="gw-player-passed" ng-if="game.players['self'].isPassing">Passing</div>
     </div>
     <div id="gw-bottom-leader-holder" class="gw-leader-holder">
-        <div class="gw-leader-holder-card">{{game.players['self'].battleKingCard}}</div>
+        <gw-battle-king-card class="gw-leader-holder-card" ng-model="game.players['self'].battleKingCard"></gw-battle-king-card>
         <div id="gw-bottom-leader-holder-turn-indicator" class="gw-leader-holder-turn-indicator" ng-if="game.players['self'].isTurn">
         </div>
     </div>
@@ -480,43 +489,67 @@
         <div class="gw-row-score">
             <div class="gw-row-score-text"></div>
         </div>
-        <div class="gw-row-modifier"></div>
-        <div class="gw-row-cards"></div>
+        <div class="gw-row-modifier">
+            <gw-card-field ng-repeat="card in game.players['opponent'].siegeModifierCards track by $index" ng-model="card" style="display: inline-block; width: 90px; height: 120px;"></gw-card-field>
+        </div>
+        <div class="gw-row-cards">
+            <gw-card-field ng-repeat="card in game.players['opponent'].siegeCards track by $index" ng-model="card" style="display: inline-block; width: 90px; height: 120px;"></gw-card-field>
+        </div>
     </div>
     <div id="gw-top-row-ranged" class="gw-row">
         <div class="gw-row-score">
             <div class="gw-row-score-text"></div>
         </div>
-        <div class="gw-row-modifier"></div>
-        <div class="gw-row-cards"></div>
+        <div class="gw-row-modifier">
+            <gw-card-field ng-repeat="card in game.players['opponent'].rangedModifierCards track by $index" ng-model="card" style="display: inline-block; width: 90px; height: 120px;"></gw-card-field>
+        </div>
+        <div class="gw-row-cards">
+            <gw-card-field ng-repeat="card in game.players['opponent'].rangedCards track by $index" ng-model="card" style="display: inline-block; width: 90px; height: 120px;"></gw-card-field>
+        </div>
     </div>
     <div id="gw-top-row-melee" class="gw-row">
         <div class="gw-row-score">
             <div class="gw-row-score-text"></div>
         </div>
-        <div class="gw-row-modifier"></div>
-        <div class="gw-row-cards"></div>
+        <div class="gw-row-modifier">
+            <gw-card-field ng-repeat="card in game.players['opponent'].meleeModifierCards track by $index" ng-model="card" style="display: inline-block; width: 90px; height: 120px;"></gw-card-field>
+        </div>
+        <div class="gw-row-cards">
+            <gw-card-field ng-repeat="card in game.players['opponent'].meleeCards track by $index" ng-model="card" style="display: inline-block; width: 90px; height: 120px;"></gw-card-field>
+        </div>
     </div>
     <div id="gw-bottom-row-melee" class="gw-row">
         <div class="gw-row-score">
             <div class="gw-row-score-text"></div>
         </div>
-        <div class="gw-row-modifier"></div>
-        <div class="gw-row-cards"></div>
+        <div class="gw-row-modifier">
+            <gw-card-field ng-repeat="card in game.players['self'].meleeModifierCards track by $index" ng-model="card" style="display: inline-block; width: 90px; height: 120px;"></gw-card-field>
+        </div>
+        <div class="gw-row-cards">
+            <gw-card-field ng-repeat="card in game.players['self'].meleeCards track by $index" ng-model="card" style="display: inline-block; width: 90px; height: 120px;"></gw-card-field>
+        </div>
     </div>
     <div id="gw-bottom-row-ranged" class="gw-row">
         <div class="gw-row-score">
             <div class="gw-row-score-text"></div>
         </div>
-        <div class="gw-row-modifier"></div>
-        <div class="gw-row-cards"></div>
+        <div class="gw-row-modifier">
+            <gw-card-field ng-repeat="card in game.players['self'].rangedModifierCards track by $index" ng-model="card" style="display: inline-block; width: 90px; height: 120px;"></gw-card-field>
+        </div>
+        <div class="gw-row-cards">
+            <gw-card-field ng-repeat="card in game.players['self'].rangedCards track by $index" ng-model="card" style="display: inline-block; width: 90px; height: 120px;"></gw-card-field>
+        </div>
     </div>
     <div id="gw-bottom-row-siege" class="gw-row">
         <div class="gw-row-score">
             <div class="gw-row-score-text"></div>
         </div>
-        <div class="gw-row-modifier"></div>
-        <div class="gw-row-cards"></div>
+        <div class="gw-row-modifier">
+            <gw-card-field ng-repeat="card in game.players['self'].siegeModifierCards track by $index" ng-model="card" style="display: inline-block; width: 90px; height: 120px;"></gw-card-field>
+        </div>
+        <div class="gw-row-cards">
+            <gw-card-field ng-repeat="card in game.players['self'].siegeCards track by $index" ng-model="card" style="display: inline-block; width: 90px; height: 120px;"></gw-card-field>
+        </div>
     </div>
     <div id="gw-bottom-hand" class="gw-hand">
         <gw-card-field ng-repeat="card in game.players['self'].handCards track by $index" ng-model="card" ng-click="methods.selectCard(card)" style="display: inline-block; width: 90px; height: 120px; margin-right: -5px"></gw-card-field>

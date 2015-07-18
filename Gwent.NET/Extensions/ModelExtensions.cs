@@ -114,12 +114,12 @@ namespace Gwent.NET.Extensions
                 HandCards = player.HandCards.Select(c => c.Card.Id).ToList(),
                 GraveyardCards = player.GraveyardCards.Select(c => c.Card.Id).ToList(),
                 MeleeCards = player.CardSlots.Where(s => s.Slot == GwintSlot.Melee).Select(s => s.Card.Id).ToList(),
-                RangeCards = player.CardSlots.Where(s => s.Slot == GwintSlot.Ranged).Select(s => s.Card.Id).ToList(),
+                RangedCards = player.CardSlots.Where(s => s.Slot == GwintSlot.Ranged).Select(s => s.Card.Id).ToList(),
                 SiegeCards = player.CardSlots.Where(s => s.Slot == GwintSlot.Siege).Select(s => s.Card.Id).ToList(),
                 WeatherCards = player.CardSlots.Where(s => s.Slot == GwintSlot.Weather).Select(s => s.Card.Id).ToList(),
-                MeleeModifiers = player.CardSlots.Where(s => s.Slot == GwintSlot.MeleeModifier).Select(s => s.Card.Id).ToList(),
-                RangedModifiers = player.CardSlots.Where(s => s.Slot == GwintSlot.RangedModifier).Select(s => s.Card.Id).ToList(),
-                SiegeModifiers = player.CardSlots.Where(s => s.Slot == GwintSlot.SiegeModifier).Select(s => s.Card.Id).ToList()
+                MeleeModifierCards = player.CardSlots.Where(s => s.Slot == GwintSlot.MeleeModifier).Select(s => s.Card.Id).ToList(),
+                RangedModifierCards = player.CardSlots.Where(s => s.Slot == GwintSlot.RangedModifier).Select(s => s.Card.Id).ToList(),
+                SiegeModifierCards = player.CardSlots.Where(s => s.Slot == GwintSlot.SiegeModifier).Select(s => s.Card.Id).ToList()
             };
         }
 

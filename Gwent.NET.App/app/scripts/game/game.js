@@ -410,18 +410,57 @@
             return {
                 require: '^ngModel',
                 scope: {
-                    card: '=ngModel'
+                    cardId: '=ngModel'
                 },
                 templateUrl: 'templates/game/gw-card.html'
             };
         })
         .directive('gwCardField', function () {
+            var controller = function ($scope, $log, cardService) {
+                $scope.card = {
+                    id: 0,
+                    power: 0,
+                    ability: 0,
+                    type: 0,
+                    picture: 'cardcover'
+                };
+                cardService.getCardById($scope.cardId).then(function (foundCard) {
+                    $scope.card = foundCard;
+                }, function(error) {
+                    $log.error(error);
+                });
+            };
+
             return {
                 require: '^ngModel',
                 scope: {
-                    card: '=ngModel'
+                    cardId: '=ngModel'
                 },
+                controller: controller,
                 templateUrl: 'templates/game/gw-card-field.html'
+            };
+        })
+        .directive('gwBattleKingCard', function () {
+            var controller = function ($scope, $log, cardService) {
+                $scope.card = {
+                    id: 0,
+                    picture: 'nor_ldr_foltest_bronze'
+                };
+                $scope.canUse = true;
+                cardService.getCardById($scope.cardId).then(function (foundCard) {
+                    $scope.card = foundCard;
+                }, function(error) {
+                    $log.error(error);
+                });
+            };
+
+            return {
+                require: '^ngModel',
+                scope: {
+                    cardId: '=ngModel'
+                },
+                controller: controller,
+                templateUrl: 'templates/game/gw-battle-king-card.html'
             };
         })
         .directive('gwBoard', function () {
@@ -429,14 +468,14 @@
                 var methods = $scope.methods = {};
                 var game = $scope.game;
                 var input = {};
-
                 methods.selectCard = function (card) {
                     input.selectedCard = card;
                     $log.info('card selected: ' + card);
+
+                    // TODO: Hightlight the card
                 }
             };
-
-
+            
             return {
                 require: '^ngModel',
                 scope: {

@@ -23,11 +23,11 @@ namespace Gwent.NET.DTOs
         public List<long> HandCards { get; set; }
         public List<long> GraveyardCards { get; set; }
         public List<long> MeleeCards { get; set; }
-        public List<long> RangeCards { get; set; }
+        public List<long> RangedCards { get; set; }
         public List<long> SiegeCards { get; set; }
         public List<long> WeatherCards { get; set; }
-        public List<long> MeleeModifiers { get; set; }
-        public List<long> RangedModifiers { get; set; }
-        public List<long> SiegeModifiers { get; set; }
+        public List<long> MeleeModifierCards { get; set; }
+        public List<long> RangedModifierCards { get; set; }
+        public List<long> SiegeModifierCards { get; set; }
     }
 }
