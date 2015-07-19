@@ -13,11 +13,7 @@
         <button type="button" ng-click="methods.sendStartCommand()">Start</button>
     </div>
     <div ng-show="data.game.state == 'PickStartingPlayer'">
-        <!-- TODO: For some reason this isn't working (see: http://jsfiddle.net/qzaxu2bp/) -->
-        <!--<select ng-model="data.input.startingPlayer" ng-option="player.id as player.name for (playerSide,player) in data.game.players"></select>-->
-        <select name="startingPlayer" ng-model="data.input.startingPlayer">
-            <option ng-repeat="player in data.game.players" value="{{player.id}}">{{player.name}}</option>
-        </select>
+        <select ng-model="data.input.startingPlayer" ng-options="player.id as player.name for (playerSide, player) in data.game.players"></select>
         <button type="button" ng-click="methods.sendPickStartingPlayerCommand(data.input.startingPlayer)">Pick player</button>
     </div>
     <div ng-show="data.game.state == 'Redraw' && data.game.players['self'].isTurn">

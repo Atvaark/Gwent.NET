@@ -406,8 +406,21 @@
                 return deferred.promise;
             }
 
-            $rootScope.$on('userChanged', function () {
-                setAuthorizationQueryString();
+            $rootScope.$on('userChanged', function (event, user) {
+                if (connected) {
+                    $log.info('disconnecting connection');
+                    gameHubService.disconnect();
+                    $log.info('disconnected');
+
+                    if (user) {
+                        $log.info('reconnecting as new user');
+                        gameHubService.connect().then(function () {
+                            $log.info('reconnected');
+                        }, function (error) {
+                            $log.info('failed to reconnect: ' + error);
+                        });
+                    }
+                }
             });
 
             return gameHubService;
