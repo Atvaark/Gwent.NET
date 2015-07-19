@@ -13,25 +13,21 @@
         <button type="button" ng-click="methods.sendStartCommand()">Start</button>
     </div>
     <div ng-show="data.game.state == 'PickStartingPlayer'">
+        <!-- TODO: For some reason this isn't working (see: http://jsfiddle.net/qzaxu2bp/) -->
+        <!--<select ng-model="data.input.startingPlayer" ng-option="player.id as player.name for (playerSide,player) in data.game.players"></select>-->
         <select name="startingPlayer" ng-model="data.input.startingPlayer">
             <option ng-repeat="player in data.game.players" value="{{player.id}}">{{player.name}}</option>
         </select>
         <button type="button" ng-click="methods.sendPickStartingPlayerCommand(data.input.startingPlayer)">Pick player</button>
     </div>
     <div ng-show="data.game.state == 'Redraw' && data.game.players['self'].isTurn">
-        <select name="redrawCard" ng-model="data.input.redrawCard">
-            <option ng-repeat="handCard in data.game.players['self'].handCards track by $index" value="{{handCard}}">{{handCard}}</option>
-        </select>
+        <select ng-model="data.input.redrawCard" ng-options="card.cardId for card in data.game.players['self'].cards['hand']"></select>
         <button type="button" ng-click="methods.sendRedrawCardCommand(data.input.redrawCard)">Redraw</button>
         <button type="button" ng-click="methods.sendEndRedrawCardCommand()">End redrawing</button>
     </div>
     <div ng-show="data.game.state == 'Round' && data.game.players['self'].isTurn">
-        <select name="playCard" ng-model="data.input.playCard" ng-change="methods.getValidSlots(data.input.playCard)">
-            <option ng-repeat="handCard in data.game.players['self'].handCards track by $index" value="{{handCard}}">{{handCard}}</option>
-        </select>
-        <select name="playCardSlot" ng-model="data.input.playCardSlot">
-            <option ng-repeat="slot in data.input.validSlots" value="{{slot}}">{{slot}}</option>
-        </select>
+        <select ng-model="data.input.playCard" ng-options="card.cardId for card in data.game.players['self'].cards['hand']" ng-change="methods.getValidSlots(data.input.playCard)"></select>
+        <select ng-model="data.input.playCardSlot" ng-options="slot for slot in data.input.validSlots"></select>
         <!-- TODO: Add a target CardId and target slot picker-->
         <button type="button" ng-click="methods.sendPlayCardCommand(data.input.playCard, data.input.playCardSlot)">Play card</button>
         <button type="button" ng-click="methods.sendPassCommand()">Pass</button>

@@ -3,12 +3,15 @@
     public enum GwintSlot
     {
         None = 0,
-        Melee = 1,
-        Ranged = 2,
-        Siege = 3,
-        MeleeModifier = 4,
-        RangedModifier = 5,
-        SiegeModifier = 6,
-        Weather = 7
+        Deck = 1,
+        Hand = 2,
+        Graveyard = 3,
+        Melee = 4,
+        Ranged = 5,
+        Siege = 6,
+        MeleeModifier = 7,
+        RangedModifier = 8,
+        SiegeModifier = 9,
+        Weather = 10
     }
 }

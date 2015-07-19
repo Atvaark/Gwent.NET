@@ -79,7 +79,7 @@ namespace Gwent.NET.Extensions
                 else
                 {
                     var opponentDto = player.ToDto();
-                    opponentDto.HandCards.Clear();
+                    opponentDto.Cards[GwintSlot.Hand].Clear();
                     players[Constants.PlayerKeyOpponent] = opponentDto;
                 }
             }
@@ -94,6 +94,13 @@ namespace Gwent.NET.Extensions
 
         public static PlayerDto ToDto(this Player player)
         {
+            Dictionary<GwintSlot, List<PlayerCardDto>> cards = player.CardSlots
+                .GroupBy(c => c.Slot)
+                .ToDictionary(g => g.Key, g => g.Select(c => c.ToDto()).ToList());
+            //cards.Add(GwintSlot.Deck, player.DeckCards.Select(c => c.ToDto()).ToList());
+            cards.Add(GwintSlot.Hand, player.HandCards.Select(c => c.ToDto()).ToList());
+            cards.Add(GwintSlot.Graveyard, player.GraveyardCards.Select(c => c.ToDto()).ToList());
+
             return new PlayerDto
             {
                 Id = player.User.Id,
@@ -111,15 +118,26 @@ namespace Gwent.NET.Extensions
                 HandCardCount = player.HandCards.Count,
                 DeckCardCount = player.DeckCards.Count,
 
-                HandCards = player.HandCards.Select(c => c.Card.Id).ToList(),
-                GraveyardCards = player.GraveyardCards.Select(c => c.Card.Id).ToList(),
-                MeleeCards = player.CardSlots.Where(s => s.Slot == GwintSlot.Melee).Select(s => s.Card.Id).ToList(),
-                RangedCards = player.CardSlots.Where(s => s.Slot == GwintSlot.Ranged).Select(s => s.Card.Id).ToList(),
-                SiegeCards = player.CardSlots.Where(s => s.Slot == GwintSlot.Siege).Select(s => s.Card.Id).ToList(),
-                WeatherCards = player.CardSlots.Where(s => s.Slot == GwintSlot.Weather).Select(s => s.Card.Id).ToList(),
-                MeleeModifierCards = player.CardSlots.Where(s => s.Slot == GwintSlot.MeleeModifier).Select(s => s.Card.Id).ToList(),
-                RangedModifierCards = player.CardSlots.Where(s => s.Slot == GwintSlot.RangedModifier).Select(s => s.Card.Id).ToList(),
-                SiegeModifierCards = player.CardSlots.Where(s => s.Slot == GwintSlot.SiegeModifier).Select(s => s.Card.Id).ToList()
+                Cards = cards
+            };
+        }
+
+        public static PlayerCardDto ToDto(this PlayerCard playerCard)
+        {
+            return new PlayerCardDto
+            {
+                Id = playerCard.Id,
+                CardId = playerCard.Card.Id
+            };
+        }
+        
+        public static PlayerCardDto ToDto(this PlayerCardSlot playerCardSlot)
+        {
+            return new PlayerCardDto
+            {
+                Id = playerCardSlot.Id,
+                CardId = playerCardSlot.Card.Id,
+                IsActive = true // HACK: This is to differentiate between the ids of PlayarCard and PlayerCardSlot.
             };
         }
 

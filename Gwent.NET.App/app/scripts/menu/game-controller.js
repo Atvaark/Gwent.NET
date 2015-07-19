@@ -139,10 +139,10 @@
                 });
             };
 
-            methods.sendRedrawCardCommand = function (cardId) {
+            methods.sendRedrawCardCommand = function (playerCard) {
                 gameHubService.sendCommand({
                     type: "RedrawCard",
-                    cardId: cardId
+                    cardId: playerCard.cardId
                 }).then(function () {
                     $log.info('card redrawn');
                 }, function (error) {
@@ -160,10 +160,10 @@
                 });
             };
 
-            methods.sendPlayCardCommand = function (cardId, slot) {
+            methods.sendPlayCardCommand = function (card, slot) {
                 gameHubService.sendCommand({
                     type: "PlayCard",
-                    cardId: cardId,
+                    cardId: card.cardId,
                     targetCardId: 0,
                     slot: slot
                 }).then(function () {
@@ -183,10 +183,16 @@
                 });
             };
 
-            methods.getValidSlots = function (cardId) {
-                cardService.getCardById(cardId).then(function (card) {
+            methods.getValidSlots = function (playerCard) {
+                if (!playerCard) {
+                    data.input.validSlots = [];
+                    return;
+                }
+
+                cardService.getCardById(playerCard.cardId).then(function (card) {
                     data.input.validSlots = gwintSlotService.getValidSlots(card);
                 }, function () {
+                    data.input.validSlots = [];
                     $log.error('unable to get valid slots. could not get the card.');
                 });
             };

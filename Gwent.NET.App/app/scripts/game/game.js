@@ -334,8 +334,26 @@
                         return false;
                     }
                 },
-                Melee: {
+                Deck: {
                     id: 1,
+                    canPlayCard: function () {
+                        return false;
+                    }
+                },
+                Hand: {
+                    id: 2,
+                    canPlayCard: function () {
+                        return false;
+                    }
+                },
+                Graveyard: {
+                    id: 3,
+                    canPlayCard: function () {
+                        return false;
+                    }
+                },
+                Melee: {
+                    id: 4,
                     canPlayCard: function (card) {
                         return gwintTypeService.hasAllTypes(card.type, ['Melee', 'Creature']) ||
                                gwintTypeService.hasType(card.type, 'Spell') ||
@@ -343,7 +361,7 @@
                     }
                 },
                 Ranged: {
-                    id: 2,
+                    id: 5,
                     canPlayCard: function (card) {
                         return gwintTypeService.hasAllTypes(card.type, ['Ranged', 'Creature']) ||
                                gwintTypeService.hasType(card.type, 'Spell') ||
@@ -351,7 +369,7 @@
                     }
                 },
                 Siege: {
-                    id: 3,
+                    id: 6,
                     canPlayCard: function (card) {
                         return gwintTypeService.hasAllTypes(card.type, ['Siege', 'Creature']) ||
                                gwintTypeService.hasType(card.type, 'Spell') ||
@@ -359,25 +377,25 @@
                     }
                 },
                 MeleeModifier: {
-                    id: 4,
+                    id: 7,
                     canPlayCard: function (card) {
                         return gwintTypeService.hasAllTypes(card.type, ['Melee', 'RowModifier']);
                     }
                 },
                 RangedModifier: {
-                    id: 5,
+                    id: 8,
                     canPlayCard: function (card) {
                         return gwintTypeService.hasAllTypes(card.type, ['Melee', 'RowModifier']);
                     }
                 },
                 SiegeModifier: {
-                    id: 6,
+                    id: 9,
                     canPlayCard: function (card) {
                         return gwintTypeService.hasAllTypes(card.type, ['Melee', 'RowModifier']);
                     }
                 },
                 Weather: {
-                    id: 7,
+                    id: 10,
                     canPlayCard: function (card) {
                         return gwintTypeService.hasType(card.type, 'Weather');
                     }
@@ -438,7 +456,7 @@
                     type: 0,
                     picture: 'cardcover'
                 };
-                cardService.getCardById($scope.cardId).then(function (foundCard) {
+                cardService.getCardById($scope.playerCard.cardId).then(function (foundCard) {
                     $scope.card = foundCard;
                 }, function(error) {
                     $log.error(error);
@@ -448,7 +466,7 @@
             return {
                 require: '^ngModel',
                 scope: {
-                    cardId: '=ngModel'
+                    playerCard: '=ngModel'
                 },
                 controller: controller,
                 templateUrl: 'templates/game/gw-card-field.html'
@@ -482,9 +500,10 @@
                 var methods = $scope.methods = {};
                 var game = $scope.game;
                 var input = {};
-                methods.selectCard = function(card) {
-                    input.selectedCard = card;
-                    $log.info('card selected: ' + card);
+                methods.selectCard = function (playerCard) {
+                    input.playCard = playerCard;
+
+                    $log.info('card selected: ' +playerCard.cardId);
 
                     // TODO: Hightlight the card
                 };

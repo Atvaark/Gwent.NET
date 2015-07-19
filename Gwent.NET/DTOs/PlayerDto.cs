@@ -20,14 +20,6 @@ namespace Gwent.NET.DTOs
         public int HandCardCount { get; set; }
         public int DeckCardCount { get; set; }
 
-        public List<long> HandCards { get; set; }
-        public List<long> GraveyardCards { get; set; }
-        public List<long> MeleeCards { get; set; }
-        public List<long> RangedCards { get; set; }
-        public List<long> SiegeCards { get; set; }
-        public List<long> WeatherCards { get; set; }
-        public List<long> MeleeModifierCards { get; set; }
-        public List<long> RangedModifierCards { get; set; }
-        public List<long> SiegeModifierCards { get; set; }
+        public Dictionary<GwintSlot, List<PlayerCardDto>> Cards { get; set; }
     }
 }
