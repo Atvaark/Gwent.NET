@@ -14,7 +14,7 @@
             };
             var methods = $scope.methods = $scope.methods || {};
             methods.getCards = function () {
-                cardService.methods.getCards().then(function (cards) {
+                cardService.getCards().then(function (cards) {
                     $log.info('Cards updated.');
                     data.cards = cards;
                 }, function (msg) {
