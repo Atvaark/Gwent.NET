@@ -106,6 +106,20 @@
                 { id: 3, name: 'Northern Kingdom', perk: 'Draw a card from your deck whenever you win a round.', validDeckFaction: true },
                 { id: 4, name: 'Scoia\'tael', perk: 'You devide who goes first at the start of battle.', validDeckFaction: true }
             ];
+
+            gwintFactionService.findFaction = function(factionId) {
+                if (factionId < gwintFactionService.factions.length) {
+                    return gwintFactionService.factions[factionId];
+                } else {
+                    return {
+                        id: factionId,
+                        name: 'Unknown',
+                        perk: 'Unknown',
+                        validDeckFaction: false
+                    };
+                }
+            };
+
             return gwintFactionService;
         })
         .filter('deckFaction', function () {
@@ -464,16 +478,19 @@
             };
         })
         .directive('gwBoard', function () {
-            var controller = function ($scope, $log) {
+            var controller = function ($scope, $log, gwintFactionService) {
                 var methods = $scope.methods = {};
                 var game = $scope.game;
                 var input = {};
-                methods.selectCard = function (card) {
+                methods.selectCard = function(card) {
                     input.selectedCard = card;
                     $log.info('card selected: ' + card);
 
                     // TODO: Hightlight the card
-                }
+                };
+                methods.getFactionName = function(factionId) {
+                    return gwintFactionService.findFaction(factionId).name;
+                };
             };
             
             return {

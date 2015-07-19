@@ -4,6 +4,7 @@
         height: 1080px;
         position: relative;
         background-image: url(/app/assets/img/board.png);
+        color: white;
     }
 
     .gw-leader-holder {
@@ -451,7 +452,7 @@
         <div id="gw-top-player-portrait" class="gw-player-portrait"></div>
         <div id="gw-top-player-faction-icon" class="gw-player-faction-icon"></div>
         <div id="gw-top-player-name" class="gw-player-name">{{game.players['opponent'].name}}</div>
-        <div id="gw-top-player-faction-name" class="gw-player-faction-name">{{game.players['opponent'].faction}}</div>
+        <div id="gw-top-player-faction-name" ng-if="game.players['opponent'].faction" class="gw-player-faction-name">{{methods.getFactionName(game.players['opponent'].faction)}}</div>
         <div id="gw-top-player-card-count" class="gw-player-card-count">
             <div class="gw-player-card-count-image"></div>
             <div class="gw-player-card-count-text">{{game.players['opponent'].handCardCount}}</div>
@@ -474,7 +475,7 @@
         <div id="gw-bottom-player-portrait" class="gw-player-portrait"></div>
         <div id="gw-bottom-player-faction-icon" class="gw-player-faction-icon"></div>
         <div id="gw-bottom-player-name" class="gw-player-name">{{game.players['self'].name}}</div>
-        <div id="gw-bottom-player-faction-name" class="gw-player-faction-name">{{game.players['self'].faction}}</div>
+        <div id="gw-bottom-player-faction-name" ng-if="game.players['self'].faction" class="gw-player-faction-name">{{methods.getFactionName(game.players['self'].faction)}}</div>
         <div id="gw-bottom-player-card-count" class="gw-player-card-count">
             <div class="gw-player-card-count-image"></div>
             <div class="gw-player-card-count-text">{{game.players['self'].handCardCount}}</div>

@@ -7,6 +7,7 @@
         height: 400px;
         background-position-y: -8px;
         background-size: 100%;
+        font-size: 64px;
     }
 
     .gw-card-field-power {
@@ -33,8 +34,8 @@
     }
 </style>
 <div class="gw-card-field" ng-style="{'background-image':'url(/app/assets/img/card/' + (card.picture || 'cardcover') + '.png)'}">
-    <span style="font-size: 64px">#{{card.id}}</span>
     <div class="gw-card-field-power">{{card.power}}</div>
     <div class="gw-card-field-ability">{{card.ability}}</div>
     <div class="gw-card-field-type">{{card.type}}</div>
+    <span>#{{card.id}}</span>
 </div>
