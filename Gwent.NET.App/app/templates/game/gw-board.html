@@ -436,8 +436,7 @@
 </style>
 <div class="gw-board">
     <div id="gw-top-leader-holder" class="gw-leader-holder">
-        <!-- TODO: Fix battleKingCard not binding properly.-->
-        <gw-battle-king-card class="gw-leader-holder-card" ng-model="game.players['opponent'].battleKingCard"></gw-battle-king-card>
+        <gw-battle-king-card class="gw-leader-holder-card" ng-if="game.players['opponent'].battleKingCard" ng-model="game.players['opponent'].battleKingCard"></gw-battle-king-card>
         <div id="gw-top-leader-holder-turn-indicator" class="gw-leader-holder-turn-indicator" ng-if="game.players['opponent'].isTurn"></div>
     </div>
     <div id="gw-top-player" class="gw-player">
@@ -481,9 +480,8 @@
         <div id="gw-bottom-player-passed" class="gw-player-passed" ng-if="game.players['self'].isPassing">Passing</div>
     </div>
     <div id="gw-bottom-leader-holder" class="gw-leader-holder">
-        <gw-battle-king-card class="gw-leader-holder-card" ng-model="game.players['self'].battleKingCard"></gw-battle-king-card>
-        <div id="gw-bottom-leader-holder-turn-indicator" class="gw-leader-holder-turn-indicator" ng-if="game.players['self'].isTurn">
-        </div>
+        <gw-battle-king-card class="gw-leader-holder-card" ng-if="game.players['self'].battleKingCard" ng-model="game.players['self'].battleKingCard"></gw-battle-king-card>
+        <div id="gw-bottom-leader-holder-turn-indicator" class="gw-leader-holder-turn-indicator" ng-if="game.players['self'].isTurn"></div>
     </div>
     <div id="gw-top-row-siege" class="gw-row">
         <div class="gw-row-score">

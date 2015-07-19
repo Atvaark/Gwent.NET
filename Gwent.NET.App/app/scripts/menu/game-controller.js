@@ -38,13 +38,6 @@
                 var deferred = $q.defer();
 
                 gameHubService.getActiveGame().then(function (game) {
-                    if (game == null) {
-                        $log.info('no active game found');
-                    } else {
-                        $log.info('active game found');
-                    }
-
-                    data.game = game;
                     deferred.resolve(game);
                 }, function (error) {
                     $log.error(error);
@@ -96,14 +89,11 @@
                             $log.error('unable to create game: ' + error);
                         });
                     });
-
             };
 
             methods.resumeGame = function () {
-                gameHubService.connect()
-                    .then(function () {
-                        $state.go('menu.game.lobby');
-                    });
+                $log.info('resuming game');
+                $state.go('menu.game.lobby');
             };
 
             methods.sendStartCommand = function () {
@@ -221,14 +211,30 @@
             $scope.$on('serverEventRecieved', onServerEventRecieved);
 
             // Initializing game page
-            gameHubService.connect().then(function () {
+            $log.info('initializing game controller');
+
+            $log.info('loading cards');
+            cardService.getCards().then(function () {
                 $log.info('connecting');
-                methods.getActiveGame().then(function (game) {
-                    $log.info('resuming game');
-                    methods.resumeGame();;
+                gameHubService.connect().then(function () {
+                    $log.info('getting active game');
+                    methods.getActiveGame().then(function (game) {
+                        if (game == null) {
+                            $log.info('no active game found');
+                        } else {
+                            $log.info('active game found');
+                            data.game = game;
+                            methods.resumeGame();
+                        }
+                    }, function(error) {
+                        $log.error('could not get active game: ' + error);
+                    });
+                }, function (error) {
+                    $log.error('could not connect: ' + error);
                 });
-            }, function () {
-                $log.error('could not connect');
-            });
+            }), function(error) {
+                $log.error('could not load cards: ' + error);
+            };
+
         });
 })();

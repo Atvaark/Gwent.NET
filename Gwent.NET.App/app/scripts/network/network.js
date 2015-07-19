@@ -249,7 +249,7 @@
 
             gameHubService.connect = function () {
                 if (userService.getUser() == null) {
-                    return $q.reject('No user logged in.');
+                    return $q.reject('no user logged in.');
                 }
 
                 if (connected) {
@@ -257,7 +257,7 @@
                     return $q.when();
                 }
                 var deferred = $q.defer();
-                $log.info('connecting');
+                $log.info('creating new connection');
                 connection = $.hubConnection(signalRUrl, {
                     useDefaultPath: false,
                     qs: getAuthorizationQueryString()
@@ -347,7 +347,6 @@
                 }
 
                 var deferred = $q.defer();
-                $log.info('getting active game');
                 gameHubProxy.invoke('GetActiveGame')
                     .done(function (result) {
                         if (result.error) {
