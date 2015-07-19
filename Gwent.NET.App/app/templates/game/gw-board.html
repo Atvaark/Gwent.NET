@@ -21,7 +21,7 @@
         margin-top: 15px;
         margin-left: 15px;
     }
-    
+
     .gw-leader-holder-turn-indicator {
         /*background: yellow;*/
         width: 56px;
@@ -121,6 +121,17 @@
         /*background: orange;*/
         width: 65px;
         height: 65px;
+        text-align: center;
+        background-image: url(/app/assets/img/player_power_indicator.png);
+        background-size: 100%;
+    }
+
+    .gw-player-score-text {
+        color: black;
+        font-size: 36px;
+        font-weight: bold;
+        margin-top: 10px;
+        font-family: sans-serif;
     }
 
     .gw-player-passed {
@@ -144,7 +155,7 @@
         text-align: center;
     }
 
-    .gw-row-score {
+    .gw-row-left {
         /*background: yellow;*/
         width: 78px;
         height: 132px;
@@ -152,7 +163,7 @@
         background-image: url(/app/assets/img/row_power_indicator.png);
     }
 
-    .gw-row-score-text {
+    .gw-row-score {
         /*background: orange;*/
         width: 54px;
         height: 54px;
@@ -161,6 +172,14 @@
         top: 40px;
         background-image: url(/app/assets/img/player_power_indicator.png);
         background-size: 100%;
+    }
+
+    .gw-row-score-text {
+        color: black;
+        font-size: 28px;
+        font-weight: bold;
+        margin-top: 12px;
+        font-family: sans-serif;
     }
 
     .gw-row-modifier {
@@ -188,12 +207,12 @@
         padding-top: 10px;
         text-align: center;
     }
-    
-    .gw-hand .gw-card-field:hover {
-        margin-top: -15px;
-        border: 8px solid orange;
-        border-radius: 15px;
-    }
+
+        .gw-hand .gw-card-field:hover {
+            margin-top: -15px;
+            border: 8px solid orange;
+            border-radius: 15px;
+        }
 
     .gw-graveyard {
         /*background: red;*/
@@ -281,8 +300,6 @@
         position: absolute;
         top: 23px;
         left: 316px;
-        background-image: url(/app/assets/img/player_power_indicator.png);
-        background-size: 100%;
     }
 
     #gw-top-player-passed {
@@ -342,8 +359,6 @@
         position: absolute;
         top: 35px;
         left: 316px;
-        background-image: url(/app/assets/img/player_power_indicator.png);
-        background-size: 100%;
     }
 
     #gw-bottom-player-passed {
@@ -461,10 +476,10 @@
             <div class="gw-player-life-indicator-gem" ng-class="{'gw-player-life-indicator-gem-inactive' : game.players['opponent'].lives <= 0}"></div>
             <div class="gw-player-life-indicator-gem" ng-class="{'gw-player-life-indicator-gem-inactive' : game.players['opponent'].lives <= 1}"></div>
         </div>
-        <div id="gw-top-player-winning-round" class="gw-player-winning-round">
-            {{game.players['opponent'].isWinning}}
+        <div id="gw-top-player-winning-round" class="gw-player-winning-round">{{game.players['opponent'].isWinning}}</div>
+        <div id="gw-top-player-score" class="gw-player-score">
+            <div class="gw-player-score-text">{{game.players['opponent'].score || 0}}</div>
         </div>
-        <div id="gw-top-player-score" class="gw-player-score">{{game.players['opponent'].score}}</div>
         <div id="gw-top-player-passed" class="gw-player-passed" ng-if="game.players['opponent'].isPassing">Passing</div>
     </div>
     <div id="gw-weather" class="gw-weather">
@@ -485,7 +500,9 @@
             <div class="gw-player-life-indicator-gem" ng-class="{'gw-player-life-indicator-gem-inactive' : game.players['self'].lives <= 1}"></div>
         </div>
         <div id="gw-bottom-player-winning-round" class="gw-player-winning-round">{{game.players['self'].isWinning}}</div>
-        <div id="gw-bottom-player-score" class="gw-player-score">{{game.players['self'].score}}</div>
+        <div id="gw-bottom-player-score" class="gw-player-score">
+            <div class="gw-player-score-text">{{game.players['self'].score || 0}}</div>
+        </div>
         <div id="gw-bottom-player-passed" class="gw-player-passed" ng-if="game.players['self'].isPassing">Passing</div>
     </div>
     <div id="gw-bottom-leader-holder" class="gw-leader-holder">
@@ -493,8 +510,10 @@
         <div id="gw-bottom-leader-holder-turn-indicator" class="gw-leader-holder-turn-indicator" ng-if="game.players['self'].isTurn"></div>
     </div>
     <div id="gw-top-row-siege" class="gw-row">
-        <div class="gw-row-score">
-            <div class="gw-row-score-text"></div>
+        <div class="gw-row-left">
+            <div class="gw-row-score">
+                <div class="gw-row-score-text">0</div>
+            </div>
         </div>
         <div class="gw-row-modifier">
             <gw-card-field ng-repeat="card in game.players['opponent'].siegeModifierCards track by $index" ng-model="card" style="display: inline-block; width: 90px; height: 120px;"></gw-card-field>
@@ -504,8 +523,10 @@
         </div>
     </div>
     <div id="gw-top-row-ranged" class="gw-row">
-        <div class="gw-row-score">
-            <div class="gw-row-score-text"></div>
+        <div class="gw-row-left">
+            <div class="gw-row-score">
+                <div class="gw-row-score-text">0</div>
+            </div>
         </div>
         <div class="gw-row-modifier">
             <gw-card-field ng-repeat="card in game.players['opponent'].rangedModifierCards track by $index" ng-model="card" style="display: inline-block; width: 90px; height: 120px;"></gw-card-field>
@@ -515,8 +536,10 @@
         </div>
     </div>
     <div id="gw-top-row-melee" class="gw-row">
-        <div class="gw-row-score">
-            <div class="gw-row-score-text"></div>
+        <div class="gw-row-left">
+            <div class="gw-row-score">
+                <div class="gw-row-score-text">0</div>
+            </div>
         </div>
         <div class="gw-row-modifier">
             <gw-card-field ng-repeat="card in game.players['opponent'].meleeModifierCards track by $index" ng-model="card" style="display: inline-block; width: 90px; height: 120px;"></gw-card-field>
@@ -526,8 +549,10 @@
         </div>
     </div>
     <div id="gw-bottom-row-melee" class="gw-row">
-        <div class="gw-row-score">
-            <div class="gw-row-score-text"></div>
+        <div class="gw-row-left">
+            <div class="gw-row-score">
+                <div class="gw-row-score-text">0</div>
+            </div>
         </div>
         <div class="gw-row-modifier">
             <gw-card-field ng-repeat="card in game.players['self'].meleeModifierCards track by $index" ng-model="card" style="display: inline-block; width: 90px; height: 120px;"></gw-card-field>
@@ -537,8 +562,10 @@
         </div>
     </div>
     <div id="gw-bottom-row-ranged" class="gw-row">
-        <div class="gw-row-score">
-            <div class="gw-row-score-text"></div>
+        <div class="gw-row-left">
+            <div class="gw-row-score">
+                <div class="gw-row-score-text">0</div>
+            </div>
         </div>
         <div class="gw-row-modifier">
             <gw-card-field ng-repeat="card in game.players['self'].rangedModifierCards track by $index" ng-model="card" style="display: inline-block; width: 90px; height: 120px;"></gw-card-field>
@@ -548,8 +575,10 @@
         </div>
     </div>
     <div id="gw-bottom-row-siege" class="gw-row">
-        <div class="gw-row-score">
-            <div class="gw-row-score-text"></div>
+        <div class="gw-row-left">
+            <div class="gw-row-score">
+                <div class="gw-row-score-text">0</div>
+            </div>
         </div>
         <div class="gw-row-modifier">
             <gw-card-field ng-repeat="card in game.players['self'].siegeModifierCards track by $index" ng-model="card" style="display: inline-block; width: 90px; height: 120px;"></gw-card-field>
